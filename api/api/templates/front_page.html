@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predico REST API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{% static "background.png" %}') no-repeat center center fixed;
+            background-size: contain;
+            z-index: -1;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            z-index: 1;
+        }
+        h1 {
+            color: #03314A;
+        }
+        p {
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            color: #03314A;
+        }
+        a {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #03314A;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #1CD09A;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="container">
+        <img src="{% static 'logo.png' %}" height="120" margin="0px"/>
+        <h1>RESTful API</h1>
+        <p>Explore the documentation for more details:</p>
+        <a href="{{ swagger_link }}" target="_blank">Swagger Documentation</a>
+        <a href="{{ redoc_link }}" target="_blank">Redoc Documentation</a>
+    </div>
+</body>
+</html>
