@@ -1,93 +1,150 @@
-# collabforecast
+# Predico Collabforecast - Backend
+
+-----------------------------------------------------
+
+[![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
+[![status](https://img.shields.io/badge/status-development-yellow.svg)]()
+[![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-360/)
+
+## Requirements
+
+* [Python ^3.11](https://www.python.org/downloads/)
+* [Pip ^21.x](https://pypi.org/project/pip/)
 
 
+## Project Structure:
 
-## Getting started
+The following directory structure should be considered:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+``` bash
+.   # Current directory
+├── api                       # REST API source code
+├──── api                     # main configs
+├──── authentication          # authentication endpoints
+├──── data                    # data operations endpoints
+|──── logs                    # logs directory
+├──── market                  # market participation endpoints
+├──── tests                   # unittests suite
+├──── users                   # users endpoints
+├── nginx                     # NGINX configs
+├──── Dockerfile              # Dockerfile
+├──── index.html              # Docs mainpage
+├──── nginx.conf              # Nginx config
+├──── project.conf            # Nginx config
+├── docs                      # Docs
+├── .dockerignore             # dockerignore file
+├── .gitignore                # gitignore file
+├── .gitlab-ci.yml            # gitlab-ci file
+├── docker-compose.prod.yml   # docker-compose file (production)
+├── docker-compose.test.yml   # docker-compose file (CICD)
+├── docker-compose.yml        # docker-compose file (development)
+├── README.md
 ```
-cd existing_repo
-git remote add origin https://gitlab.inesctec.pt/cpes/elia/collaborative-forecasting/collabforecast.git
-git branch -M main
-git push -uf origin main
+
+## Project Setup
+
+Create a `.env` file from a provided example (`dotenv`) and update its variables
+```shell
+cp dotenv .env
 ```
 
-## Integrate with your tools
+Start docker stack:
 
-- [ ] [Set up project integrations](https://gitlab.inesctec.pt/cpes/elia/collaborative-forecasting/collabforecast/-/settings/integrations)
+```shell
+docker-compose up -d
+```
 
-## Collaborate with your team
+Enter docker container (app):
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```shell
+docker exec -it predico_rest_app bash
+```
 
-## Test and Deploy
+Inside the container (`predico_rest_app`) apply current migrations and create superuser.
 
-Use the built-in continuous integration in GitLab.
+```shell
+python manage.py migrate
+python manage.py createsuperuser
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Run collectstatic to serve static files (relevant if behind NGINX)
+```shell
+python manage.py collectstatic
+```
 
-***
+Check if all tests pass successfully
 
-# Editing this README
+```shell
+pytest
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
-## Suggestions for a good README
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## How to easy deploy in "debug" mode (developers)?
 
-## Name
-Choose a self-explaining name for your project.
+How to run the code in development mode, with APP decoupled from docker stack?
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+First, install the necessary project python dependencies:
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```shell
+cd /api
+poetry install
+poetry shell
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Then, create a `.dev.env` file with environment variables used to debug and update default environment variables to your specifics.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+```shell
+cp dotenv .dev.env
+```
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+**Important:** Make sure you force develop mode by using the following environment variable `DJANGO_APPLICATION_ENVIRONMENT=develop` and `POSTGRES_HOST=localhost`
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Then, use docker-compose to initialize a Postgres DB:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+```shell
+docker-compose up -d --build postgresql
+```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Once your DB is up, you can debug locally by just by uncommenting the following lines in "environment.lines: 
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+```python
+from dotenv import load_dotenv
+load_dotenv(".dev.env")
+```
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+After this, you can easily run your application without docker container, in either an IDE or straight from the command line.
 
-## License
-For open source projects, say how it is licensed.
+1. Migrate your DB migrations:
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+```shell
+python manage.py migrate
+```
+
+2. Create a superuser:
+
+```shell
+python manage.py createsuperuser
+```
+
+3. Run your app using through Django runserver command:
+
+```shell
+python manage.py runserver
+```
+
+
+## Contacts:
+
+If you have any questions regarding this project, please contact the following people:
+
+Developers (SW source code / methodology questions):
+  - José Andrade <jose.r.andrade@inesctec.pt>
+  - André Garcia <andre.f.garcia@inesctec.pt>
+  - Giovanni Buroni <giovanni.buroni@inesctec.pt>
+
+Contributors / Reviewers (methodology questions):
+  - Carla Gonçalves <carla.s.goncalves@inesctec.pt>
+  - Ricardo Bessa <ricardo.j.bessa@inesctec.pt>
