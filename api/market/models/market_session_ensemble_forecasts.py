@@ -49,10 +49,8 @@ class MarketSessionEnsemble(models.Model):
         blank=False
     )
     # Ensemble Weights
-    # todo: check if this is the best way to store the weights
-    #  alternatively we can use a separate table (w/ indexation)
-    #  note that this might be sufficient for the current use case
-    #  with a small number of forecasters
+    # todo: this is sufficient for a proof-of-concept (small nr of forecasters)
+    #  a separate table (w/ indexation) should be used moving forward.
     weights = models.JSONField(
         null=True,
         blank=True,

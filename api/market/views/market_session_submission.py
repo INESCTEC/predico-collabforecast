@@ -37,6 +37,11 @@ class MarketSessionListSubmissionForecastsView(APIView):
         challenge_id = request.query_params.get('challenge')
         submission_id = request.query_params.get('submission')
 
+        # If user is not superuser, filter by user_id else give the superuser
+        # the ability to filter by user_id
+        # todo: validate user_id for all other endpoints that do this.
+        user_id = request.query_params.get('user') if user.is_superuser else user.id  # noqa
+
         # Enforce required parameters:
         if challenge_id is None:
             raise exceptions.ValidationError("Query parameter 'challenge' is required.")
@@ -44,12 +49,9 @@ class MarketSessionListSubmissionForecastsView(APIView):
         # Validate query parameters:
         validate_query_params(
             challenge_id=challenge_id,
-            submission_id=submission_id
+            submission_id=submission_id,
+            user_id=user_id
         )
-        
-        # If user is not superuser, filter by user_id else give the superuser
-        # the ability to filter by user_id
-        user_id = request.query_params.get('user') if user.is_superuser else user.id  # noqa
 
         # Construct query filters using Q objects for conditional filtering
         query_filters = Q()

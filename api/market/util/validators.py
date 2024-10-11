@@ -8,6 +8,7 @@ def validate_query_params(
         market_session_id=None,
         resource_id=None,
         challenge_id=None,
+        user_id=None,
         submission_id=None,
         market_session_status=None,
         confirmed=None,
@@ -22,6 +23,13 @@ def validate_query_params(
         except ValueError as ex:
             raise exceptions.ValidationError(
                 "Query param 'market_session' must be an integer."
+            ) from ex
+    if user_id is not None:
+        try:
+            uuid.UUID(str(user_id))
+        except ValueError as ex:
+            raise exceptions.ValidationError(
+                "Query param 'user' must be a valid uuid."
             ) from ex
     if resource_id is not None:
         try:

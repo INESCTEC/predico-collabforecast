@@ -12,3 +12,6 @@ from .market_session_ensemble_forecasts import (
     MarketSessionEnsemble,
     MarketSessionEnsembleForecasts,
 )
+from .market_session_submission_scores import (
+    MarketSessionSubmissionScores,
+)
