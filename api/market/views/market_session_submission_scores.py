@@ -4,18 +4,16 @@ import pandas as pd
 from django.db.models import Q, Avg, Min, Count, Max, F, Window, StdDev
 from django.db.models.functions import Rank, Round
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, exceptions
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import exceptions
 
 from api.renderers.CustomRenderer import CustomRenderer
 from ..models import MarketSessionSubmissionScores
 from ..schemas.responses import *
 from ..schemas.query import *
 from ..util.validators import validate_query_params
-from ..models.market_session_ensemble_forecasts import MarketSessionEnsemble
 from ..serializers.market_session_submission_scores import (
     MarketSessionSubmissionScoresCreateSerializer,
     MarketSessionSubmissionScoresRetrieveSerializer
@@ -128,7 +126,7 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
                 # Count the total number of participants for each metric
             ),
         ).values(
-            'submission_id',
+            'submission',
             'submission__user_id',
             'metric',
             'rank',
@@ -165,15 +163,22 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
         serializer = MarketSessionSubmissionScoresRetrieveSerializer(personal_submissions, many=True)  # noqa
         # Convert to DF to facilitate join:
         df_personal = pd.DataFrame(serializer.data)
-        df_ranked = pd.DataFrame(ranked_submissions).rename(columns={"submission_id": "submission"})  # noqa
-        # Merge DataFrames on 'submission_id' and 'metric'
-        merged_df = pd.merge(df_personal, df_ranked, on=['submission', 'metric'], how='inner')  # noqa
-        personal_metrics = merged_df.to_dict(orient="records")
-        # Prepare Response payload:
-        response = {
-            "personal_metrics": personal_metrics,
-            "general_metrics": aggregated_data
-        }
+        df_ranked = pd.DataFrame(ranked_submissions)
+        if not df_personal.empty and not df_ranked.empty:
+            # Merge DataFrames on 'submission_id' and 'metric'
+            merged_df = pd.merge(df_personal, df_ranked, on=['submission', 'metric'], how='inner')  # noqa
+            merged_df.sort_values(by=["variable", "metric"], inplace=True)
+            personal_metrics = merged_df.to_dict(orient="records")
+            # Prepare Response payload:
+            response = {
+                "personal_metrics": personal_metrics,
+                "general_metrics": aggregated_data
+            }
+        else:
+            response = {
+                "personal_metrics": [],
+                "general_metrics": aggregated_data
+            }
         return Response(data=response, status=status.HTTP_200_OK)
 
 

@@ -96,7 +96,7 @@ class MarketSessionListSubmissionForecastsView(APIView):
             challenge,
             many=True
         )
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class MarketSessionListSubmissionView(APIView):
@@ -159,7 +159,7 @@ class MarketSessionListSubmissionView(APIView):
         challenge = self.queryset(request)
         serializer = MarketSessionSubmissionRetrieveSerializer(challenge,
                                                                many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class MarketSessionCreateUpdateSubmissionView(APIView):

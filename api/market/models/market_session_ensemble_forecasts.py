@@ -16,13 +16,11 @@ class MarketSessionEnsemble(models.Model):
         Q80 = 'q80'
         Q90 = 'q90'
         Q95 = 'q95'
-
     class EnsembleModel(models.TextChoices):
         GBR = 'GBR'
         WEIGHTED_AVG = "weighted_avg"
         EQ_WEIGHTS = "eq_weights"
         LR = "LR"
-
     # Submission ID
     id = models.UUIDField(
         primary_key=True,
@@ -48,18 +46,10 @@ class MarketSessionEnsemble(models.Model):
         null=False,
         blank=False
     )
-    # Ensemble Weights
-    # todo: this is sufficient for a proof-of-concept (small nr of forecasters)
-    #  a separate table (w/ indexation) should be used moving forward.
-    weights = models.JSONField(
-        null=True,
-        blank=True,
-    )
     # Register date:
     registered_at = models.DateTimeField(
         auto_now_add=True
     )
-
     class Meta:
         db_table = "market_session_ensemble"
         unique_together = ("market_session_challenge", "model", "variable")
