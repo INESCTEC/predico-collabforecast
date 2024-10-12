@@ -40,10 +40,6 @@ if not ACCOUNT_VERIFICATION:
     print("-" * 80)
 
 # HOSTS:
-# todo
-# Additionally, you can also use a reverse proxy server, such as NGINX or Apache, to limit access to your Django API
-# and add extra security features, such as SSL encryption. In this case, you would specify the IP addresses or domain
-# names of the reverse proxy servers in the ALLOWED_HOSTS setting.
 if ENVIRONMENT == "production":
     ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
     SESSION_COOKIE_SECURE = True

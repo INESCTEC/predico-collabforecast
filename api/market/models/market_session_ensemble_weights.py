@@ -4,7 +4,7 @@ from django.db import models
 class MarketSessionEnsembleWeights(models.Model):
     # Ensemble ID:
     ensemble = models.ForeignKey(
-        to="MarketSessionEnsemble",  # todo: refactor tables like this
+        to="MarketSessionEnsemble",
         on_delete=models.CASCADE,
     )
     # Forecaster user ID:

@@ -1,5 +1,4 @@
 from django.db import models
-from ..models.market_session_submission import MarketSessionSubmission
 
 
 class MarketSessionSubmissionScores(models.Model):
@@ -9,7 +8,7 @@ class MarketSessionSubmissionScores(models.Model):
         RMSE = "rmse"
     # Submission ID:
     submission = models.ForeignKey(
-        to=MarketSessionSubmission,
+        to="market.MarketSessionSubmission",
         on_delete=models.CASCADE,
     )
     # Metric name:

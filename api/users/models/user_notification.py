@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import User
 
 
 class UserNotificationType(models.Model):
@@ -13,7 +12,7 @@ class UserNotificationType(models.Model):
 
 class UserNotification(models.Model):
     objects = models.Manager()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     notification_title = models.CharField(max_length=255)
     notification_description = models.CharField(max_length=255)
     notification_type = models.ForeignKey(UserNotificationType,
