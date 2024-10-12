@@ -23,7 +23,7 @@ from ..serializers.market_session_ensemble_weights import (
 logger = structlog.get_logger("api_logger")
 
 
-class MarketSessionChallengeWeightsCreateUpdateView(APIView):
+class MarketSessionEnsembleWeightsCreateUpdateView(APIView):
     permission_classes = (IsAdminUser,)
     renderer_classes = [CustomRenderer]
 
@@ -49,7 +49,7 @@ class MarketSessionChallengeWeightsCreateUpdateView(APIView):
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
-class MarketSessionChallengesWeightsRetrieveView(APIView):
+class MarketSessionEnsembleWeightsRetrieveView(APIView):
     permission_classes = (IsAuthenticated,)
     renderer_classes = [CustomRenderer]
 

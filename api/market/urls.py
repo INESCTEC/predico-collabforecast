@@ -21,8 +21,8 @@ from .views.market_session_ensemble_forecasts import (
     MarketSessionCreateUpdateEnsembleForecastsView,
 )
 from .views.market_session_ensemble_weights import (
-    MarketSessionChallengeWeightsCreateUpdateView,
-    MarketSessionChallengesWeightsRetrieveView
+    MarketSessionEnsembleWeightsCreateUpdateView,
+    MarketSessionEnsembleWeightsRetrieveView
 )
 from .views.market_session_submission_scores import (
     MarketSessionSubmissionScoresCreateView,
@@ -68,10 +68,10 @@ urlpatterns = [
             MarketSessionCreateUpdateEnsembleForecastsView.as_view(),
             name="market-session-ensemble-create-update"),
     re_path('challenge/ensemble-weights?$',
-            MarketSessionChallengesWeightsRetrieveView.as_view(),
+            MarketSessionEnsembleWeightsRetrieveView.as_view(),
             name="market-session-ensemble-weights-list"),
     re_path(f'challenge/({challenge_id_regex})/ensemble-weights?$',
-            MarketSessionChallengeWeightsCreateUpdateView.as_view(),
+            MarketSessionEnsembleWeightsCreateUpdateView.as_view(),
             name="market-session-ensemble-weights-create-update"),
     re_path('challenge/submission-scores?$',
             MarketSessionSubmissionScoresRetrieveView.as_view(),
