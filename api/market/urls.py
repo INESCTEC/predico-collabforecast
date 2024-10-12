@@ -78,5 +78,5 @@ urlpatterns = [
             name="market-session-submission-scores-list"),
     re_path(f'challenge/({challenge_id_regex})/submission-scores?$',
             MarketSessionSubmissionScoresCreateView.as_view(),
-            name="market-session-submission-scores-create-update")
+            name="market-session-submission-scores-create")
 ]

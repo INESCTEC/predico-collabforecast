@@ -23,8 +23,12 @@ from ...views.market_session_ensemble_forecasts import (
     MarketSessionCreateUpdateEnsembleForecastsView,
 )
 from ...views.market_session_ensemble_weights import (
-    MarketSessionChallengeWeightsCreateUpdateView,
-    MarketSessionChallengesWeightsRetrieveView
+    MarketSessionEnsembleWeightsCreateUpdateView,
+    MarketSessionEnsembleWeightsRetrieveView
+)
+from ...views.market_session_submission_scores import (
+    MarketSessionSubmissionScoresCreateView,
+    MarketSessionSubmissionScoresRetrieveView
 )
 
 
@@ -63,10 +67,16 @@ class TestUrls(TestCase):
         self.assertEqual(resolve(url).func.view_class, MarketSessionListEnsembleForecastsMetaView)
 
         url = reverse('market:market-session-ensemble-weights-create-update', args=[uuid.uuid4()])
-        self.assertEqual(resolve(url).func.view_class, MarketSessionChallengeWeightsCreateUpdateView)
+        self.assertEqual(resolve(url).func.view_class, MarketSessionEnsembleWeightsCreateUpdateView)
 
         url = reverse('market:market-session-ensemble-weights-list')
-        self.assertEqual(resolve(url).func.view_class, MarketSessionChallengesWeightsRetrieveView)
+        self.assertEqual(resolve(url).func.view_class, MarketSessionEnsembleWeightsRetrieveView)
 
         url = reverse('market:market-session-ensemble-create-update', args=[uuid.uuid4()])
         self.assertEqual(resolve(url).func.view_class, MarketSessionCreateUpdateEnsembleForecastsView)
+
+        url = reverse('market:market-session-submission-scores-list')
+        self.assertEqual(resolve(url).func.view_class, MarketSessionSubmissionScoresRetrieveView)
+
+        url = reverse('market:market-session-submission-scores-create', args=[uuid.uuid4()])
+        self.assertEqual(resolve(url).func.view_class, MarketSessionSubmissionScoresCreateView)
