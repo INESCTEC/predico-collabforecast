@@ -221,7 +221,7 @@ class MarketSessionChallengeSolutionView(APIView):
             datetime__gte=challenge.start_datetime,
             datetime__lte=challenge.end_datetime,
             resource_id=challenge.resource_id
-        ).all()
+        ).order_by('datetime').all()
         data_serializer = RawDataRetrieveSerializer(data, many=True)
         return Response({
             'challenge': challenge_serializer.data,

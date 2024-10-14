@@ -21,9 +21,14 @@ from .views.market_session_ensemble_forecasts import (
     MarketSessionCreateUpdateEnsembleForecastsView,
 )
 from .views.market_session_ensemble_weights import (
-    MarketSessionChallengeWeightsCreateUpdateView,
-    MarketSessionChallengesWeightsRetrieveView
+    MarketSessionEnsembleWeightsCreateUpdateView,
+    MarketSessionEnsembleWeightsRetrieveView
 )
+from .views.market_session_submission_scores import (
+    MarketSessionSubmissionScoresCreateView,
+    MarketSessionSubmissionScoresRetrieveView
+)
+
 
 app_name = "market"
 challenge_id_regex = "?P<challenge_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # noqa
@@ -63,9 +68,15 @@ urlpatterns = [
             MarketSessionCreateUpdateEnsembleForecastsView.as_view(),
             name="market-session-ensemble-create-update"),
     re_path('challenge/ensemble-weights?$',
-            MarketSessionChallengesWeightsRetrieveView.as_view(),
+            MarketSessionEnsembleWeightsRetrieveView.as_view(),
             name="market-session-ensemble-weights-list"),
     re_path(f'challenge/({challenge_id_regex})/ensemble-weights?$',
-            MarketSessionChallengeWeightsCreateUpdateView.as_view(),
-            name="market-session-ensemble-weights-create-update")
+            MarketSessionEnsembleWeightsCreateUpdateView.as_view(),
+            name="market-session-ensemble-weights-create-update"),
+    re_path('challenge/submission-scores?$',
+            MarketSessionSubmissionScoresRetrieveView.as_view(),
+            name="market-session-submission-scores-list"),
+    re_path(f'challenge/({challenge_id_regex})/submission-scores?$',
+            MarketSessionSubmissionScoresCreateView.as_view(),
+            name="market-session-submission-scores-create")
 ]

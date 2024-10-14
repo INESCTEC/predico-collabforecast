@@ -2,8 +2,6 @@ import uuid
 
 from django.db import models
 
-from .market_session import MarketSession
-
 
 class MarketSessionChallenge(models.Model):
     class UseCase(models.TextChoices):
@@ -29,7 +27,7 @@ class MarketSessionChallenge(models.Model):
     )
     # Market session ID:
     market_session = models.ForeignKey(
-        to=MarketSession,
+        to="market.MarketSession",
         on_delete=models.CASCADE,
     )
     # Forecast use case for this bid:

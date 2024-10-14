@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from .user import User
 
 
 class UserResources(models.Model):
@@ -16,7 +15,7 @@ class UserResources(models.Model):
         editable=False
     )
     user = models.ForeignKey(
-        to=User,
+        to="users.User",
         on_delete=models.CASCADE,
     )
     name = models.CharField(
