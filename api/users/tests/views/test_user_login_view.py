@@ -10,7 +10,7 @@ from ..common import create_and_login_superuser, drop_dict_field, create_user
 User = get_user_model()
 
 
-class TestUserRegisterView(APITestCase):
+class TestUserLoginView(APITestCase):
     """
         Tests for UserRegisterView class.
 
