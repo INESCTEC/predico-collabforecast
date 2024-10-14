@@ -48,6 +48,7 @@ class UserRegistrationSerializer(serializers.Serializer):
     @staticmethod
     def validate_email(email):
         validate_email(email)
+        email = email.lower()
         email_exists = User.objects.filter(email=email).first()
         if email_exists:
             raise EmailAlreadyExists(email)
