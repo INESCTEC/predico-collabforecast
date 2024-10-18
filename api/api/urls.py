@@ -14,13 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include, re_path
-from rest_framework_simplejwt import views as jwt_views
 from rest_framework import permissions
 
-from authentication.views.login import MyTokenObtainPairView
+from authentication.views.login import MyTokenObtainPairView, MyTokenRefreshView
 from users.views.user import TestEndpointView
 from .views import front_page_view
 
@@ -71,10 +69,8 @@ Restful API for the INESC TEC Collaborative Forecasting Service. (Predico - Demo
 )
 
 v1_urlpatterns = [
-    # Admin URLs
-    # path('admin/', admin.site.urls),
     # API urls:
-    re_path('token/refresh', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    re_path('token/refresh', MyTokenRefreshView.as_view(), name='token_refresh'),
     re_path('token', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     re_path('market/', include('market.urls'), name="market"),
     re_path('user/', include('users.urls'), name="users"),

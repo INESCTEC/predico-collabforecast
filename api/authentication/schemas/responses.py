@@ -34,3 +34,31 @@ LoginResponse = {
     "POST": PostLogin,
 }
 
+###############################
+# Refresh
+###############################
+PostRefresh = \
+    openapi.Response(
+        description="Success",
+        schema=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "refresh": create_schema(
+                    type=openapi.TYPE_STRING,
+                    description="JWT refresh token"
+                ),
+            },
+        ),
+        examples={
+            "application/json": {
+                "access": "jwt_access_token",
+            },
+        }
+    )
+
+
+RefreshResponse = {
+    "POST": PostRefresh,
+}
+
+
