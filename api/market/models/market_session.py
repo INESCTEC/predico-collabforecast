@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class MarketSession(models.Model):
@@ -14,9 +15,9 @@ class MarketSession(models.Model):
     )
     # Datetime at which session was opened (bid placement time)
     open_ts = models.DateTimeField(
-        auto_now_add=True,
         blank=False,
         null=False,
+        default=timezone.now,
     )
     # Datetime at which session was closed (gate closure time)
     close_ts = models.DateTimeField(
