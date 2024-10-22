@@ -233,7 +233,7 @@ class VerifyTokenView(APIView):
         except (InvalidToken,
                 TokenError,
                 jwt.ExpiredSignatureError,
-                jwt.exceptions.DecodeError) as e:
+                jwt.exceptions.DecodeError):
 
             data = {"valid": False, 'error': "Invalid token."}
             return Response(
