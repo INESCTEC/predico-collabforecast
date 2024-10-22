@@ -26,12 +26,14 @@ ENVIRONMENT = os.environ.get('DJANGO_APPLICATION_ENVIRONMENT', 'test').lower()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
 SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
 DEBUG = os.environ.get('DJANGO_APPLICATION_ENVIRONMENT', 'test') != 'production'
 
 # Disable account verification (easier tests later)
 _acc_verify = os.environ.get('ACCOUNT_VERIFICATION', 'true')
 ACCOUNT_VERIFICATION = str(_acc_verify).lower() == 'true'
+PASSWORD_RESET_RATE_LIMIT = int(os.environ.get('PASSWORD_RESET_RATE_LIMIT', 3))
 
 if not ACCOUNT_VERIFICATION:
     print("-" * 80)
@@ -40,14 +42,22 @@ if not ACCOUNT_VERIFICATION:
     print("-" * 80)
 
 # HOSTS:
+CORS_ALLOW_ALL_ORIGINS = False  # Allow any origin (make sure authentication is solid)
+
 if ENVIRONMENT == "production":
-    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
+    CORS_ALLOWED_ORIGINS = [
+        os.getenv("FRONTEND_URL", "https://predico-elia.inesctec.pt"),
+    ]
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    ALLOWED_HOSTS = ["predico-elia.inesctec.pt", "127.0.0.1", "localhost"]
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_SSL_REDIRECT = True  # Force HTTPS connections
 else:
     ALLOWED_HOSTS = ['*']
+    CORS_ALLOWED_ORIGINS = [
+        os.getenv("FRONTEND_URL", "http://localhost:3000"),
+    ]
 
 # Application definition
 INSTALLED_APPS = [
@@ -55,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'corsheaders',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -70,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -330,7 +341,6 @@ structlog.configure(
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
-
 
 # -- REST configs:
 REST_PORT = int(os.environ.get("REST_PORT", 8080))

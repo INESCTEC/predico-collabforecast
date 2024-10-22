@@ -1,5 +1,5 @@
 import threading
-from smtplib import SMTPException, SMTPConnectError, socket
+from smtplib import SMTPException, SMTPConnectError
 
 import structlog
 from django.conf import settings
@@ -57,6 +57,7 @@ class EmailThread(threading.Thread):
     """
     Send emails on separate thread
     """
+
     def __init__(self,
                  destination,
                  email_opt_key,
@@ -82,7 +83,6 @@ def send_email_as_thread(destination,
                          email_opt_key=None,
                          format_args=None,
                          fail_silently=False):
-
     # Attempt email connection. If it is unavailable inform user.
     try:
         connection = get_connection(
@@ -91,7 +91,7 @@ def send_email_as_thread(destination,
             fail_silently=fail_silently
         )
         check_connection = connection.open()
-    except (socket.error, SMTPConnectError, SMTPException) as ex:
+    except (SMTPConnectError, SMTPException) as ex:
         logger.exception("Failed to connect to email.")
         raise exceptions.APIException({
             'message': 'An error occurred while sending email, '

@@ -1,3 +1,4 @@
+import uuid
 from datetime import timedelta
 
 import jwt
@@ -7,28 +8,28 @@ from django.conf import settings
 # from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.shortcuts import render
 from django.utils import timezone
-from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError, UntypedToken
-from stronghold.decorators import public
-from django.shortcuts import render
 
-# cannot use django.conf.settings the "DEBUG" flag in settings.base is
-# updated depending on the environment
-from api.settings.base import DEBUG
 from api.email.utils.email_utils import send_email_as_thread
 from api.renderers.CustomRenderer import CustomRenderer
-from users.models.user import OneTimeToken, User
-from users.notifications.notification_data import create_user_notifications
+from api.settings.base import DEBUG
+from users.models.user import OneTimeToken, User, OneTimeRegisterToken
 from users.schemas.responses import *
+# cannot use django.conf.settings the "DEBUG" flag in settings.base is
+# updated depending on the environment
+from users.util.verification import IsValidRegisterToken, send_registration_email
 from users.util.verification import (check_one_time_token,
                                      create_verification_info,
                                      send_verification_email)
@@ -36,7 +37,10 @@ from ..serializers.user import (ResetPasswordEmailRequestSerializer,
                                 UserRegistrationSerializer,
                                 UserSerializer,
                                 PasswordResetRequestSerializer,
-                                LimitedUserSerializer)
+                                LimitedUserSerializer,
+                                TokenVerifySerializer,
+                                TokenVerificationResponseSerializer,
+                                UserInvitationSerializer)
 
 # init logger:
 logger = structlog.get_logger("api_logger")
@@ -46,10 +50,70 @@ class CustomAnonRateThrottle(AnonRateThrottle):
     rate = '100/day'
 
 
+class UserByTokenView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get(self, request):
+
+        try:
+            user = User.objects.get(email=request.user)
+            serializer = self.serializer_class(user)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except OneTimeToken.DoesNotExist:
+            return Response({'error': 'Invalid token.'}, status=status.HTTP_404_NOT_FOUND)
+
+class GenerateRegisterTokenView(APIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = UserInvitationSerializer
+
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+        # Validate the incoming data using the serializer
+        if serializer.is_valid():
+            token = str(uuid.uuid4())
+            expiration_time = timezone.now() + timezone.timedelta(hours=72)
+
+            # check if the email exists in the database
+            email = serializer.validated_data.get('email')
+            if User.objects.filter(email=email).exists():
+                return Response({'error': 'User with this email already exists'},
+                                status=status.HTTP_409_CONFLICT)
+
+            try:
+                with transaction.atomic():  # Start atomic transaction
+                    # Create the OneTimeRegisterToken object
+                    OneTimeRegisterToken.objects.create(token=token,
+                                                        expiration_time=expiration_time)
+
+                    # Use reverse to dynamically generate the link
+                    link = f"{settings.FRONTEND_URL}/signup/{token}"
+
+                    email = serializer.validated_data.get('email')
+
+                    # Send the registration email
+                    send_registration_email(email, link)
+
+                    # Return the link to the admin user
+                    return Response({'link': link}, status=status.HTTP_201_CREATED)
+
+            except Exception as e:
+                # Handle any exceptions that occur
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            # If the data is invalid, return the validation errors
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserRegisterView(APIView):
     renderer_classes = (CustomRenderer,)
     serializer_class = UserRegistrationSerializer
-    permission_classes = (AllowAny,)
+    authentication_classes = []  # No authentication for this view
+    permission_classes = (IsValidRegisterToken,)
 
     @swagger_auto_schema(
         operation_summary="User registration",
@@ -64,7 +128,6 @@ class UserRegisterView(APIView):
             409: UserRegisterResponse["POST_conflict"],
             500: "Internal Server Error",
         })
-    @method_decorator(public)
     def post(self, request):
 
         serializer = self.serializer_class(data=request.data)
@@ -73,9 +136,14 @@ class UserRegisterView(APIView):
         try:
             with transaction.atomic():
                 # Save the user
-                user = serializer.save()
-                # Create user notifications
-                create_user_notifications(user=user)
+                serializer.save()
+                # If all is successful, mark the token as used here
+                one_time_register_token = OneTimeRegisterToken.objects.get(
+                    token=request.headers.get('Authorization')[7:],
+                    used=False)
+
+                one_time_register_token.used = True
+                one_time_register_token.save()
 
         except Exception as e:
             logger.exception("Transaction failed while creating the user", exc_info=e)
@@ -101,6 +169,69 @@ class UserRegisterView(APIView):
             return Response(
                 {"message": "User registered successfully."},
                 status=status.HTTP_201_CREATED)
+
+
+class VerifyTokenView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny, ]
+    serializer_class = TokenVerifySerializer  # Use the serializer
+
+    @swagger_auto_schema(
+        request_body=TokenVerifySerializer,
+        responses={
+            200: TokenVerificationResponseSerializer,
+            401: openapi.Response(description="Unauthorized", schema=TokenVerificationResponseSerializer),
+            404: openapi.Response(description="Not Found", schema=TokenVerificationResponseSerializer),
+        }
+    )
+    def post(self, request):
+        # Initialize the serializer with the request data
+        serializer = self.serializer_class(data=request.data)
+
+        # Validate serializer data
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the token from the validated serializer data
+        token = serializer.validated_data['token']
+
+        try:
+
+            # Extract user information from the decoded token
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            email = payload.get('email')  # Get user ID from the token payload
+
+            # Check if the user exists and is active
+            try:
+                user = User.objects.get(email=email)
+                if not user.is_active:
+                    return Response(
+                        TokenVerificationResponseSerializer(
+                            valid=False,
+                            error="User is inactive."
+                        ).data,
+                        status=status.HTTP_401_UNAUTHORIZED
+                    )
+
+                # If everything is correct, return the valid response
+                data = {"valid": True, "user": user.email}
+                return Response(
+                    TokenVerificationResponseSerializer(data).data,
+                    status=status.HTTP_200_OK
+                )
+            except User.DoesNotExist:
+                data = {"valid": False, 'error': "User not found."}
+                return Response(
+                    TokenVerificationResponseSerializer(data).data,
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        except (InvalidToken, TokenError, jwt.ExpiredSignatureError, jwt.exceptions.DecodeError) as e:
+            data = {"valid": False, 'error': "Invalid token."}
+            return Response(
+                TokenVerificationResponseSerializer(data).data,
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
 
 class UserListView(APIView):
@@ -199,51 +330,6 @@ class UserVerifyEmailView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class RequestPasswordResetEmail(APIView):
-    throttle_classes = [CustomAnonRateThrottle]
-    serializer_class = PasswordResetRequestSerializer
-
-    @swagger_auto_schema(
-        operation_id="post_request_password_reset_email",
-        operation_description="Method for user to request password reset "
-                              "for their account email.",
-        request_body=PasswordResetRequestSerializer,
-        responses={
-            400: 'Bad request',
-            500: "Internal Server Error",
-        })
-    def post(self, request):
-
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        email = self.request.data.get('email')
-
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = str(RefreshToken.for_user(user).access_token)
-            # create OneTimeToken
-            OneTimeToken.objects.create(
-                user=user,
-                token=token,
-                expiration_time=timezone.now() + timedelta(hours=1)
-            )
-            # current_site = get_current_site(request=request).domain
-            relative_link = uidb64 + "/" + token
-            reset_link = 'predico://reset/' + relative_link
-            # password - reset - success
-            send_email_as_thread(
-                destination=[email],
-                email_opt_key="password-reset-verification",
-                format_args={"link": reset_link},
-                fail_silently=True
-            )
-
-        return Response({'success': 'If your email exists on the '
-                                    'system an email has been sent to you'},
-                        status=status.HTTP_200_OK)
-
-
 class PasswordTokenCheck(APIView):
     throttle_classes = [CustomAnonRateThrottle]
 
@@ -296,6 +382,6 @@ class SetNewPassword(APIView):
 class TestEndpointView(APIView):
 
     @staticmethod
-    def get(request, format=None):
+    def get(request):
         message = {'message': 'Welcome to Predico!'}
         return Response(message)

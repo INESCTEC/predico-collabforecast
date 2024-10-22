@@ -1,56 +1,32 @@
 # ruff: noqa: E501
-from django.urls import re_path, path
+from django.urls import re_path
 
-from .views.user import (PasswordTokenCheck,
-                         RequestPasswordResetEmail,
-                         SetNewPassword,
+from .views.user import (UserByTokenView,
                          UserListView,
                          UserRegisterView,
+                         GenerateRegisterTokenView,
                          UserVerifyEmailView)
+from .views.user_reset_password import (PasswordResetRequestView,
+                                        PasswordResetView)
 
-from .views.user_notification import (
-    UserNotificationListAPIView,
-    UserNotificationTypeDeleteAndUpdateAPIView,
-    UserNotificationTypeListAndCreateAPIView,
-    UserNotificationUpdateStateAPIView
-)
 from .views.user_resources import (UserResourcesUpdateView,
                                    UserResourcesView)
 
 app_name = "user"
-
 urlpatterns = [
-    re_path('request-reset-email/',
-            RequestPasswordResetEmail.as_view(),
-            name="request-reset-email"),
+    # Password reset views
+    re_path('password-reset/confirm/?$', PasswordResetView.as_view(), name='password_reset_confirm'),
+    re_path('password-reset/?$', PasswordResetRequestView.as_view(), name='password_reset_request'),
 
-    path('password-reset-confirm/<uidb64>/<token>/',
-         PasswordTokenCheck.as_view(),
-         name='password_reset_confirm'),
-
-    re_path('password-reset-complete/',
-            SetNewPassword.as_view(),
-            name='password-reset-complete'),
-
-    re_path(r'^notification/$',
-            UserNotificationListAPIView.as_view(),
-            name='user-notification-list'),
-
-    re_path(r'^notification/(?P<pk>\d+)/$',
-            UserNotificationUpdateStateAPIView.as_view(),
-            name='user-notification-update'),
-
-    re_path(r'^notification_type/$',
-            UserNotificationTypeListAndCreateAPIView.as_view(),
-            name='user-notification-type-list-create'),
-
-    re_path(r'^notification_type/(?P<pk>\d+)/$',
-            UserNotificationTypeDeleteAndUpdateAPIView.as_view(),
-            name='user-notification-type-update-delete'),
+    re_path('user-detail/', UserByTokenView.as_view(), name='get_user_by_token'),
 
     re_path('register/?$',
             UserRegisterView.as_view(),
             name="register"),
+
+    re_path('register-invite/?$',
+            GenerateRegisterTokenView.as_view(),
+            name="admin-register"),
 
     re_path('verify/(?P<uid>.*)/(?P<token>.*)/?$',
             UserVerifyEmailView.as_view(),

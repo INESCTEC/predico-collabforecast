@@ -45,7 +45,7 @@ The following directory structure should be considered:
 
 Create a `.env` file from a provided example (`dotenv`) and update its variables
 ```shell
-cp dotenv .env
+cp dotenv .dev.env
 ```
 
 Start docker stack:
@@ -135,6 +135,21 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+## Schedule tasks
+
+To schedule tasks, you can use the Django management commands:
+
+- Remove older register tokens
+
+```shell
+python manage.py delete_old_register_tokens
+```
+
+- Remove older password reset tokens
+
+```shell
+python manage.py delete_old_reset_password_tokens
+```
 
 ## Contacts:
 
