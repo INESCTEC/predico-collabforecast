@@ -3,6 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 from users.models import PasswordResetRequest
 
+
 class Command(BaseCommand):
     help = 'Delete password reset requests older than 24 hours'
 
@@ -11,4 +12,5 @@ class Command(BaseCommand):
         old_requests = PasswordResetRequest.objects.filter(created_at__lt=threshold)
         old_requests_count = old_requests.count()
         old_requests.delete()
-        self.stdout.write(self.style.SUCCESS(f'Successfully deleted {old_requests_count} old password reset requests'))
+        self.stdout.write(self.style.SUCCESS(f'Successfully deleted {old_requests_count} '
+                                             f'old password reset requests'))

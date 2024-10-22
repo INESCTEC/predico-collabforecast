@@ -18,7 +18,8 @@ class PasswordResetRequestView(APIView):
     def post(request):
         email = request.data.get('email')
 
-        # Check rate limiting: limit to 3 requests per day (or whatever is set in settings)
+        # Check rate limiting: limit to 3 requests per day
+        # (or whatever is set in settings)
         one_day_ago = timezone.now() - timedelta(days=1)
         recent_requests = PasswordResetRequest.objects.filter(
             email=email,
@@ -49,7 +50,8 @@ class PasswordResetRequestView(APIView):
             )
 
         # Always respond with the same message to avoid disclosing email existence
-        return Response({'detail': 'If the email is registered, you will receive a password reset link.'},
+        return Response({'detail': 'If the email is registered, '
+                                   'you will receive a password reset link.'},
                         status=status.HTTP_200_OK)
 
 
@@ -65,7 +67,8 @@ class PasswordResetView(APIView):
             # Find the password reset request
             reset_request = PasswordResetRequest.objects.filter(token=token).first()
             if not reset_request:
-                return Response({'detail': 'Invalid or expired token'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'detail': 'Invalid or expired token'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
             # Get the user
             user = User.objects.filter(email=reset_request.email).first()
@@ -79,7 +82,8 @@ class PasswordResetView(APIView):
                     return Response({'detail': 'Password has been reset successfully.'},
                                     status=status.HTTP_200_OK)
 
-            return Response({'detail': 'User not found or invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'User not found or invalid token'},
+                            status=status.HTTP_400_BAD_REQUEST)
         else:
             # Return the validation errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -63,7 +63,9 @@ class UserByTokenView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except OneTimeToken.DoesNotExist:
-            return Response({'error': 'Invalid token.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Invalid token.'},
+                            status=status.HTTP_404_NOT_FOUND)
+
 
 class GenerateRegisterTokenView(APIView):
     permission_classes = [IsAdminUser]
@@ -180,8 +182,10 @@ class VerifyTokenView(APIView):
         request_body=TokenVerifySerializer,
         responses={
             200: TokenVerificationResponseSerializer,
-            401: openapi.Response(description="Unauthorized", schema=TokenVerificationResponseSerializer),
-            404: openapi.Response(description="Not Found", schema=TokenVerificationResponseSerializer),
+            401: openapi.Response(description="Unauthorized",
+                                  schema=TokenVerificationResponseSerializer),
+            404: openapi.Response(description="Not Found",
+                                  schema=TokenVerificationResponseSerializer),
         }
     )
     def post(self, request):
@@ -226,7 +230,11 @@ class VerifyTokenView(APIView):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
-        except (InvalidToken, TokenError, jwt.ExpiredSignatureError, jwt.exceptions.DecodeError) as e:
+        except (InvalidToken,
+                TokenError,
+                jwt.ExpiredSignatureError,
+                jwt.exceptions.DecodeError) as e:
+
             data = {"valid": False, 'error': "Invalid token."}
             return Response(
                 TokenVerificationResponseSerializer(data).data,
