@@ -3,21 +3,21 @@ SECRET_KEY=insert_your_secret_key_here
 FRONTEND_URL=http://localhost:3000
 
 # Applications environment options: production/develop/test
-DJANGO_APPLICATION_ENVIRONMENT=develop
+DJANGO_APPLICATION_ENVIRONMENT=production
 ACCOUNT_VERIFICATION=true
 FORECAST_TIME_RESOLUTION_MINUTES=15
 PASSWORD_RESET_RATE_LIMIT=3
 
 # Database configs:
-POSTGRES_DB=predico
-POSTGRES_USER=predico
-POSTGRES_PASSWORD=predico
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
+POSTGRES_DB=db_name
+POSTGRES_USER=db_user
+POSTGRES_PASSWORD=db_password
+POSTGRES_HOST=db_host
+POSTGRES_PORT=db_port
 
 # Email configs:
 EMAIL_HOST=email_host
-EMAIL_PORT=587
+EMAIL_PORT=888
 EMAIL_HOST_USER=email_user
 EMAIL_HOST_PASSWORD=email_password
 EMAIL_USE_TLS=1
