@@ -118,7 +118,8 @@ class EmailVerificationView(APIView):
     @swagger_auto_schema(
         operation_summary="Email verification",
         operation_id="get_verify_email",
-        operation_description="[Public] Method for verifying user's email with the token.",
+        operation_description="[Public] Method for verifying user's "
+                              "email with the token.",
         responses={
             200: 'Email verified successfully',
             400: 'Bad request or token is invalid',

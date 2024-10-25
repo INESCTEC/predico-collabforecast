@@ -23,7 +23,7 @@ class TimedCompressedRotatingFileHandler(TimedRotatingFileHandler):
 
         # Ensure the log file exists
         if not os.path.exists(self.baseFilename):
-            with open(self.baseFilename, 'w') as f:
+            with open(self.baseFilename, 'w'):
                 pass
 
     def doRollover(self):
@@ -56,11 +56,13 @@ class TimedCompressedRotatingFileHandler(TimedRotatingFileHandler):
                 s.sort()
                 os.remove(s[0])
 
-        # Reopen the log file for writing
         if self.encoding:
-            self.stream = codecs.open(self.baseFilename, 'w', 'utf-8')  # noqa
+            with codecs.open(self.baseFilename, 'w', 'utf-8') as f:
+                self.stream = f
         else:
-            self.stream = open(self.baseFilename, 'w')
+            # Use context manager for opening files
+            with open(self.baseFilename, 'w') as f:
+                self.stream = f
 
         # Set up the next rollover time
         self.rolloverAt = self.rolloverAt + self.interval

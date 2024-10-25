@@ -47,12 +47,6 @@ class PasswordResetRequestView(APIView):
                 email_opt_key="password-reset-verification",
                 format_args={'reset_link': reset_link}
             )
-            # send_mail(
-            #     subject="Password Reset Request",
-            #     message=f"Use the following link to reset your password: {reset_link}",
-            #     from_email=settings.DEFAULT_FROM_EMAIL,
-            #     recipient_list=[email],
-            # )
 
         # Always respond with the same message to avoid disclosing email existence
         return Response({'detail': 'If the email is registered, '
