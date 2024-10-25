@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from urllib.parse import urlparse
 
 import jwt
@@ -79,7 +79,7 @@ def create_verification_info(request):
 
 
 def generate_token(email):
-    date_ref = datetime.utcnow() + timedelta(days=1)
+    date_ref = datetime.now(UTC) + timedelta(days=60)
 
     token = jwt.encode({
         'email': email,
