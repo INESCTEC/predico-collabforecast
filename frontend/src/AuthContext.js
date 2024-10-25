@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
         },
       })
       .then((response) => {
-        setInvitationLink(response.data.link);
+        setInvitationLink(response.data.data.link);
         setSuccessMessage('Invitation sent successfully.');
       })
       .catch((error) => {

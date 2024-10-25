@@ -15,9 +15,10 @@ import ForgotPassword from "./pages/users/ForgotPassword";
 import SetPassword from "./pages/users/SetPassword";
 import EmailVerification from "./pages/authentication/EmailVerification";
 import Homepage from "./pages/Homepage";
+import { useNavigate } from 'react-router-dom';
 
 export default function App() {
-  console.log('App component rendered');
+  
   // Navigation and other state data
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
@@ -45,10 +46,14 @@ export default function App() {
 // Create a separate component that can use the Auth context
 function AppContent({ navigation }) {
   const { logout } = useAuth();  // Access the logout function here
+  const navigate = useNavigate();
   
+  const userSettingsNavigation = () => {
+    navigate('/settings'); // Redirect to the login panel
+  }
   // User navigation with logout functionality
   const userNavigation = [
-    { name: 'Your profile', href: '#' },
+    { name: 'Your profile', href: '#', onClick: userSettingsNavigation },
     { name: 'Sign out', href: '#', onClick: logout },  // Directly use logout
   ];
   

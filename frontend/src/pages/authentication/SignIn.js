@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import logo from '../../static/images/elia-group-logo-svg.svg';
 import windTurbineImage from '../../static/images/windturbine.jpg';
-import { useAuth } from "../../AuthContext";
+import {useAuth} from "../../AuthContext";
 import axiosInstance from "../../routes/axiosInstance";
 
 export default function SignIn() {
@@ -30,6 +30,7 @@ export default function SignIn() {
         password
       });
       
+      console.log(response.data)
       if (response.status === 200) {
         const accessToken = response.data.access;
         const refreshToken = response.data.refresh;
@@ -59,8 +60,14 @@ export default function SignIn() {
         }
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setError('Invalid email or password');
+      if (error.response && error.response.data) {
+        if (error.response.data.non_field_errors) {
+          const errorMessage = error.response.data.non_field_errors[0];
+          setError(errorMessage);
+        } else {
+          // Handle other possible error messages
+          setError('An unexpected error occurred.');
+        }
       } else {
         setError('Something went wrong. Please try again.');
       }
@@ -84,7 +91,7 @@ export default function SignIn() {
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto" />
+          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto"/>
         </div>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
@@ -154,9 +161,12 @@ export default function SignIn() {
                   disabled={loading} // Disable button when loading
                 >
                   {loading ? (
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291a7.978 7.978 0 01-1.664-1.415A8.018 8.018 0 012.34 14H.12A9.985 9.985 0 006 19.29V17.29z"></path>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                              strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291a7.978 7.978 0 01-1.664-1.415A8.018 8.018 0 012.34 14H.12A9.985 9.985 0 006 19.29V17.29z"></path>
                     </svg>
                   ) : (
                     'Sign in'
