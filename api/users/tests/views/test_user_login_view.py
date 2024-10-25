@@ -118,4 +118,3 @@ class TestUserLoginView(APITestCase):
         # Verify user account (2x)
         response = self.client.get(reverse("user:verify-email"), data={"uid": uidb64, "token": token})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
