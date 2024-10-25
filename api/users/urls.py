@@ -14,12 +14,12 @@ from .views.user_resources import (UserResourcesUpdateView,
 
 app_name = "user"
 urlpatterns = [
-    re_path('password-reset/confirm/?$',
-            PasswordResetView.as_view(),
-            name='password-reset-confirm'),
     re_path('password-reset/?$',
             PasswordResetRequestView.as_view(),
             name='password-reset-request'),
+    re_path('password-reset/confirm/?$',
+            PasswordResetView.as_view(),
+            name='password-reset-confirm'),
     re_path('user-detail/',
             UserByTokenView.as_view(),
             name='get_user_by_token'),

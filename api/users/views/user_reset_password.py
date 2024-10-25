@@ -45,7 +45,7 @@ class PasswordResetRequestView(APIView):
             send_email_as_thread(
                 destination=[email],
                 email_opt_key="password-reset-verification",
-                format_args={'reset_link': reset_link}
+                format_args={'link': reset_link}
             )
 
         # Always respond with the same message to avoid disclosing email existence

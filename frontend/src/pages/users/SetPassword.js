@@ -31,7 +31,7 @@ export default function SetPassword() {
     }
     
     try {
-      const response = await axiosInstance.post(`/password-reset/confirm`, {
+      const response = await axiosInstance.post(`/user/password-reset/confirm`, {
         "new_password": password,
         token,
       });
