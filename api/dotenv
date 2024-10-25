@@ -1,6 +1,7 @@
 # Django secret key:
 SECRET_KEY=insert_your_secret_key_here
 FRONTEND_URL=http://localhost:3000
+
 # Applications environment options: production/develop/test
 DJANGO_APPLICATION_ENVIRONMENT=develop
 ACCOUNT_VERIFICATION=true

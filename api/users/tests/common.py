@@ -56,3 +56,7 @@ def login_user(client, user):
                                  "password": user.raw_password})
     user_token = response.data['access']
     client.credentials(HTTP_AUTHORIZATION="Bearer " + user_token)
+
+
+def logout_user(client):
+    client.logout()

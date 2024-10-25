@@ -3,13 +3,8 @@ import uuid
 import jwt
 import structlog
 from django.conf import settings
-from django.contrib.auth.tokens import default_token_generator
-# from django.contrib.auth.models import User
-# from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
 from django.utils import timezone
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
@@ -20,7 +15,6 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
-from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError, UntypedToken
 
 from api.email.utils.email_utils import send_email_as_thread
@@ -38,9 +32,9 @@ from ..serializers.user import (ResetPasswordEmailRequestSerializer,
                                 UserRegistrationSerializer,
                                 UserSerializer,
                                 LimitedUserSerializer,
-                                TokenVerifySerializer,
-                                TokenVerificationResponseSerializer,
                                 UserInvitationSerializer)
+from .. import exceptions as user_exceptions
+
 
 # init logger:
 logger = structlog.get_logger("api_logger")
@@ -68,90 +62,42 @@ class UserByTokenView(APIView):
 
 
 class GenerateRegisterTokenView(APIView):
+    renderer_classes = (CustomRenderer,)
     permission_classes = [IsAdminUser]
     serializer_class = UserInvitationSerializer
 
     def post(self, request):
 
         serializer = self.serializer_class(data=request.data)
-        # Validate the incoming data using the serializer
-        if serializer.is_valid():
-            token = str(uuid.uuid4())
-            expiration_time = timezone.now() + timezone.timedelta(hours=72)
+        serializer.is_valid(raise_exception=True)
 
-            # check if the email exists in the database
-            email = serializer.validated_data.get('email')
-            if User.objects.filter(email=email).exists():
-                return Response({'error': 'User with this email already exists'},
-                                status=status.HTTP_409_CONFLICT)
+        token = str(uuid.uuid4())
 
-            try:
-                with transaction.atomic():  # Start atomic transaction
-                    # Create the OneTimeRegisterToken object
-                    OneTimeRegisterToken.objects.create(token=token,
-                                                        expiration_time=expiration_time)
-
-                    # Use reverse to dynamically generate the link
-                    link = f"{settings.FRONTEND_URL}/signup/{token}"
-                    email = serializer.validated_data.get('email')
-                    # Send the registration email
-                    send_registration_email(email, link)
-
-                    # Return the link to the admin user
-                    return Response({'link': link}, status=status.HTTP_201_CREATED)
-
-            except Exception as e:
-                # Handle any exceptions that occur
-                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
+        if settings.ENVIRONMENT == "test":
+            expiration_time = timezone.timedelta(seconds=15)
         else:
-            # If the data is invalid, return the validation errors
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            expiration_time = timezone.timedelta(hours=settings.INVITE_TOKEN_EXPIRATION_HOURS)
 
+        expiration_time += timezone.now()
 
-class EmailVerificationView(APIView):
-    permission_classes = [AllowAny]
-    authentication_classes = []
-    """
-    API View for verifying user emails via token.
-    """
-    @swagger_auto_schema(
-        operation_summary="Email verification",
-        operation_id="get_verify_email",
-        operation_description="[Public] Method for verifying user's "
-                              "email with the token.",
-        responses={
-            200: 'Email verified successfully',
-            400: 'Bad request or token is invalid',
-        })
-    def get(self, request, uidb64, token):
-        try:
-            # Decode the user ID from the URL
-            uid = urlsafe_base64_decode(uidb64).decode()
+        # check if the email exists in the database
+        email = serializer.validated_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise user_exceptions.EmailAlreadyExists(value=email)
 
-            # Fetch the user associated with the UID
-            user = get_object_or_404(User, pk=uid)
+        with transaction.atomic():  # Start atomic transaction
+            # Create the OneTimeRegisterToken object
+            OneTimeRegisterToken.objects.create(token=token,
+                                                expiration_time=expiration_time)
 
-            # Verify the token using Django's token generator
-            if default_token_generator.check_token(user, token):
-                # If the token is valid, activate the user
-                user.is_active = True
-                user.save()
+            # Use reverse to dynamically generate the link
+            link = f"{settings.FRONTEND_URL}/signup/{token}"
+            email = serializer.validated_data.get('email')
+            # Send the registration email
+            send_registration_email(email, link)
 
-                return Response(
-                    {"message": "Email verified successfully. You can now sign in."},
-                    status=status.HTTP_200_OK
-                )
-            else:
-                return Response(
-                    {"message": "Invalid or expired verification token."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response(
-                {"message": "Invalid or expired verification token."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            # Return the link to the admin user
+            return Response({'link': link}, status=status.HTTP_201_CREATED)
 
 
 class UserRegisterView(APIView):
@@ -178,25 +124,16 @@ class UserRegisterView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        try:
-            with transaction.atomic():
-                # Save the user
-                serializer.save()
-                # If all is successful, mark the token as used here
-                one_time_register_token = OneTimeRegisterToken.objects.get(
-                    token=request.headers.get('Authorization')[7:],
-                    used=False)
+        with transaction.atomic():
+            # Save the user
+            serializer.save()
+            # If all is successful, mark the token as used here
+            one_time_register_token = OneTimeRegisterToken.objects.get(
+                token=request.headers.get('Authorization')[7:],
+                used=False)
 
-                one_time_register_token.used = True
-                one_time_register_token.save()
-
-        except Exception as e:
-            logger.exception("Transaction failed while creating the user", exc_info=e)
-            return Response({'message': 'An error occurred while '
-                                        'registering the user. '
-                                        'Contact the platform for more '
-                                        'details if the problem persists'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            one_time_register_token.used = True
+            one_time_register_token.save()
 
         if settings.ACCOUNT_VERIFICATION:
             # Prepare verification info:
@@ -267,7 +204,7 @@ class UserVerifyEmailView(APIView):
                 if user.is_verified:
                     # if user already verified, ignore
                     return Response(data={
-                        'response': 'User is already verified'
+                        'email': 'User is already verified'
                     }, status=status.HTTP_400_BAD_REQUEST)
 
                 # Activate / verify user:
