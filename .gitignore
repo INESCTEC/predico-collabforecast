@@ -4,7 +4,7 @@
 !*/.keep
 
 nginx/private.key
-nginx/certificate.cer
+nginx/certificate.pem
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

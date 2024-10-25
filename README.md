@@ -80,6 +80,32 @@ pytest
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
+## Development Deployment
+
+### Environment Variables
+
+To apply the environment variables, you can edit the `.dev.env` file and load it the helpers/enviroment.py file.
+
+
+## Production Deployment
+
+### Frontend
+
+For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod to the correct URL.
+
+```yaml
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: https://predico-elia.inesctec.pt/api/v1
+    container_name: predico_frontend_build
+    networks:
+      - predico_network
+    volumes:
+      - frontend_build:/app/build  # This volume will store the build output
+```
 
 ## How to easy deploy in "debug" mode (developers)?
 

@@ -1,17 +1,18 @@
 import uuid
-from datetime import timedelta
 
 import jwt
 import structlog
 from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
 # from django.contrib.auth.models import User
 # from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils import timezone
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -36,7 +37,6 @@ from users.util.verification import (check_one_time_token,
 from ..serializers.user import (ResetPasswordEmailRequestSerializer,
                                 UserRegistrationSerializer,
                                 UserSerializer,
-                                PasswordResetRequestSerializer,
                                 LimitedUserSerializer,
                                 TokenVerifySerializer,
                                 TokenVerificationResponseSerializer,
@@ -93,9 +93,7 @@ class GenerateRegisterTokenView(APIView):
 
                     # Use reverse to dynamically generate the link
                     link = f"{settings.FRONTEND_URL}/signup/{token}"
-
                     email = serializer.validated_data.get('email')
-
                     # Send the registration email
                     send_registration_email(email, link)
 
@@ -109,6 +107,50 @@ class GenerateRegisterTokenView(APIView):
         else:
             # If the data is invalid, return the validation errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EmailVerificationView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+    """
+    API View for verifying user emails via token.
+    """
+    @swagger_auto_schema(
+        operation_summary="Email verification",
+        operation_id="get_verify_email",
+        operation_description="[Public] Method for verifying user's email with the token.",
+        responses={
+            200: 'Email verified successfully',
+            400: 'Bad request or token is invalid',
+        })
+    def get(self, request, uidb64, token):
+        try:
+            # Decode the user ID from the URL
+            uid = urlsafe_base64_decode(uidb64).decode()
+
+            # Fetch the user associated with the UID
+            user = get_object_or_404(User, pk=uid)
+
+            # Verify the token using Django's token generator
+            if default_token_generator.check_token(user, token):
+                # If the token is valid, activate the user
+                user.is_active = True
+                user.save()
+
+                return Response(
+                    {"message": "Email verified successfully. You can now sign in."},
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {"message": "Invalid or expired verification token."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response(
+                {"message": "Invalid or expired verification token."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class UserRegisterView(APIView):
@@ -158,6 +200,7 @@ class UserRegisterView(APIView):
         if settings.ACCOUNT_VERIFICATION:
             # Prepare verification info:
             verification_link, uid = create_verification_info(request)
+
             email = request.data.get('email')
             send_verification_email(email, verification_link)
             response = {"email": email}
@@ -171,75 +214,6 @@ class UserRegisterView(APIView):
             return Response(
                 {"message": "User registered successfully."},
                 status=status.HTTP_201_CREATED)
-
-
-class VerifyTokenView(APIView):
-    authentication_classes = []
-    permission_classes = [AllowAny, ]
-    serializer_class = TokenVerifySerializer  # Use the serializer
-
-    @swagger_auto_schema(
-        request_body=TokenVerifySerializer,
-        responses={
-            200: TokenVerificationResponseSerializer,
-            401: openapi.Response(description="Unauthorized",
-                                  schema=TokenVerificationResponseSerializer),
-            404: openapi.Response(description="Not Found",
-                                  schema=TokenVerificationResponseSerializer),
-        }
-    )
-    def post(self, request):
-        # Initialize the serializer with the request data
-        serializer = self.serializer_class(data=request.data)
-
-        # Validate serializer data
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # Get the token from the validated serializer data
-        token = serializer.validated_data['token']
-
-        try:
-
-            # Extract user information from the decoded token
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-            email = payload.get('email')  # Get user ID from the token payload
-
-            # Check if the user exists and is active
-            try:
-                user = User.objects.get(email=email)
-                if not user.is_active:
-                    return Response(
-                        TokenVerificationResponseSerializer(
-                            valid=False,
-                            error="User is inactive."
-                        ).data,
-                        status=status.HTTP_401_UNAUTHORIZED
-                    )
-
-                # If everything is correct, return the valid response
-                data = {"valid": True, "user": user.email}
-                return Response(
-                    TokenVerificationResponseSerializer(data).data,
-                    status=status.HTTP_200_OK
-                )
-            except User.DoesNotExist:
-                data = {"valid": False, 'error': "User not found."}
-                return Response(
-                    TokenVerificationResponseSerializer(data).data,
-                    status=status.HTTP_404_NOT_FOUND
-                )
-
-        except (InvalidToken,
-                TokenError,
-                jwt.ExpiredSignatureError,
-                jwt.exceptions.DecodeError):
-
-            data = {"valid": False, 'error': "Invalid token."}
-            return Response(
-                TokenVerificationResponseSerializer(data).data,
-                status=status.HTTP_401_UNAUTHORIZED
-            )
 
 
 class UserListView(APIView):
@@ -272,8 +246,10 @@ class UserVerifyEmailView(APIView):
     permission_classes = (AllowAny,)
 
     @staticmethod
-    def get(request, uid, token):
+    def get(request):
         try:
+            uid = request.query_params.get('uid')
+            token = request.query_params.get('token')
             # Decode JWT:
             payload = jwt.decode(token,
                                  settings.SECRET_KEY,
@@ -310,17 +286,8 @@ class UserVerifyEmailView(APIView):
                         fail_silently=True
                     )
 
-                return render(request, 'email_verification_success.html')  # noqa
-                # return Response(
-                #     {
-                #         'authentication': {
-                #             'access_token': str(refresh_token.access_token),
-                #             'refresh_token': str(refresh_token)
-                #         },
-                #         'user': UserSerializer(user).data,
-                #     },
-                #     status=status.HTTP_200_OK
-                # )
+                return Response(status=status.HTTP_200_OK)
+
             else:
                 return Response({'message': 'Invalid activation link.'},
                                 status=status.HTTP_400_BAD_REQUEST)

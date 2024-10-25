@@ -9,7 +9,6 @@ EMAIL_OPTS = {
     'registration': {
         'subject': EMAIL_SUBJECT_FORMAT + 'Register to Collabforecast!',
         'message': '<p>Click the following button to register to Collabforecast.'
-                   ' <a href="{link}">Register</a></p>'
     },
 
     'generic-error-email': {

@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from users.models import User, PasswordResetRequest
 from users.serializers.user_reset_password import PasswordResetSerializer
-
+from api.email.utils.email_utils import send_email_as_thread
 
 class PasswordResetRequestView(APIView):
 
@@ -41,13 +41,18 @@ class PasswordResetRequestView(APIView):
             PasswordResetRequest.objects.create(email=email, token=token)
 
             # Send password reset email with secure token
-            reset_link = f"{settings.FRONTEND_URL}/reset-password/{token}"
-            send_mail(
-                subject="Password Reset Request",
-                message=f"Use the following link to reset your password: {reset_link}",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[email],
+            reset_link = f"{settings.FRONTEND_URL}/set-password/{token}"
+            send_email_as_thread(
+                destination=[email],
+                email_opt_key="password-reset-verification",
+                format_args={'reset_link': reset_link}
             )
+            # send_mail(
+            #     subject="Password Reset Request",
+            #     message=f"Use the following link to reset your password: {reset_link}",
+            #     from_email=settings.DEFAULT_FROM_EMAIL,
+            #     recipient_list=[email],
+            # )
 
         # Always respond with the same message to avoid disclosing email existence
         return Response({'detail': 'If the email is registered, '

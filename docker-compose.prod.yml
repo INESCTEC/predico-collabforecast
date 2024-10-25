@@ -20,12 +20,25 @@ services:
     depends_on:
       - postgresql
     env_file:
-      - api/.dev.env
+      - api/.env
     networks:
       - predico_network
     volumes:
       - static_volume:/usr/src/django/api/staticfiles
       - media_volume:/usr/src/django/api/mediafiles
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: https://predico-elia.inesctec.pt/api/v1
+#        PUBLIC_URL: /app
+    container_name: predico_frontend_build
+    networks:
+      - predico_network
+    volumes:
+      - frontend_build:/app/build  # This volume will store the build output
 
   nginx:
     container_name: predico_rest_nginx
@@ -34,16 +47,19 @@ services:
       context: nginx
       dockerfile: Dockerfile
     ports:
-      - "443:443"
+      - "443:443" # HTTPS
     depends_on:
       - app
+      - frontend
     networks:
       - predico_network
     volumes:
-      - static_volume:/usr/src/api/staticfiles
-      - media_volume:/usr/src/api/mediafiles
+      - frontend_build:/usr/share/nginx/html  # Correcting the path for admin frontend
+      - static_volume:/usr/src/django/api/staticfiles  # Serve Django static files correctly
+      - media_volume:/usr/src/django/api/mediafiles    # Serve Django media files
 
 volumes:
+  frontend_build:
   postgresql-data:
   static_volume:
   media_volume:

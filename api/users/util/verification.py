@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
 
@@ -73,15 +74,8 @@ def send_verification_email(email, verification_link):
 
 def create_verification_info(request):
     token, host, port, protocol, uid = account_url_metadata(request)
-    verification_link = create_verification_link(
-        token=token,
-        host=host,
-        port=port,
-        protocol=protocol,
-        uid=uid
-    )
-
-    return verification_link, uid
+    base_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    return f"{base_url}/email-verification/{uid}/{token}", uid
 
 
 def generate_token(email):
