@@ -4,7 +4,7 @@ services:
     container_name: predico_postgresql
     restart: always
     env_file:
-      - api/.dev.env
+      - api/.env
     volumes:
       - postgresql-data:/var/lib/postgresql/data
     networks:
