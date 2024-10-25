@@ -33,7 +33,6 @@ services:
       dockerfile: Dockerfile
       args:
         REACT_APP_API_URL: https://predico-elia.inesctec.pt/api/v1
-#        PUBLIC_URL: /app
     container_name: predico_frontend_build
     networks:
       - predico_network
