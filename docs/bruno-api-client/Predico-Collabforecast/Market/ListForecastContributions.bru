@@ -1,0 +1,19 @@
+meta {
+  name: ListForecastContributions
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://{{PredicoBaseUrl}}/api/v1/market/challenge/ensemble-weights?challenge=challenge_uuid
+  body: none
+  auth: none
+}
+
+params:query {
+  challenge: challenge_uuid
+}
+
+headers {
+  Authorization: Bearer {{BearerToken}}
+}

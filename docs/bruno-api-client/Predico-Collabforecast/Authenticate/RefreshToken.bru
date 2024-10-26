@@ -1,0 +1,22 @@
+meta {
+  name: RefreshToken
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://{{PredicoBaseUrl}}/api/v1/token/refresh
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refresh": "refresh_token_here"
+  }
+}
+
+script:post-response {
+  let jsonData = res.getBody();
+  bru.setEnvVar("BearerToken",jsonData.access);
+}
