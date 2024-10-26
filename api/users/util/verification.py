@@ -33,10 +33,7 @@ class IsValidRegisterToken(BasePermission):
             return False
 
         # Check if the token has expired
-        if one_time_token.expiration_time < timezone.now():
-            return False
-
-        return True
+        return not one_time_token.expiration_time < timezone.now()
 
 
 def check_one_time_token(token):
