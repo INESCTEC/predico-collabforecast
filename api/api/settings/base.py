@@ -37,7 +37,6 @@ ACCOUNT_VERIFICATION = str(_acc_verify).lower() == 'true'
 PASSWORD_RESET_RATE_LIMIT = int(os.environ.get('PASSWORD_RESET_RATE_LIMIT', 3))
 INVITE_TOKEN_EXPIRATION_HOURS = int(os.environ.get('INVITE_TOKEN_EXPIRATION_HOURS', 72))
 
-
 if not ACCOUNT_VERIFICATION:
     print('-' * 80)
     print('WARNING: ACCOUNT_VERIFICATION is set to False. '
@@ -142,19 +141,23 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'OPTIONS': {
+            'user_attributes': ('username', 'email', 'first_name', 'last_name'),
+            'max_similarity': 0.7,
+        },
+    },
+    {
+        'NAME': 'api.utils.custom_validators.PasswordComplexityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {
             'min_length': 9,
-        }
+        },
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    }
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -307,7 +310,6 @@ else:
             },
         }
     }
-
 
 structlog.configure(
     processors=[
