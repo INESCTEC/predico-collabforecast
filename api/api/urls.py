@@ -73,13 +73,12 @@ v1_urlpatterns = [
     re_path('token/refresh', MyTokenRefreshView.as_view(), name='token_refresh'),
     re_path('token', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     re_path('market/', include('market.urls'), name="market"),
-    re_path('user/', include('users.urls'), name="users"),
+    re_path('user/', include('users.urls'), name="user"),
     re_path('data/', include('data.urls'), name="data"),
     re_path('test/', TestEndpointView.as_view(), name="test-service"),
 ]
 
 urlpatterns = [
-    path('', front_page_view, name='front_page'),
     path('api/v1/', include(v1_urlpatterns)),
     # Auto-Docs
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

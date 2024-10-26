@@ -74,7 +74,7 @@ docs/_build/
 target/
 
 # Virtual environment
-api/.env
+api/.dev.env
 api/*.env
 .env/
 .venv/

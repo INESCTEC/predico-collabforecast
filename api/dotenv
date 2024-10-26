@@ -1,10 +1,12 @@
 # Django secret key:
 SECRET_KEY=insert_your_secret_key_here
+FRONTEND_URL=http://localhost:3000
 
 # Applications environment options: production/develop/test
 DJANGO_APPLICATION_ENVIRONMENT=production
 ACCOUNT_VERIFICATION=true
 FORECAST_TIME_RESOLUTION_MINUTES=15
+PASSWORD_RESET_RATE_LIMIT=3
 
 # Database configs:
 POSTGRES_DB=db_name
@@ -15,7 +17,7 @@ POSTGRES_PORT=db_port
 
 # Email configs:
 EMAIL_HOST=email_host
-EMAIL_PORT=email_port
+EMAIL_PORT=888
 EMAIL_HOST_USER=email_user
 EMAIL_HOST_PASSWORD=email_password
 EMAIL_USE_TLS=1

@@ -22,7 +22,7 @@ from data.models.individual_forecasts import IndividualForecasts
 
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class MarketSessionSubmissionRetrieveSerializer(serializers.ModelSerializer):

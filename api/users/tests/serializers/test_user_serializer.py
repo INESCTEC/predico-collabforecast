@@ -8,7 +8,7 @@ class UserRegistrationSerializerTestCase(TestCase):
     def setUp(self):
         self.valid_data = {
             "email": "testuser1@inesctec.pt",
-            "password": "testuser1password",
+            "password": "Testuser1password!",
             "first_name": "Test",
             "last_name": "User 1"
         }

@@ -1,0 +1,15 @@
+meta {
+  name: ListUserDetails
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://{{PredicoBaseUrl}}/api/v1/user/list
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{BearerToken}}
+}

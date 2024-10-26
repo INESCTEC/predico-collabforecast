@@ -1,16 +1,39 @@
-from datetime import datetime, timedelta
+import os
+from datetime import datetime, timedelta, UTC
+from urllib.parse import urlparse
 
 import jwt
-from urllib.parse import urlparse
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from rest_framework.permissions import BasePermission
 
 from api.email.utils.email_utils import send_email_as_thread
-from users.models.user import OneTimeToken
+from users.models.user import OneTimeToken, OneTimeRegisterToken
+
+
+class IsValidRegisterToken(BasePermission):
+
+    def has_permission(self, request, view):
+
+        token = request.headers.get('Authorization')
+        if not token:
+            return False
+
+        if token.startswith("Bearer "):
+            token = token[7:]
+
+        try:
+            # Try fetching the token from the database
+            one_time_token = OneTimeRegisterToken.objects.get(token=token, used=False)
+        except OneTimeRegisterToken.DoesNotExist:
+            return False
+
+        # Check if the token has expired
+        return not one_time_token.expiration_time < timezone.now()
 
 
 def check_one_time_token(token):
@@ -28,7 +51,14 @@ def check_one_time_token(token):
     except (ValidationError, ValueError, OverflowError, OneTimeToken.DoesNotExist) as ex:  # noqa
         raise ValidationError({'token': 'Invalid token'}) from ex
 
-
+def send_registration_email(email, registration_link):
+    if settings.ENVIRONMENT == "production":
+        send_email_as_thread(
+            destination=[email],
+            email_opt_key="registration",
+            format_args={"link": registration_link},
+            fail_silently=False
+        )
 def send_verification_email(email, verification_link):
     if settings.ENVIRONMENT == "production":
         send_email_as_thread(
@@ -41,19 +71,12 @@ def send_verification_email(email, verification_link):
 
 def create_verification_info(request):
     token, host, port, protocol, uid = account_url_metadata(request)
-    verification_link = create_verification_link(
-        token=token,
-        host=host,
-        port=port,
-        protocol=protocol,
-        uid=uid
-    )
-
-    return verification_link, uid
+    base_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    return f"{base_url}/email-verification/{uid}/{token}", uid
 
 
 def generate_token(email):
-    date_ref = datetime.utcnow() + timedelta(days=1)
+    date_ref = datetime.now(UTC) + timedelta(days=60)
 
     token = jwt.encode({
         'email': email,

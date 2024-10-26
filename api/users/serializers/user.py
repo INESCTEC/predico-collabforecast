@@ -16,7 +16,7 @@ from users.models.user import OneTimeToken
 from users.util.verification import check_one_time_token
 from ..models.user import User
 
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,6 +37,9 @@ class LimitedUserSerializer(serializers.ModelSerializer):
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
+
+class UserInvitationSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
 
 class UserRegistrationSerializer(serializers.Serializer):
     email = serializers.CharField(required=True)
@@ -83,6 +86,22 @@ class UserRegistrationSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class TokenVerifySerializer(serializers.Serializer):
+    token = serializers.CharField(write_only=True)
+
+    # noinspection PyMethodMayBeStatic
+    def validate_token(self, value):
+        if not value:
+            raise serializers.ValidationError("Token is required.")
+        return value
+
+
+class TokenVerificationResponseSerializer(serializers.Serializer):
+    valid = serializers.BooleanField()
+    user = serializers.CharField(required=False)
+    error = serializers.CharField(required=False)
 
 
 class SecurityLinkSerializer(serializers.Serializer):

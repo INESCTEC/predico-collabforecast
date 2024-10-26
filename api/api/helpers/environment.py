@@ -1,5 +1,7 @@
 import os
+# import dotenv
 
+# dotenv.load_dotenv('.dev.env')
 ENVIRONMENT = os.environ['DJANGO_APPLICATION_ENVIRONMENT']
 
 if ENVIRONMENT == 'develop':

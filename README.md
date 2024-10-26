@@ -45,7 +45,7 @@ The following directory structure should be considered:
 
 Create a `.env` file from a provided example (`dotenv`) and update its variables
 ```shell
-cp dotenv .env
+cp dotenv .dev.env
 ```
 
 Start docker stack:
@@ -80,6 +80,32 @@ pytest
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
+## Development Deployment
+
+### Environment Variables
+
+To apply the environment variables, you can edit the `.dev.env` file and load it the helpers/enviroment.py file.
+
+
+## Production Deployment
+
+### Frontend
+
+For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod to the correct URL.
+
+```yaml
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: https://predico-elia.inesctec.pt/api/v1
+    container_name: predico_frontend_build
+    networks:
+      - predico_network
+    volumes:
+      - frontend_build:/app/build  # This volume will store the build output
+```
 
 ## How to easy deploy in "debug" mode (developers)?
 
@@ -135,6 +161,21 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+## Schedule tasks
+
+To schedule tasks, you can use the Django management commands:
+
+- Remove older register tokens
+
+```shell
+python manage.py delete_old_register_tokens
+```
+
+- Remove older password reset tokens
+
+```shell
+python manage.py delete_old_reset_password_tokens
+```
 
 ## Contacts:
 

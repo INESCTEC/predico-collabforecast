@@ -1,0 +1,21 @@
+meta {
+  name: ListMarketSessions
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://{{PredicoBaseUrl}}/api/v1/market/session
+  body: none
+  auth: none
+}
+
+params:query {
+  ~market_session: 1
+  ~status: open
+  ~latest_only: false
+}
+
+headers {
+  Authorization: Bearer {{BearerToken}}
+}

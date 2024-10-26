@@ -28,7 +28,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     user_resource = {"name": "u1-resource-1", "timezone": "Europe/Brussels"}
     super_user_2_config = {'email': "admin2@user.com",
-                           'password': "admin_foo",
+                           'password': "Admin2_foo_123!",
                            'is_session_manager': False}
 
     def setUp(self):
@@ -136,6 +136,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         submission_data = create_market_submission_data(variable="q50", forecasts=forecasts_data)
         submission_url = reverse("market:market-session-submission-create-update", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
+        print(response.json())
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
     def test_normal_forecaster_submit_forecast_with_historical(self):
@@ -146,7 +147,9 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         response = self.client.get(self.submission_forecasts_list_url, data={"challenge": challenge_data["id"]})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()["data"]
-        self.assertEqual(len(response_data), 96)
+        # todo: add test specific for two DST changes.
+        self.assertGreaterEqual(len(response_data), 23*4) # DST lower
+        self.assertLessEqual(len(response_data), 25*4)  # DST Upper
 
     def test_admin_forecaster_submit_forecast_with_historical(self):
         challenge_data = self.create_challenge_pipeline()
@@ -160,7 +163,9 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         response = self.client.get(self.submission_forecasts_list_url, data={"challenge": challenge_data["id"]})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()["data"]
-        self.assertEqual(len(response_data), 96)
+        # todo: add test specific for two DST changes.
+        self.assertGreaterEqual(len(response_data), 92)
+        self.assertLessEqual(len(response_data), 100)
 
     def test_admin_list_submissions_from_another_admin_challenge(self):
         challenge_data = self.create_challenge_pipeline()
@@ -230,7 +235,9 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         response = self.client.get(self.submission_forecasts_list_url, data={"challenge": challenge_data["id"]})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()["data"]
-        self.assertEqual(len(response_data), 4*24*3)
+        # todo: created specific tests for DST changes
+        self.assertGreaterEqual(len(response_data), 23*4*3)  # DST lower
+        self.assertLessEqual(len(response_data), 25*4*3)  # DST upper
 
     def test_submission_update(self):
         challenge_data = self.create_challenge_pipeline()
@@ -245,7 +252,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     def test_concurrent_submissions(self):
         challenge_data = self.create_challenge_pipeline()
-        
+
         # Prepare forecast historical data (31 days prior to challenge)
         st_ = dt.datetime.strptime(challenge_data["forecast_start_datetime"], "%Y-%m-%dT%H:%M:%SZ")
         forecasts_historical_data = create_forecasts_submission_data(
@@ -264,7 +271,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
                                     data=historical_submission_data,
                                     format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
+
         submission_data = create_market_submission_data(
             variable="q50",
             forecasts=create_forecasts_submission_data(

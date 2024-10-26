@@ -221,8 +221,7 @@ class TestMarketSessionView(TransactionTestCase):
         response = self.client.get(self.base_url, {"latest_only": "asdsd"})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         response_data = response.json()["data"]
-        expected_response = ["Query param 'latest_only' must be a boolean "
-                             "(true/false)"]
+        expected_response = {'latest_only': "Query param 'latest_only' must be a boolean (true/false)"}
         self.assertEqual(response_data, expected_response)
 
     def test_admin_update_session_invalid_status(self):

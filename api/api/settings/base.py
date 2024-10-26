@@ -16,6 +16,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 import os
+import json
 import structlog
 
 from pathlib import Path
@@ -26,35 +27,45 @@ ENVIRONMENT = os.environ.get('DJANGO_APPLICATION_ENVIRONMENT', 'test').lower()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
 SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
 DEBUG = os.environ.get('DJANGO_APPLICATION_ENVIRONMENT', 'test') != 'production'
-
 # Disable account verification (easier tests later)
 _acc_verify = os.environ.get('ACCOUNT_VERIFICATION', 'true')
 ACCOUNT_VERIFICATION = str(_acc_verify).lower() == 'true'
+PASSWORD_RESET_RATE_LIMIT = int(os.environ.get('PASSWORD_RESET_RATE_LIMIT', 3))
+INVITE_TOKEN_EXPIRATION_HOURS = int(os.environ.get('INVITE_TOKEN_EXPIRATION_HOURS', 72))
 
 if not ACCOUNT_VERIFICATION:
-    print("-" * 80)
-    print("WARNING: ACCOUNT_VERIFICATION is set to False. "
-          "This is not recommended for production environments.")
-    print("-" * 80)
+    print('-' * 80)
+    print('WARNING: ACCOUNT_VERIFICATION is set to False. '
+          'This is not recommended for production environments.')
+    print('-' * 80)
 
-# HOSTS:
-if ENVIRONMENT == "production":
-    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
+# Allow any origin (make sure authentication is solid)
+CORS_ALLOW_ALL_ORIGINS = False
+
+if ENVIRONMENT == 'production':
+    CORS_ALLOWED_ORIGINS = [
+        os.getenv('FRONTEND_URL', 'https://predico-elia.inesctec.pt'),
+    ]
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    ALLOWED_HOSTS = ['predico-elia.inesctec.pt', '127.0.0.1', 'localhost']
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_SSL_REDIRECT = True  # Force HTTPS connections
 else:
     ALLOWED_HOSTS = ['*']
+    CORS_ALLOWED_ORIGINS = [
+        os.getenv('FRONTEND_URL', 'http://localhost'),
+    ]
 
-# Application definition
 INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'corsheaders',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -70,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -99,48 +110,36 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("POSTGRES_DB", 'valorem'),
-        'USER': os.environ.get("POSTGRES_USER", 'valorem'),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'valorem'),
-        'HOST': os.environ.get("POSTGRES_HOST", 'localhost'),
-        'PORT': os.environ.get("POSTGRES_PORT", 5432),
-        # todo implement SSL connection to the Database
-        # 'OPTIONS': {
-        #     'sslmode': 'require',
-        #     'sslrootcert': '/path/to/rootcert.pem',
-        #     'sslcert': '/path/to/clientcert.pem',
-        #     'sslkey': '/path/to/clientkey.pem',
-        # },
+        'NAME': os.environ.get('POSTGRES_DB', 'valorem'),
+        'USER': os.environ.get('POSTGRES_USER', 'valorem'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'valorem'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
         'TEST': {
             'NAME': 'test_database',
         },
     },
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
+        'NAME': 'api.utils.custom_validators.PasswordComplexityValidator',
+    },
+    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {
-            'min_length': 9,
-        }
+            'min_length': 12,
+        },
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    }
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -155,11 +154,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = '/django-static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = "/mediafiles/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -179,43 +178,43 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustomPagination',
     'EXCEPTION_HANDLER': 'api.utils.exceptions.custom_exception_handler.custom_exception_handler',
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'user': '500/day',  # Limits for authenticated users
-    #     'anon': '50/hour',  # Limits for anonymous users
-    # },
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.UserRateThrottle',
-    #     'rest_framework.throttling.AnonRateThrottle',
-    # ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '500/day',  # Limits for authenticated users
+        'anon': '50/hour',  # Limits for anonymous users
+    },
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
 }
 
-# if ENVIRONMENT == "test":
-#     # If in tests, change limits
-#     REST_FRAMEWORK.update({
-#         'DEFAULT_THROTTLE_RATES': {
-#             'user': '1500/day',  # Limits for authenticated users
-#             'anon': '100/hour',  # Limits for anonymous users
-#         },
-#     })
+if ENVIRONMENT == 'test':
+    # If in tests, change limits
+    REST_FRAMEWORK.update({
+        'DEFAULT_THROTTLE_RATES': {
+            'user': '10000/day',  # Limits for authenticated users
+            'anon': '5000/hour',  # Limits for anonymous users
+        },
+    })
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Swagger:
-SWAGGER_BASE_URL = os.environ.get("SWAGGER_BASE_URL", "http://127.0.0.1:80")
+# OpenApi Specs (Swagger):
+SWAGGER_BASE_URL = os.environ.get('SWAGGER_BASE_URL', 'http://127.0.0.1:80')
 if not SWAGGER_BASE_URL.endswith('/'):
     SWAGGER_BASE_URL += '/'
 
 SWAGGER_SETTINGS = {
-    "DEFAULT_MODEL_RENDERING": "example",
-    "DOC_EXPANSION": "all",
-    "HIDE_HOSTNAME": True,
-    "DEFAULT_FILTER_INSPECTORS": [
+    'DEFAULT_MODEL_RENDERING': 'example',
+    'DOC_EXPANSION': 'all',
+    'HIDE_HOSTNAME': True,
+    'DEFAULT_FILTER_INSPECTORS': [
         'drf_yasg.inspectors.CoreAPICompatInspector'
     ],
-    "FILTER": False,
-    "SHOW_EXTENSIONS": False,
-    "LOGOUT_URL": "account/logout",
+    'FILTER': False,
+    'SHOW_EXTENSIONS': False,
+    'LOGOUT_URL': 'account/logout',
     'SECURITY_DEFINITIONS': {
         'Bearer': {
             'type': 'apiKey',
@@ -228,12 +227,24 @@ SWAGGER_SETTINGS = {
 # Python logging ( using structlog )
 # todo: email to admins logs for django.server & django.security
 # see more in https://docs.djangoproject.com/en/4.0/ref/logging/#django-logger
-LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath("logs")
+LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath('logs')
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # log handlers definition:
 MAIN_LOG_HANDLERS = []
-DB_LOG_HANDLERS = []
+EXCEPTION_LOG_HANDLERS = []
+
+class JSONRenderer:
+    def __call__(self, logger, name, event_dict):
+        base_order = ['timestamp', 'request_id', 'ip', 'event', 'level', 'request']
+        if event_dict.get('event') == 'request_error':
+            order_ = base_order + ['code', 'error_code', 'error_message', 'error_traceback', 'user_agent']
+        elif event_dict.get('event') == 'request_started':
+            order_ = base_order + ['user_agent']
+        else:
+            order_ = base_order + ['user_id', 'code']
+        return json.dumps({key: event_dict.get(key) for key in order_})
+
 
 # python manage.py runserver starts a python process that launches your server
 # a child python process. Each time the parent detects a change it recreates
@@ -243,70 +254,39 @@ if DEBUG and os.environ.get('RUN_MAIN', None) != 'true':
     LOGGING = {}
 else:
     LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "plain_console": {
-                "()": structlog.stdlib.ProcessorFormatter,
-                "processor": structlog.dev.ConsoleRenderer(),
-            },
-            "json_formatter": {
-                "()": structlog.stdlib.ProcessorFormatter,
-                "processor": structlog.processors.JSONRenderer(sort_keys=True),
-            },
-            'plain_text': {
-                'format': '{asctime} | {levelname} | {module} | {process:d} | {thread:d} | {message}',
-                'style': '{',
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'key_value': {
+                '()': structlog.stdlib.ProcessorFormatter,
+                'processor': JSONRenderer(),
             },
         },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "plain_console",
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'key_value',
             },
-            "json_file": {
+            'json_debug': {
                 'level': 'DEBUG',
-                'class': 'api.utils.logging.handlers.TimedCompressedRotatingFileHandler',
-                'filename': os.path.join(LOG_DIR, "requests_json.log"),
-                'when': 'D',
-                'interval': 1,
-                'backupCount': 1,
-                "formatter": "json_formatter",
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOG_DIR, 'debug.log'),
+                'formatter': 'key_value',
             },
-            'text_file': {
+            'json_exception': {
                 'level': 'DEBUG',
-                'class': 'api.utils.logging.handlers.TimedCompressedRotatingFileHandler',
-                'filename': os.path.join(LOG_DIR, "requests_text.log"),
-                'when': 'D',
-                'interval': 1,
-                'backupCount': 1,
-                'formatter': "plain_text"
-            },
-            'text_exception': {
-                'level': 'DEBUG',
-                'class': 'api.utils.logging.handlers.TimedCompressedRotatingFileHandler',
-                'filename': os.path.join(LOG_DIR, "requests_exception_text.log"),
-                'when': 'D',
-                'interval': 1,
-                'backupCount': 1,
-                'formatter': "plain_text"
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOG_DIR, 'exception.log'),
+                'formatter': 'key_value',
             },
         },
-        "loggers": {
-            "django_structlog": {
-                "handlers": MAIN_LOG_HANDLERS,
-                "level": "DEBUG",
+        'loggers': {
+            'django_structlog': {
+                'handlers': MAIN_LOG_HANDLERS,
+                'level': 'DEBUG',
             },
-            "api_logger": {
-                "handlers": MAIN_LOG_HANDLERS,
-                "level": "DEBUG",
-            },
-            "api_error500_logger": {
-                "handlers": ["console", "text_exception"],
-                "level": "DEBUG",
-            },
-            'django.db.backends': {
-                'handlers': DB_LOG_HANDLERS,
+            'api_error500_logger': {
+                'handlers': EXCEPTION_LOG_HANDLERS,
                 'level': 'DEBUG',
                 'propagate': True,
             },
@@ -315,8 +295,9 @@ else:
 
 structlog.configure(
     processors=[
+        structlog.contextvars.merge_contextvars,
         structlog.stdlib.filter_by_level,
-        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.TimeStamper(fmt='iso'),
         structlog.stdlib.add_logger_name,
         structlog.stdlib.add_log_level,
         structlog.stdlib.PositionalArgumentsFormatter(),
@@ -325,28 +306,29 @@ structlog.configure(
         structlog.processors.UnicodeDecoder(),
         structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
     ],
-    context_class=structlog.threadlocal.wrap_dict(dict),
     logger_factory=structlog.stdlib.LoggerFactory(),
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
 
+# -- Django Structlog (change default user_id field)
+DJANGO_STRUCTLOG_USER_ID_FIELD = 'email'
 
 # -- REST configs:
-REST_PORT = int(os.environ.get("REST_PORT", 8080))
+REST_PORT = int(os.environ.get('REST_PORT', 8080))
 
 # -- Email Configs:
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get("EMAIL_HOST", )
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", '')
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", '')
-EMAIL_USE_TLS = int(os.environ.get("EMAIL_USE_TLS", 0)) == 1
-EMAIL_USE_SSL = int(os.environ.get("EMAIL_USE_SSL", 0)) == 1
-EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 30))
+EMAIL_HOST = os.environ.get('EMAIL_HOST', )
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = int(os.environ.get('EMAIL_USE_TLS', 0)) == 1
+EMAIL_USE_SSL = int(os.environ.get('EMAIL_USE_SSL', 0)) == 1
+EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', 30))
 
 # -- Market Configs:
 # Minimum data requirements for a resource to be challenged (1 week default)
-MIN_RAW_DATA_COUNT_TO_CHALLENGE = int(os.environ.get("MIN_RAW_DATA_COUNT_TO_CHALLENGE", 4 * 24 * 30))
-FORECAST_TIME_RESOLUTION_MINUTES = int(os.environ.get("FORECAST_TIME_RESOLUTION_MINUTES", 15))
-FORECAST_VARIABLES = ["q10", "q50", "q90"]
+MIN_RAW_DATA_COUNT_TO_CHALLENGE = int(os.environ.get('MIN_RAW_DATA_COUNT_TO_CHALLENGE', 4 * 24 * 30))
+FORECAST_TIME_RESOLUTION_MINUTES = int(os.environ.get('FORECAST_TIME_RESOLUTION_MINUTES', 15))
+FORECAST_VARIABLES = ['q10', 'q50', 'q90']

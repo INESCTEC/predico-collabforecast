@@ -6,6 +6,11 @@ EMAIL_SUBJECT_FORMAT = '[Collabforecast] - '
 # Insert here the different components for your email subject and body message
 
 EMAIL_OPTS = {
+    'registration': {
+        'subject': EMAIL_SUBJECT_FORMAT + 'Register to Collabforecast!',
+        'message': '<p>Click the following button to register to Collabforecast.'
+    },
+
     'generic-error-email': {
         'subject': EMAIL_SUBJECT_FORMAT + 'An error occurred. Please contact the developers.',
         'message': "{message}"

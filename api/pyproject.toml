@@ -1,8 +1,8 @@
 [tool.poetry]
 package-mode = false
-name = "data-sharing-barter-incentives-rest-api"
+name = "collabforecast"
 version = "0.1.0"
-description = "Restful API and Database for INESC TEC Data Sharing / Barter Incentives Service"
+description = "Restful API and Database for INESC TEC Predico CollabForecast Service"
 authors = ["Jose Andrade <jose.r.andrade@inesctec.pt>", "Andre Garcia <andre.f.garcia@inesctec.pt>"]
 license = "GNU Affero General Public License"
 readme = "README.md"
@@ -20,10 +20,10 @@ loguru = "^0.7.2"
 gunicorn = "^23.0.0"
 django-stronghold = "^0.4.0"
 drf-yasg = "^1.21.7"
-django-structlog = "^7.1.0"
+django-structlog = "^8.1.0"
 django-cors-headers = "^4.3.1"
 python-dotenv = "^1.0.1"
-ruff = "^0.3.2"
+ruff = "^0.7.1"
 setuptools = "^74.1.2"
 
 [tool.poetry.group.test]
