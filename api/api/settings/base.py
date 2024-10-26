@@ -30,7 +30,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
 SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
 DEBUG = os.environ.get('DJANGO_APPLICATION_ENVIRONMENT', 'test') != 'production'
-
 # Disable account verification (easier tests later)
 _acc_verify = os.environ.get('ACCOUNT_VERIFICATION', 'true')
 ACCOUNT_VERIFICATION = str(_acc_verify).lower() == 'true'
@@ -43,8 +42,8 @@ if not ACCOUNT_VERIFICATION:
           'This is not recommended for production environments.')
     print('-' * 80)
 
-# HOSTS:
-CORS_ALLOW_ALL_ORIGINS = False  # Allow any origin (make sure authentication is solid)
+# Allow any origin (make sure authentication is solid)
+CORS_ALLOW_ALL_ORIGINS = False
 
 if ENVIRONMENT == 'production':
     CORS_ALLOWED_ORIGINS = [
@@ -61,7 +60,6 @@ else:
         os.getenv('FRONTEND_URL', 'http://localhost'),
     ]
 
-# Application definition
 INSTALLED_APPS = [
     'rest_framework',
     'django.contrib.admin',
@@ -112,8 +110,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -122,29 +118,15 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'valorem'),
         'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGRES_PORT', 5432),
-        # todo implement SSL connection to the Database
-        # 'OPTIONS': {
-        #     'sslmode': 'require',
-        #     'sslrootcert': '/path/to/rootcert.pem',
-        #     'sslcert': '/path/to/clientcert.pem',
-        #     'sslkey': '/path/to/clientkey.pem',
-        # },
         'TEST': {
             'NAME': 'test_database',
         },
     },
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        'OPTIONS': {
-            'user_attributes': ('username', 'email', 'first_name', 'last_name'),
-            'max_similarity': 0.7,
-        },
     },
     {
         'NAME': 'api.utils.custom_validators.PasswordComplexityValidator',
@@ -152,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {
-            'min_length': 9,
+            'min_length': 12,
         },
     },
     {
@@ -210,15 +192,15 @@ if ENVIRONMENT == 'test':
     # If in tests, change limits
     REST_FRAMEWORK.update({
         'DEFAULT_THROTTLE_RATES': {
-            'user': '1500/day',  # Limits for authenticated users
-            'anon': '100/hour',  # Limits for anonymous users
+            'user': '10000/day',  # Limits for authenticated users
+            'anon': '5000/hour',  # Limits for anonymous users
         },
     })
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Swagger:
+# OpenApi Specs (Swagger):
 SWAGGER_BASE_URL = os.environ.get('SWAGGER_BASE_URL', 'http://127.0.0.1:80')
 if not SWAGGER_BASE_URL.endswith('/'):
     SWAGGER_BASE_URL += '/'

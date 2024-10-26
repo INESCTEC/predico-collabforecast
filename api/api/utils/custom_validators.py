@@ -5,11 +5,6 @@ from django.utils.translation import gettext as _
 
 class PasswordComplexityValidator:
     def validate(self, password, user=None):
-        if len(password) < 12:
-            raise ValidationError(
-                _("Your password must be at least 12 characters long."),
-                code='password_too_short',
-            )
         if not re.findall('[A-Z]', password):
             raise ValidationError(
                 _("Your password must contain at least one uppercase letter."),

@@ -18,7 +18,7 @@ class TestUserResourceView(APITestCase):
     admin_user_2 = {'email': 'admin2@user.com',
                     'password': 'admin2_foo'}
     normal_user_1 = {'email': 'normal1@user.com',
-                     'password': 'normal1_foo',
+                     'password': 'Normal1_foo_123!',
                      'first_name': 'Normal1',
                      'last_name': 'Peanut1'}
 

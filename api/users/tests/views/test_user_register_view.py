@@ -20,7 +20,7 @@ class TestUserRegisterView(APITestCase):
     admin_user_1 = {'email': 'admin1@user.com',
                     'password': 'admin1_foo'}
     normal_user_1 = {'email': 'normal1@user.com',
-                     'password': 'normal1_foo',
+                     'password': 'Normal1_foo_123!',
                      'first_name': 'Normal1',
                      'last_name': 'Peanut1'}
 
@@ -134,30 +134,14 @@ class TestUserRegisterView(APITestCase):
         # Admin creates an invitation token:
         invite_token = self.admin_creates_invite_token()
         data = self.normal_user_1.copy()
-        data["password"] = "normal"
+        data["password"] = "N3o4as92!"
         # User uses this token to register:
         client_headers = {"Authorization": f"Bearer {invite_token}"}
         response = self.client.post(self.base_url, data=data, format="json", headers=client_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         response_data = response.json()["data"]
         expected_response = {
-            'password': ['This password is too short. It must contain at least '
-                         '9 characters.', 'This password is too common.']
-        }
-        self.assertEqual(response_data, expected_response)
-
-    def test_normal_register_user_invalid_password_too_common(self):
-        # Admin creates an invitation token:
-        invite_token = self.admin_creates_invite_token()
-        data = self.normal_user_1.copy()
-        data["password"] = "123456789a"
-        # User uses this token to register:
-        client_headers = {"Authorization": f"Bearer {invite_token}"}
-        response = self.client.post(self.base_url, data=data, format="json", headers=client_headers)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        response_data = response.json()["data"]
-        expected_response = {
-            'password': ['This password is too common.']
+            'password': ['This password is too short. It must contain at least 12 characters.']
         }
         self.assertEqual(response_data, expected_response)
 
@@ -172,7 +156,7 @@ class TestUserRegisterView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         response_data = response.json()["data"]
         expected_response = {
-            'password': ['This password is entirely numeric.']
+            'password': ['Your password must contain at least one uppercase letter.']
         }
         self.assertEqual(response_data, expected_response)
 

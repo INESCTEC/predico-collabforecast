@@ -26,7 +26,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     user_resource = {"name": "u1-resource-1", "timezone": "Europe/Brussels"}
     super_user_2_config = {'email': "admin2@user.com",
-                           'password': "admin_foo",
+                           'password': "Admin_Foo_123!",
                            'is_session_manager': False}
 
     def setUp(self):
@@ -127,7 +127,9 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         response = self.client.get(self.ensemble_forecasts_list_url, {"challenge": challenge_data["id"]})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()["data"]
-        self.assertEqual(len(response_data), 4 * 24)
+        # todo: add test specific for two DST changes.
+        self.assertGreaterEqual(len(response_data), 23*4) # DST lower
+        self.assertLessEqual(len(response_data), 25*4)  # DST Upper
         self.assertEqual(response_data[0]["challenge"], challenge_data["id"])
         self.assertEqual(response_data[0]["resource"], challenge_data["resource"])
         self.assertEqual(response_data[0]["variable"], "q50")

@@ -19,7 +19,7 @@ class TestUserLoginView(APITestCase):
     admin_user_1 = {'email': 'admin1@user.com',
                     'password': 'admin1_foo'}
     normal_user_1 = {'email': 'normal1@user.com',
-                     'password': 'normal1_foo',
+                     'password': 'Normal1_foo_123!',
                      'first_name': 'Normal1',
                      'last_name': 'Peanut1'}
 
