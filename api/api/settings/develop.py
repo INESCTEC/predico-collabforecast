@@ -5,3 +5,4 @@ ACCOUNT_VERIFICATION = os.getenv('ACCOUNT_VERIFICATION', 'false').lower() == 'tr
 
 # Logging:
 MAIN_LOG_HANDLERS.append("console")
+EXCEPTION_LOG_HANDLERS.append("console")
