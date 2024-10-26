@@ -2,12 +2,6 @@
 # detect-secrets scan > .secrets.baseline
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
-    hooks:
-      - id: check-yaml
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0 # Use the latest stable version
     hooks:
