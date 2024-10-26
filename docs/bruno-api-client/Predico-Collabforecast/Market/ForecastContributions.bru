@@ -1,11 +1,11 @@
 meta {
-  name: ListForecastScores
+  name: ForecastContributions
   type: http
-  seq: 4
+  seq: 3
 }
 
 get {
-  url: https://{{PredicoBaseUrl}}/api/v1/market/challenge/submission-scores?challenge=challenge_uuid
+  url: https://{{PredicoBaseUrl}}/api/v1/market/challenge/ensemble-weights?challenge=challenge_uuid
   body: none
   auth: none
 }

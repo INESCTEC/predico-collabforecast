@@ -1,19 +1,19 @@
 meta {
-  name: ListMarketSessions
+  name: MarketSessions
   type: http
   seq: 1
 }
 
 get {
-  url: https://{{PredicoBaseUrl}}/api/v1/market/session
+  url: https://{{PredicoBaseUrl}}/api/v1/market/session?latest_only=true
   body: none
   auth: none
 }
 
 params:query {
+  latest_only: true
   ~market_session: 1
   ~status: open
-  ~latest_only: false
 }
 
 headers {
