@@ -22,7 +22,7 @@ from ..serializers.market_session_ensemble_forecasts import (
 from ..util.validators import validate_query_params
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class MarketSessionListEnsembleForecastsView(APIView):

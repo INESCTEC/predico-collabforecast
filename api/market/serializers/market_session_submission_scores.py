@@ -8,7 +8,7 @@ from ..models.market_session_submission_scores import (
 
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class MarketSessionSubmissionScoresCreateSerializer(serializers.ModelSerializer):

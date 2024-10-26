@@ -16,7 +16,7 @@ from users.models.user import OneTimeToken
 from users.util.verification import check_one_time_token
 from ..models.user import User
 
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class UserSerializer(serializers.ModelSerializer):

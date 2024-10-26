@@ -37,7 +37,7 @@ from .. import exceptions as user_exceptions
 
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class CustomAnonRateThrottle(AnonRateThrottle):

@@ -4,7 +4,7 @@ from rest_framework.renderers import JSONRenderer
 
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class CustomRenderer(JSONRenderer):

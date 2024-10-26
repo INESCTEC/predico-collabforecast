@@ -16,6 +16,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 import os
+import json
 import structlog
 
 from pathlib import Path
@@ -38,27 +39,27 @@ INVITE_TOKEN_EXPIRATION_HOURS = int(os.environ.get('INVITE_TOKEN_EXPIRATION_HOUR
 
 
 if not ACCOUNT_VERIFICATION:
-    print("-" * 80)
-    print("WARNING: ACCOUNT_VERIFICATION is set to False. "
-          "This is not recommended for production environments.")
-    print("-" * 80)
+    print('-' * 80)
+    print('WARNING: ACCOUNT_VERIFICATION is set to False. '
+          'This is not recommended for production environments.')
+    print('-' * 80)
 
 # HOSTS:
 CORS_ALLOW_ALL_ORIGINS = False  # Allow any origin (make sure authentication is solid)
 
-if ENVIRONMENT == "production":
+if ENVIRONMENT == 'production':
     CORS_ALLOWED_ORIGINS = [
-        os.getenv("FRONTEND_URL", "https://predico-elia.inesctec.pt"),
+        os.getenv('FRONTEND_URL', 'https://predico-elia.inesctec.pt'),
     ]
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    ALLOWED_HOSTS = ["predico-elia.inesctec.pt", "127.0.0.1", "localhost"]
+    ALLOWED_HOSTS = ['predico-elia.inesctec.pt', '127.0.0.1', 'localhost']
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_SSL_REDIRECT = True  # Force HTTPS connections
 else:
     ALLOWED_HOSTS = ['*']
     CORS_ALLOWED_ORIGINS = [
-        os.getenv("FRONTEND_URL", "http://localhost"),
+        os.getenv('FRONTEND_URL', 'http://localhost'),
     ]
 
 # Application definition
@@ -117,11 +118,11 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("POSTGRES_DB", 'valorem'),
-        'USER': os.environ.get("POSTGRES_USER", 'valorem'),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'valorem'),
-        'HOST': os.environ.get("POSTGRES_HOST", 'localhost'),
-        'PORT': os.environ.get("POSTGRES_PORT", 5432),
+        'NAME': os.environ.get('POSTGRES_DB', 'valorem'),
+        'USER': os.environ.get('POSTGRES_USER', 'valorem'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'valorem'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
         # todo implement SSL connection to the Database
         # 'OPTIONS': {
         #     'sslmode': 'require',
@@ -169,10 +170,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_URL = '/django-static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = "/mediafiles/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -192,43 +193,43 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustomPagination',
     'EXCEPTION_HANDLER': 'api.utils.exceptions.custom_exception_handler.custom_exception_handler',
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'user': '500/day',  # Limits for authenticated users
-    #     'anon': '50/hour',  # Limits for anonymous users
-    # },
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.UserRateThrottle',
-    #     'rest_framework.throttling.AnonRateThrottle',
-    # ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '500/day',  # Limits for authenticated users
+        'anon': '50/hour',  # Limits for anonymous users
+    },
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
 }
 
-# if ENVIRONMENT == "test":
-#     # If in tests, change limits
-#     REST_FRAMEWORK.update({
-#         'DEFAULT_THROTTLE_RATES': {
-#             'user': '1500/day',  # Limits for authenticated users
-#             'anon': '100/hour',  # Limits for anonymous users
-#         },
-#     })
+if ENVIRONMENT == 'test':
+    # If in tests, change limits
+    REST_FRAMEWORK.update({
+        'DEFAULT_THROTTLE_RATES': {
+            'user': '1500/day',  # Limits for authenticated users
+            'anon': '100/hour',  # Limits for anonymous users
+        },
+    })
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Swagger:
-SWAGGER_BASE_URL = os.environ.get("SWAGGER_BASE_URL", "http://127.0.0.1:80")
+SWAGGER_BASE_URL = os.environ.get('SWAGGER_BASE_URL', 'http://127.0.0.1:80')
 if not SWAGGER_BASE_URL.endswith('/'):
     SWAGGER_BASE_URL += '/'
 
 SWAGGER_SETTINGS = {
-    "DEFAULT_MODEL_RENDERING": "example",
-    "DOC_EXPANSION": "all",
-    "HIDE_HOSTNAME": True,
-    "DEFAULT_FILTER_INSPECTORS": [
+    'DEFAULT_MODEL_RENDERING': 'example',
+    'DOC_EXPANSION': 'all',
+    'HIDE_HOSTNAME': True,
+    'DEFAULT_FILTER_INSPECTORS': [
         'drf_yasg.inspectors.CoreAPICompatInspector'
     ],
-    "FILTER": False,
-    "SHOW_EXTENSIONS": False,
-    "LOGOUT_URL": "account/logout",
+    'FILTER': False,
+    'SHOW_EXTENSIONS': False,
+    'LOGOUT_URL': 'account/logout',
     'SECURITY_DEFINITIONS': {
         'Bearer': {
             'type': 'apiKey',
@@ -241,12 +242,21 @@ SWAGGER_SETTINGS = {
 # Python logging ( using structlog )
 # todo: email to admins logs for django.server & django.security
 # see more in https://docs.djangoproject.com/en/4.0/ref/logging/#django-logger
-LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath("logs")
+LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath('logs')
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # log handlers definition:
 MAIN_LOG_HANDLERS = []
-DB_LOG_HANDLERS = []
+
+class JSONRenderer:
+    def __init__(self, key_order=None):
+        self.key_order = key_order
+
+    def __call__(self, logger, name, event_dict):
+        if self.key_order:
+            return json.dumps({key: event_dict.get(key) for key in self.key_order})
+        return json.dumps(event_dict)
+
 
 # python manage.py runserver starts a python process that launches your server
 # a child python process. Each time the parent detects a change it recreates
@@ -256,80 +266,57 @@ if DEBUG and os.environ.get('RUN_MAIN', None) != 'true':
     LOGGING = {}
 else:
     LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "plain_console": {
-                "()": structlog.stdlib.ProcessorFormatter,
-                "processor": structlog.dev.ConsoleRenderer(),
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'key_value': {
+                '()': structlog.stdlib.ProcessorFormatter,
+                'processor': JSONRenderer(
+                    key_order=['request_id', 'level', 'ip', 'user_id', 'timestamp', 'code', 'event', 'user_agent']),
             },
-            "json_formatter": {
-                "()": structlog.stdlib.ProcessorFormatter,
-                "processor": structlog.processors.JSONRenderer(sort_keys=True),
-            },
-            'plain_text': {
-                'format': '{asctime} | {levelname} | {module} | {process:d} | {thread:d} | {message}',
-                'style': '{',
+            'key_value_exception': {
+                '()': structlog.stdlib.ProcessorFormatter,
+                'processor': JSONRenderer(
+                    key_order=['request_id', 'level', 'ip', 'user_id', 'timestamp', 'code', 'event', 'error_code', 'error_message', 'error_traceback', 'user_agent']),
             },
         },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "plain_console",
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'key_value',
             },
-            "json_file": {
+            'json_debug': {
                 'level': 'DEBUG',
-                'class': 'api.utils.logging.handlers.TimedCompressedRotatingFileHandler',
-                'filename': os.path.join(LOG_DIR, "requests_json.log"),
-                'when': 'D',
-                'interval': 1,
-                'backupCount': 1,
-                "formatter": "json_formatter",
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOG_DIR, 'debug.log'),
+                'formatter': 'key_value',
             },
-            'text_file': {
+            'json_exception': {
                 'level': 'DEBUG',
-                'class': 'api.utils.logging.handlers.TimedCompressedRotatingFileHandler',
-                'filename': os.path.join(LOG_DIR, "requests_text.log"),
-                'when': 'D',
-                'interval': 1,
-                'backupCount': 1,
-                'formatter': "plain_text"
-            },
-            'text_exception': {
-                'level': 'DEBUG',
-                'class': 'api.utils.logging.handlers.TimedCompressedRotatingFileHandler',
-                'filename': os.path.join(LOG_DIR, "requests_exception_text.log"),
-                'when': 'D',
-                'interval': 1,
-                'backupCount': 1,
-                'formatter': "plain_text"
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOG_DIR, 'exception.log'),
+                'formatter': 'key_value_exception',
             },
         },
-        "loggers": {
-            "django_structlog": {
-                "handlers": MAIN_LOG_HANDLERS,
-                "level": "DEBUG",
+        'loggers': {
+            'django_structlog': {
+                'handlers': MAIN_LOG_HANDLERS,
+                'level': 'DEBUG',
             },
-            "api_logger": {
-                "handlers": MAIN_LOG_HANDLERS,
-                "level": "DEBUG",
-            },
-            "api_error500_logger": {
-                "handlers": ["console", "text_exception"],
-                "level": "DEBUG",
-            },
-            'django.db.backends': {
-                'handlers': DB_LOG_HANDLERS,
+            'api_error500_logger': {
+                'handlers': ['json_exception'],
                 'level': 'DEBUG',
                 'propagate': True,
             },
         }
     }
 
+
 structlog.configure(
     processors=[
+        structlog.contextvars.merge_contextvars,
         structlog.stdlib.filter_by_level,
-        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.TimeStamper(fmt='iso'),
         structlog.stdlib.add_logger_name,
         structlog.stdlib.add_log_level,
         structlog.stdlib.PositionalArgumentsFormatter(),
@@ -338,27 +325,29 @@ structlog.configure(
         structlog.processors.UnicodeDecoder(),
         structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
     ],
-    context_class=structlog.threadlocal.wrap_dict(dict),
     logger_factory=structlog.stdlib.LoggerFactory(),
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
 
+# -- Django Structlog (change default user_id field)
+DJANGO_STRUCTLOG_USER_ID_FIELD = 'email'
+
 # -- REST configs:
-REST_PORT = int(os.environ.get("REST_PORT", 8080))
+REST_PORT = int(os.environ.get('REST_PORT', 8080))
 
 # -- Email Configs:
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get("EMAIL_HOST", )
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", '')
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", '')
-EMAIL_USE_TLS = int(os.environ.get("EMAIL_USE_TLS", 0)) == 1
-EMAIL_USE_SSL = int(os.environ.get("EMAIL_USE_SSL", 0)) == 1
-EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 30))
+EMAIL_HOST = os.environ.get('EMAIL_HOST', )
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = int(os.environ.get('EMAIL_USE_TLS', 0)) == 1
+EMAIL_USE_SSL = int(os.environ.get('EMAIL_USE_SSL', 0)) == 1
+EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', 30))
 
 # -- Market Configs:
 # Minimum data requirements for a resource to be challenged (1 week default)
-MIN_RAW_DATA_COUNT_TO_CHALLENGE = int(os.environ.get("MIN_RAW_DATA_COUNT_TO_CHALLENGE", 4 * 24 * 30))
-FORECAST_TIME_RESOLUTION_MINUTES = int(os.environ.get("FORECAST_TIME_RESOLUTION_MINUTES", 15))
-FORECAST_VARIABLES = ["q10", "q50", "q90"]
+MIN_RAW_DATA_COUNT_TO_CHALLENGE = int(os.environ.get('MIN_RAW_DATA_COUNT_TO_CHALLENGE', 4 * 24 * 30))
+FORECAST_TIME_RESOLUTION_MINUTES = int(os.environ.get('FORECAST_TIME_RESOLUTION_MINUTES', 15))
+FORECAST_VARIABLES = ['q10', 'q50', 'q90']

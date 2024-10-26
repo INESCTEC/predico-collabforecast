@@ -13,7 +13,7 @@ from rest_framework import exceptions
 from .email_messages import EMAIL_OPTS, EMAIL_SIGNATURE
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 def send_email(destination,

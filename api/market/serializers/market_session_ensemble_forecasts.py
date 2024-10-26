@@ -19,7 +19,7 @@ from ..models.market_session_ensemble_forecasts import (
 
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class MarketSessionEnsembleRetrieveSerializer(serializers.ModelSerializer):

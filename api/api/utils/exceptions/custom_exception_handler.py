@@ -1,4 +1,5 @@
 import structlog
+import traceback
 
 from rest_framework import status
 from rest_framework.views import exception_handler
@@ -19,8 +20,11 @@ def custom_exception_handler(exc, context):
         error_message = "An unexpected error occurred. " \
                         "If the problem persists please " \
                         "contact the developers."
-        logger.exception(event="request_error", error_code="unexpected",
-                         error_detail=error_message)
+        full_traceback = traceback.format_exc()
+        logger.error(event="request_error",
+                     error_code="unexpected",
+                     error_message=error_message,
+                     error_traceback=full_traceback)
         return Response(data={"detail": error_message},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:

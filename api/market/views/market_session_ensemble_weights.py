@@ -20,7 +20,7 @@ from ..serializers.market_session_ensemble_weights import (
 )
 
 # init logger:
-logger = structlog.get_logger("api_logger")
+logger = structlog.get_logger(__name__)
 
 
 class MarketSessionEnsembleWeightsCreateUpdateView(APIView):
