@@ -1,10 +1,19 @@
 import structlog
 
 from rest_framework.renderers import JSONRenderer
-
+from rest_framework.exceptions import ErrorDetail
 
 # init logger:
 logger = structlog.get_logger(__name__)
+
+def error_detail_to_dict(error_detail):
+    if isinstance(error_detail, ErrorDetail):
+        return {error_detail.code: str(error_detail)}
+    elif isinstance(error_detail, list):
+        return [error_detail_to_dict(item) for item in error_detail]
+    elif isinstance(error_detail, dict):
+        return {key: error_detail_to_dict(value) for key, value in error_detail.items()}
+    return error_detail
 
 
 class CustomRenderer(JSONRenderer):
@@ -38,5 +47,8 @@ class CustomRenderer(JSONRenderer):
                                   "your request parameters or body fields " \
                                   "and fix the errors mentioned in this " \
                                   "response 'data' field."
+            logger.warning(event="request_error",
+                           error_code="validation_error",
+                           error_detail=error_detail_to_dict(response["data"]))
 
         return super().render(response, accepted_media_type, renderer_context)

@@ -21,7 +21,9 @@ def validate_query_params(
             uuid.UUID(resource_id)
         except ValueError as ex:
             raise exceptions.ValidationError(
-                "Query param 'resource' must be a valid uuid."
+                {
+                    "resource": "Query param 'resource' must be a valid UUID."
+                }
             ) from ex
 
     if resource_name is not None:
@@ -29,13 +31,19 @@ def validate_query_params(
         is_match = bool(matched)
         if not is_match:
             raise exceptions.ValidationError(
-                "Resource name cannot contain "
-                "spaces or any special "
-                "characters besides '-' or '_'."
+                {
+                    "resource_name": "Resource name cannot contain spaces or "
+                                     "any special characters besides "
+                                     "'-' or '_'."
+                }
             )
 
     if ((to_forecast is not None)
             and (to_forecast.lower() not in ['true', 'false'])):
         raise exceptions.ValidationError(
-            "Query param 'to_forecast' must be a boolean (true/false)"
+            {
+                "to_forecast": (
+                    "Query param 'to_forecast' must be a boolean (true/false)"
+                )
+            }
         )

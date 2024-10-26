@@ -247,15 +247,18 @@ os.makedirs(LOG_DIR, exist_ok=True)
 
 # log handlers definition:
 MAIN_LOG_HANDLERS = []
+EXCEPTION_LOG_HANDLERS = []
 
 class JSONRenderer:
-    def __init__(self, key_order=None):
-        self.key_order = key_order
-
     def __call__(self, logger, name, event_dict):
-        if self.key_order:
-            return json.dumps({key: event_dict.get(key) for key in self.key_order})
-        return json.dumps(event_dict)
+        base_order = ['timestamp', 'request_id', 'ip', 'event', 'level', 'request']
+        if event_dict.get('event') == 'request_error':
+            order_ = base_order + ['code', 'error_code', 'error_message', 'error_traceback', 'user_agent']
+        elif event_dict.get('event') == 'request_started':
+            order_ = base_order + ['user_agent']
+        else:
+            order_ = base_order + ['user_id', 'code']
+        return json.dumps({key: event_dict.get(key) for key in order_})
 
 
 # python manage.py runserver starts a python process that launches your server
@@ -271,13 +274,7 @@ else:
         'formatters': {
             'key_value': {
                 '()': structlog.stdlib.ProcessorFormatter,
-                'processor': JSONRenderer(
-                    key_order=['request_id', 'level', 'ip', 'user_id', 'timestamp', 'code', 'event', 'user_agent']),
-            },
-            'key_value_exception': {
-                '()': structlog.stdlib.ProcessorFormatter,
-                'processor': JSONRenderer(
-                    key_order=['request_id', 'level', 'ip', 'user_id', 'timestamp', 'code', 'event', 'error_code', 'error_message', 'error_traceback', 'user_agent']),
+                'processor': JSONRenderer(),
             },
         },
         'handlers': {
@@ -295,7 +292,7 @@ else:
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
                 'filename': os.path.join(LOG_DIR, 'exception.log'),
-                'formatter': 'key_value_exception',
+                'formatter': 'key_value',
             },
         },
         'loggers': {
@@ -304,7 +301,7 @@ else:
                 'level': 'DEBUG',
             },
             'api_error500_logger': {
-                'handlers': ['json_exception'],
+                'handlers': EXCEPTION_LOG_HANDLERS,
                 'level': 'DEBUG',
                 'propagate': True,
             },
