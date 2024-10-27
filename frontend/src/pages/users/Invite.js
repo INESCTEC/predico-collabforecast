@@ -1,39 +1,46 @@
-import { EnvelopeIcon, InformationCircleIcon, KeyIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
-import { useAuth } from "../../AuthContext";
+import {EnvelopeIcon, InformationCircleIcon, KeyIcon} from '@heroicons/react/24/outline';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {
+  clearInvitationLink,
+  clearUserMessages,
+  selectInvitationLink,
+  selectUserError,
+  selectUserLoading,
+  selectUserSuccess,
+  sendInvite
+} from "../../slices/userSlice";
 
 export default function Invite() {
   
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false); // Loading state
+  // Selectors for Redux state
+  const loading = useSelector(selectUserLoading);
+  const successMessage = useSelector(selectUserSuccess);
+  const errorMessage = useSelector(selectUserError);
+  const invitationLink = useSelector(selectInvitationLink);
+  const dispatch = useDispatch();
   
-  const {
-    sendInvite,
-    invitationLink,
-    clearInvitationLink,
-    errorMessage,
-    successMessage,
-    clearMessages
-  } = useAuth();
-  
+  // Clear messages after 2 seconds
   useEffect(() => {
-    // Automatically clear messages after 2 seconds
     if (errorMessage || successMessage) {
       const timer = setTimeout(() => {
-        clearMessages();
+        dispatch(clearUserMessages());
       }, 2000);
       return () => clearTimeout(timer);  // Clean up the timer
     }
-  }, [errorMessage, successMessage, clearMessages]);
+  }, [errorMessage, successMessage, dispatch]);
   
+  
+  // Handle form submission
   const handleInvitation = async (e) => {
     e.preventDefault();  // Prevent default form submission behavior
-    setLoading(true); // Start loading
-    try {
-      await sendInvite(email); // Send invitation
-    } finally {
-      setLoading(false); // End loading
+    if (!email) {
+      dispatch(clearUserMessages());
+      dispatch({ type: 'user/sendInvite/rejected', payload: 'Please enter a valid email address.' });
+      return;
     }
+    dispatch(sendInvite(email)); // Dispatch the sendInvite action
   };
   
   const copyToClipboard = () => {
@@ -90,9 +97,12 @@ export default function Invite() {
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 {loading ? (
-                  <svg className="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291a7.978 7.978 0 01-1.664-1.415A8.018 8.018 0 012.34 14H.12A9.985 9.985 0 006 19.29V17.29z"></path>
+                  <svg className="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                       viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291a7.978 7.978 0 01-1.664-1.415A8.018 8.018 0 012.34 14H.12A9.985 9.985 0 006 19.29V17.29z"></path>
                   </svg>
                 ) : (
                   'Send email invitation'

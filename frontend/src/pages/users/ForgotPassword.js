@@ -1,14 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // To navigate back to login
+import {useState} from 'react';
+import {Link} from 'react-router-dom'; // To navigate back to login
 import axiosInstance from "../../routes/axiosInstance";
-import logo from '../../static/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../static/images/windturbine.jpg'; // Import the background image
+import logo from '../../assets/images/elia-group-logo-svg.svg';
+import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
   
   const handleForgotPassword = async (e) => {
     e.preventDefault();
@@ -26,10 +25,6 @@ export default function ForgotPassword() {
     }
   };
   
-  const navigateToSignIn = () => {
-    navigate('/signin'); // Redirect to the login panel
-  };
-  
   return (
     <div className="relative min-h-screen">
       {/* Background Image */}
@@ -45,11 +40,12 @@ export default function ForgotPassword() {
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto" />
+          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto"/>
         </div>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div
+            className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleForgotPassword} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-900">Email address</label>
@@ -73,15 +69,13 @@ export default function ForgotPassword() {
                 </button>
               </div>
               
-              {/* Back to login link */}
               <div className="mt-4 text-sm">
-                <a
-                  href="#"
-                  onClick={navigateToSignIn}
+                <Link
+                  to={'/signin'}
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Back to login
-                </a>
+                </Link>
               </div>
             </form>
           </div>

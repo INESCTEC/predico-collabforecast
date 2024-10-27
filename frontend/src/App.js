@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
 import Layout from "./components/Layout";
 import {HomeIcon, UsersIcon} from '@heroicons/react/24/outline';
 import Dashboard from './pages/Dashboard';
@@ -8,15 +8,13 @@ import SignIn from "./pages/authentication/SignIn";
 import SignUp from "./pages/authentication/SignUp";
 import Welcome from "./pages/authentication/Welcome";
 import Settings from "./pages/users/Settings";
-import {AuthProvider, useAuth} from './AuthContext'; // Import useAuth
-import ErrorBanner from "./components/ErrorBanner";
 import PrivateRoute from "./routes/PrivateRoute";
 import ForgotPassword from "./pages/users/ForgotPassword";
 import SetPassword from "./pages/users/SetPassword";
 import EmailVerification from "./pages/authentication/EmailVerification";
 import Homepage from "./pages/Homepage";
-import { useNavigate } from 'react-router-dom';
-
+import {useDispatch} from "react-redux";
+import {logout} from './slices/authSlice'; // Import the logout action
 export default function App() {
   
   // Navigation and other state data
@@ -35,27 +33,27 @@ export default function App() {
   
   return (
     <Router>
-      <AuthProvider> {/* AuthProvider wraps the entire app */}
-        <ErrorBanner/> {/* Global Error Banner */}
         <AppContent navigation={navigation}/>
-      </AuthProvider>
     </Router>
   );
 }
 
 // Create a separate component that can use the Auth context
 function AppContent({ navigation }) {
-  const { logout } = useAuth();  // Access the logout function here
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const userSettingsNavigation = () => {
-    navigate('/settings'); // Redirect to the login panel
-  }
   // User navigation with logout functionality
   const userNavigation = [
-    { name: 'Your profile', href: '#', onClick: userSettingsNavigation },
-    { name: 'Sign out', href: '#', onClick: logout },  // Directly use logout
+    { name: 'Your profile', href: '#', onClick: () => {navigate('/settings')} },
+    { name: 'Sign out', href: '#', onClick: () => {handleLogout(dispatch, navigate)}},  // Directly use logout
   ];
+  
+  // Logout handler
+  const handleLogout = (dispatch, navigate) => {
+    dispatch(logout());
+    navigate('/signin'); // Redirect to the sign-in page after logout
+  };
   
   return (
     <Routes>

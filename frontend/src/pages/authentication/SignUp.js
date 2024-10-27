@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import axiosInstance from "../../routes/axiosInstance";
-import logo from '../../static/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../static/images/windturbine.jpg'; // Import the background image
+import logo from '../../assets/images/elia-group-logo-svg.svg';
+import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -91,11 +91,7 @@ export default function SignUp() {
         }
       });
   };
-  
-  const navigateToHomePage = () => {
-    navigate('/'); // Redirect to the login panel
-  };
-  
+
   const handleTermsModal = () => {
     setShowTermsModal(!showTermsModal); // Toggle terms modal
   };
@@ -246,13 +242,12 @@ export default function SignUp() {
               
               {/* Back to login link */}
               <div className="mt-4 text-sm">
-                <a
-                  href="#"
-                  onClick={navigateToHomePage}
+                <Link
+                  to={'/homepage'}
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Back to homepage
-                </a>
+                </Link>
               </div>
             </form>
           </div>

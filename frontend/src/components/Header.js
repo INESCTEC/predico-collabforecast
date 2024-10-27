@@ -1,11 +1,19 @@
 // components/Header.js
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/react';
 import {Bars3Icon, ChevronDownIcon, UserCircleIcon} from '@heroicons/react/24/outline'; // Import UserIcon
-import {useAuth} from "../AuthContext";
+import {fetchUserDetails} from "../slices/userSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
 
 export default function Header({ setSidebarOpen, userNavigation }) {
   
-  const { userDetails } = useAuth();
+  const { userDetails } = useSelector(state => state.user);
+  
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchUserDetails())
+  }, [dispatch])
+  
   
   return (
     <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 bg-white shadow-sm px-4 sm:gap-x-6 lg:gap-x-8">

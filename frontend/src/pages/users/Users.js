@@ -1,23 +1,29 @@
 import DataTable from 'react-data-table-component';
-import {useState, useEffect} from 'react';
-import {useAuth} from '../../AuthContext'; // Import the useAuth hook to get users
+import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { fetchUsers } from "../../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUsersList, selectUserLoading, selectUserError } from "../../slices/userSlice";
 
 export default function Users() {
-  const { users, fetchUsers } = useAuth();  // Use the users from authContext
+  
+  const dispatch = useDispatch();
+  const usersList = useSelector(selectUsersList);
+  const loading = useSelector(selectUserLoading);
+  const errorMessage = useSelector(selectUserError);
   const [filteredUsers, setFilteredUsers] = useState([]);
   
   // Fetch users on component mount
   useEffect(() => {
-    fetchUsers();  // This will fetch users when the component mounts
-  }, [fetchUsers]);  // Empty dependency array ensures fetchUsers runs only once
+    dispatch(fetchUsers());
+  }, [dispatch]);  // Added dispatch to dependencies for best practices
   
-  // Update filteredUsers when users are updated
+  // Update filteredUsers when usersList is updated
   useEffect(() => {
-    if (users) {
-      setFilteredUsers(users);  // Set filteredUsers when users are available
+    if (usersList && usersList.length > 0) {
+      setFilteredUsers(usersList);  // Set filteredUsers when users are available
     }
-  }, [users]);  // This useEffect depends on `users` to update `filteredUsers`
+  }, [usersList]);  // Correct dependency on `usersList`
   
   // Define columns for the DataTable
   const columns = [
@@ -25,7 +31,7 @@ export default function Users() {
       name: 'Name',
       selector: row => `${row.first_name} ${row.last_name}`,  // Combine first and last names
       sortable: true,
-      grow: 2, // Adjusting width of the name column
+      // grow: 2, // Adjusting width of the name column
     },
     {
       name: 'Email',
@@ -48,7 +54,7 @@ export default function Users() {
         row.is_active ?
           <span className="text-green-600">✔</span> :
           <span className="text-red-600">✘</span>
-      ),  // Display green checkmark if verified, red cross if not
+      ),  // Display green checkmark if active, red cross if not
       sortable: true,
     },
     {
@@ -57,9 +63,9 @@ export default function Users() {
         row.is_verified ?
           <span className="text-green-600">✔</span> :
           <span className="text-red-600">✘</span>
-      ),  // Display green checkmark if verified, red cross if not
-      sortable: true,  // Enable sorting for the verified status if needed
-      center: true,  // Align center for better appearance
+      ),
+      sortable: true,
+      // center: true, // Supported and correctly applied
     },
   ];
   
@@ -108,6 +114,30 @@ export default function Users() {
     },
   };
   
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900">List of Users</h1>
+        <p className="mt-2 text-sm text-gray-600">
+          Roles, email addresses, and other details of all users.
+        </p>
+        <div className="mt-8">Loading...</div>
+      </div>
+    );
+  }
+  
+  if (errorMessage) {
+    return (
+      <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900">List of Users</h1>
+        <p className="mt-2 text-sm text-gray-600">
+          Roles, email addresses, and other details of all users.
+        </p>
+        <div className="mt-8 text-red-500">Error: {errorMessage}</div>
+      </div>
+    );
+  }
+  
   return (
     <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
       {/* Header */}
@@ -120,7 +150,7 @@ export default function Users() {
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Table section (full width) */}
         <div className="lg:col-span-3">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Users List </h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Users List</h2>
           
           {/* DataTable */}
           <DataTable
@@ -131,6 +161,7 @@ export default function Users() {
             highlightOnHover
             defaultSortFieldId={1}
             customStyles={customStyles}
+            // Optional: Add other props like selectableRows, etc.
           />
         </div>
       </div>
