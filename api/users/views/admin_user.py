@@ -13,13 +13,16 @@ class AdminTokenObtainPairSerializer(serializers.Serializer):
         password = attrs.get('password')
 
         # Authenticate the user
-        user = authenticate(request=self.context.get('request'), email=email, password=password)
+        user = authenticate(request=self.context.get('request'),
+                            email=email,
+                            password=password)
 
         if not user or not user.is_active:
             raise serializers.ValidationError('Invalid credentials.')
 
         if not user.is_superuser:
-            raise serializers.ValidationError('Access denied. You are not authorized to sign in.')
+            raise serializers.ValidationError('Access denied. '
+                                              'You are not authorized to sign in.')
 
         # Create refresh and access tokens
         refresh = RefreshToken.for_user(user)
