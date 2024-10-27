@@ -1,0 +1,41 @@
+meta {
+  name: SubmitHistoricalForecasts
+  type: http
+  seq: 10
+}
+
+post {
+  url: https://{{PredicoBaseUrl}}/api/v1/data/individual-forecasts/historical
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{BearerToken}}
+}
+
+body:json {
+  {
+    "forecasts": [
+      {
+        "datetime": "2024-10-26T23:00:00Z",
+        "value": 0
+      }
+    ],
+    "resource": "resource_uuid",
+    "variable": "q05",
+    "launch_time": "2024-10-26T23:03:42.000Z"
+  }
+}
+
+docs {
+  ## Important
+  
+  Endpoint used to submit historical forecasts. 
+  
+  Having historical forecasts for at least 10800 samples (past 30 days - 15min time resolution) is a requirement to enable an agent participation in the collaborative forecasting sessions. 
+  
+  If you do not do this step, you wont be able to submit forecasts for open sessions.
+  
+  Note: If you consistently participate in market sessions, you will only have to do this once. Afterwards the market models will train using your actual submissions.
+}

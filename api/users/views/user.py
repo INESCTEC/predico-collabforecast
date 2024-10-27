@@ -74,7 +74,7 @@ class GenerateRegisterTokenView(APIView):
         token = str(uuid.uuid4())
 
         if settings.ENVIRONMENT == "test":
-            expiration_time = timezone.timedelta(seconds=15)
+            expiration_time = timezone.timedelta(seconds=25)
         else:
             expiration_time = timezone.timedelta(hours=settings.INVITE_TOKEN_EXPIRATION_HOURS)  # noqa
 
