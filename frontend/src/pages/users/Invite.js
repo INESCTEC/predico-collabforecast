@@ -10,6 +10,7 @@ import {
   selectUserSuccess,
   sendInvite
 } from "../../slices/userSlice";
+import {toast} from 'react-toastify';
 
 export default function Invite() {
   
@@ -43,10 +44,15 @@ export default function Invite() {
     dispatch(sendInvite(email)); // Dispatch the sendInvite action
   };
   
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(invitationLink);
-    clearInvitationLink();
-    alert('Token copied to clipboard!');
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(invitationLink); // Await the promise for better error handling
+      dispatch(clearInvitationLink());
+      toast.success('URL copied to clipboard!'); // Display a success toast
+    } catch (err) {
+      console.error('Failed to copy!', err);
+      toast.error('Failed to copy token. Please try again.'); // Display an error toast
+    }
   };
   
   return (

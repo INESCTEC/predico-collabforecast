@@ -14,8 +14,12 @@ import SetPassword from "./pages/users/SetPassword";
 import EmailVerification from "./pages/authentication/EmailVerification";
 import Homepage from "./pages/Homepage";
 import {useDispatch} from "react-redux";
+import {ToastContainer} from 'react-toastify';
 import {logout} from './slices/authSlice'; // Import the logout action
+
+
 export default function App() {
+  
   
   // Navigation and other state data
   const navigation = [
@@ -33,7 +37,8 @@ export default function App() {
   
   return (
     <Router>
-        <AppContent navigation={navigation}/>
+      <AppContent navigation={navigation}/>
+      <ToastContainer/>
     </Router>
   );
 }
@@ -45,8 +50,16 @@ function AppContent({ navigation }) {
   
   // User navigation with logout functionality
   const userNavigation = [
-    { name: 'Your profile', href: '#', onClick: () => {navigate('/settings')} },
-    { name: 'Sign out', href: '#', onClick: () => {handleLogout(dispatch, navigate)}},  // Directly use logout
+    {
+      name: 'Your profile', href: '#', onClick: () => {
+        navigate('/settings')
+      }
+    },
+    {
+      name: 'Sign out', href: '#', onClick: () => {
+        handleLogout(dispatch, navigate)
+      }
+    },  // Directly use logout
   ];
   
   // Logout handler
