@@ -3,7 +3,10 @@ package-mode = false
 name = "collabforecast"
 version = "0.1.0"
 description = "Restful API and Database for INESC TEC Predico CollabForecast Service"
-authors = ["Jose Andrade <jose.r.andrade@inesctec.pt>", "Andre Garcia <andre.f.garcia@inesctec.pt>"]
+authors = [
+    "Jose Andrade <jose.r.andrade@inesctec.pt>",
+    "Andre Garcia <andre.f.garcia@inesctec.pt>",
+]
 license = "GNU Affero General Public License"
 readme = "README.md"
 
@@ -25,6 +28,8 @@ django-cors-headers = "^4.3.1"
 python-dotenv = "^1.0.1"
 ruff = "^0.7.1"
 setuptools = "^74.1.2"
+pre-commit = "^3.8.0"
+detect-secrets = "^1.5.0"
 
 [tool.poetry.group.test]
 optional = true

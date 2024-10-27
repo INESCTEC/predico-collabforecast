@@ -1,0 +1,35 @@
+meta {
+  name: EditSubmittedForecasts
+  type: http
+  seq: 11
+}
+
+put {
+  url: https://{{PredicoBaseUrl}}/api/v1/market/challenge/submission/:challenge_id
+  body: json
+  auth: none
+}
+
+params:path {
+  challenge_id: challenge_uuid
+}
+
+headers {
+  Authorization: Bearer {{BearerToken}}
+}
+
+body:json {
+  {
+    "variable": "q50",
+    "forecasts": [
+      {
+        "datetime": "2024-10-26T22:00:00Z",
+        "value": 77.3
+      },
+      {
+        "datetime": "2024-10-26T22:15:00Z",
+        "value": 81.8
+      }
+    ]
+  }
+}
