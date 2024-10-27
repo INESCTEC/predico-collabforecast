@@ -179,7 +179,7 @@ class TestUserRegisterView(APITestCase):
         # Admin creates an invitation token:
         invite_token = self.admin_creates_invite_token()
         data = self.normal_user_1.copy()
-        sleep(20)
+        sleep(30)
         # User uses this token to register:
         client_headers = {"Authorization": f"Bearer {invite_token}"}
         response = self.client.post(self.base_url, data=data, format="json", headers=client_headers)
