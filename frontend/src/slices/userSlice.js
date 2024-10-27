@@ -79,7 +79,6 @@ const userSlice = createSlice({
     clearUserMessages(state) {
       state.errorMessage = '';
       state.successMessage = '';
-      state.invitationLink = '';
     },
     clearInvitationLink(state) {
       state.invitationLink = '';

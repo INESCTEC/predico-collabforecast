@@ -28,7 +28,6 @@ export default function SignUp() {
   // Check password match on every change
   useEffect(() => {
     if (repeatPassword) {
-      // eslint-disable-next-line no-secrets/no-observable-timing-discrepancy
       setPasswordsMatch(password === repeatPassword);
     }
   }, [password, repeatPassword]);
@@ -74,7 +73,6 @@ export default function SignUp() {
         headers
       )
       .then((response) => {
-        // eslint-disable-next-line no-secrets/no-observable-timing-discrepancy
         if (response.status === 201) {
           navigate('/welcome'); // Redirect to welcome page
         }
@@ -228,7 +226,8 @@ export default function SignUp() {
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
                 <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-                  I agree to the <span className="text-indigo-600 hover:text-indigo-500 cursor-pointer" onClick={handleTermsModal}>terms and conditions</span>
+                  I agree to the <span className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
+                                       onClick={handleTermsModal}>terms and conditions</span>
                 </label>
               </div>
               
@@ -242,10 +241,9 @@ export default function SignUp() {
                 Sign Up
               </button>
               
-              {/* Back to login link */}
               <div className="mt-4 text-sm">
                 <Link
-                  to={'/homepage'}
+                  to={'/'}
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Back to homepage

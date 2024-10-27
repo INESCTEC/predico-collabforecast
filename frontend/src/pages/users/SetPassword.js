@@ -15,7 +15,6 @@ export default function SetPassword() {
   
   useEffect(() => {
     if (confirmPassword) {
-      // eslint-disable-next-line no-secrets/no-observable-timing-discrepancy
       setPasswordsMatch(password === confirmPassword);
     }
   }, [password, confirmPassword]);
@@ -44,7 +43,6 @@ export default function SetPassword() {
         token,
       });
       
-      // eslint-disable-next-line no-secrets/no-observable-timing-discrepancy
       if (response.status === 200) {
         setMessage('Password reset successful. Redirecting to sign in...');
         setTimeout(() => {
