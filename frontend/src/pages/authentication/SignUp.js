@@ -28,6 +28,7 @@ export default function SignUp() {
   // Check password match on every change
   useEffect(() => {
     if (repeatPassword) {
+      // eslint-disable-next-line no-secrets/no-observable-timing-discrepancy
       setPasswordsMatch(password === repeatPassword);
     }
   }, [password, repeatPassword]);
@@ -73,6 +74,7 @@ export default function SignUp() {
         headers
       )
       .then((response) => {
+        // eslint-disable-next-line no-secrets/no-observable-timing-discrepancy
         if (response.status === 201) {
           navigate('/welcome'); // Redirect to welcome page
         }
