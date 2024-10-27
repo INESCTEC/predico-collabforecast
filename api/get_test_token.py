@@ -11,16 +11,16 @@ verification_link = requests.post(f"{BASE_URL}/user/register/", data = {
   "password": password,
   "first_name": "First Name",
   "last_name": "Last Name"
-}).json()["data"]["verification_link"]
+}, timeout=10).json()["data"]["verification_link"]
 
 # Verify link
-requests.get(verification_link)
+requests.get(verification_link, timeout=10)
 
 # Get token
 token = requests.post(f"{BASE_URL}/token", data = {
   "email": email,
   "password": password,
-}).json()["access"]
+}, timeout=10).json()["access"]
 
 headers = {"headers": {"Authorization": f"Bearer {token}"}}
 with open('api-fuzzing-overrides.json', 'w') as overrides_file:
