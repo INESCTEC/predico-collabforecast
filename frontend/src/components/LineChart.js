@@ -6,13 +6,13 @@ import moment from 'moment';
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export default function LineChart({ users }) {
+export default function LineChart({ users, daysCount }) {
   // Filter users from the last 5 weeks (35 days) and group them by day
-  const days = [];
+  const days = []
   const userCounts = [];
   
-  // Loop through the last 28 days (4 weeks * 7 days)
-  for (let i = 28; i >= 0; i--) {
+  // Loop through the last daysCount days (4 weeks * 7 days)
+  for (let i = daysCount; i >= 0; i--) {
     const day = moment().subtract(i, 'days').startOf('day');
     const dayLabel = day.format('MMM D');  // Format as "MMM D" (e.g., "Oct 14")
     
@@ -33,7 +33,7 @@ export default function LineChart({ users }) {
         data: userCounts,  // Y-axis data (user count per day)
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
+        // fill: true,
         tension: 0.4,  // Add some curve to the line
       }
     ]
@@ -50,7 +50,7 @@ export default function LineChart({ users }) {
       },
       title: {
         display: true,
-        text: 'New Users Over the Last 4 Weeks (Daily)'
+        text: `New Users Over the Last ${daysCount/7} Weeks`
       }
     },
     scales: {

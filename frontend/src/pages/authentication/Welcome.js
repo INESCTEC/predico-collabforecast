@@ -1,7 +1,7 @@
 import {CheckCircleIcon} from '@heroicons/react/24/outline'; // Importing an icon for success message
 import {Link, useNavigate} from 'react-router-dom';
-import logo from '../../static/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../static/images/windturbine.jpg'; // Importing the background image
+import logo from '../../assets/images/elia-group-logo-svg.svg';
+import windTurbineImage from '../../assets/images/windturbine.jpg'; // Importing the background image
 
 export default function Welcome() {
   const navigate = useNavigate();

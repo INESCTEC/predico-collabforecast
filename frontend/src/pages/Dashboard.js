@@ -1,36 +1,46 @@
 import {ChartBarIcon, CheckCircleIcon, UserIcon, UsersIcon} from '@heroicons/react/24/outline';
-import {useAuth} from '../AuthContext';
 import {useEffect} from 'react';
 import moment from 'moment';
 import LineChart from "../components/LineChart";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUsers} from "../slices/userSlice";
+import {
+  selectNewUsersOverTimeDays,
+  selectActiveUsersHours,
+  selectNewRegistrationsDays
+} from '../slices/preferencesSlice';
 
 export default function Dashboard() {
-  const { users, fetchUsers, fetchUserDetails } = useAuth();
+  
+  const dispatch = useDispatch()
+  const { usersList } = useSelector(state => state.user);
+  
+  const newUsersOverTimeDays = useSelector(selectNewUsersOverTimeDays);
+  const activeUsersHours = useSelector(selectActiveUsersHours);
+  const newRegistrationsDays = useSelector(selectNewRegistrationsDays);
   
   useEffect(() => {
     // Fetch users only when the component mounts
-    fetchUsers();
-    fetchUserDetails()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // No dependencies, runs only once
+    dispatch(fetchUsers());
+  }, [dispatch]); // No dependencies, runs only once
   
   // Active Users (users who logged in within the last 48 hours)
-  const userRecentActivityCount = users.filter(user =>
-    user.last_login !== null && moment().diff(moment(user.last_login), 'hours') <= 48
+  const userRecentActivityCount = usersList.filter(user =>
+    user.last_login !== null && moment().diff(moment(user.last_login), 'hours') <= activeUsersHours
   ).length;
   
   // const activeUsersCount = users.filter(user => user.is_active).length;
   
   // New Registrations (users who joined within the last 2 weeks)
-  const newRegistrationsCount = users.filter(user =>
-    moment().diff(moment(user.date_joined), 'weeks') <= 2
+  const newRegistrationsCount = usersList.filter(user =>
+    moment().diff(moment(user.date_joined), 'weeks') <= newRegistrationsDays
   ).length;
   
   // Verified Users
-  const verifiedUsersCount = users.filter(user => user.is_verified).length;
+  const verifiedUsersCount = usersList.filter(user => user.is_verified).length;
   
   // Filter out users with `last_login` null and limit to most recent 10 users
-  const recentUsers = users
+  const recentUsers = usersList
     .filter(user => user.last_login !== null)
     .sort((a, b) => new Date(b.last_login) - new Date(a.last_login)) // Sort by most recent login
     .slice(0, 10); // Limit to 10 users
@@ -51,7 +61,7 @@ export default function Dashboard() {
             <UserIcon className="h-6 w-6 text-indigo-400" aria-hidden="true"/>
             <div className="ml-4">
               <div className="text-sm font-medium">Total Users</div>
-              <div className="mt-1 text-3xl font-semibold">{users.length}</div>
+              <div className="mt-1 text-3xl font-semibold">{usersList.length}</div>
             </div>
           </div>
         </div>
@@ -61,7 +71,8 @@ export default function Dashboard() {
             <div className="ml-4">
               <div className="text-sm font-medium">Active Users</div>
               <div className="mt-1 text-3xl font-semibold">{userRecentActivityCount}</div>
-              <div className="text-xs text-gray-500">logged in within the last 48 hours</div> {/* Small note for last 2 weeks */}
+              <div className="text-xs text-gray-500">logged in within the last {activeUsersHours} hours</div>
+              {/* Small note for last 2 weeks */}
             </div>
           </div>
         </div>
@@ -71,7 +82,8 @@ export default function Dashboard() {
             <div className="ml-4">
               <div className="text-sm font-medium">New Registrations</div>
               <div className="mt-1 text-3xl font-semibold">{newRegistrationsCount}</div>
-              <div className="text-xs text-gray-500">last 2 weeks</div> {/* Small note for last 2 weeks */}
+              <div className="text-xs text-gray-500">last {newRegistrationsDays} days</div>
+              {/* Small note for last 2 weeks */}
             </div>
           </div>
         </div>
@@ -81,7 +93,8 @@ export default function Dashboard() {
             <div className="ml-4">
               <div className="text-sm font-medium">Verified Users</div>
               <div className="mt-1 text-3xl font-semibold">{verifiedUsersCount}</div>
-              <div className="text-xs text-gray-500">email confirmed</div> {/* Small note for last 2 weeks */}
+              <div className="text-xs text-gray-500">email confirmed</div>
+              {/* Small note for last 2 weeks */}
             </div>
           </div>
         </div>
@@ -89,8 +102,8 @@ export default function Dashboard() {
       
       {/* Chart Section */}
       <div className="bg-white overflow-hidden rounded-lg p-0 mb-8">
-        <h2 className="text-lg font-medium text-gray-900 mb-0">New Users Over Time (Last 4 Weeks)</h2>
-        <LineChart users={users}/> {/* Pass the users array to the chart */}
+        <h2 className="text-lg font-medium text-gray-900 mb-0">New Users Over Time (Last {newUsersOverTimeDays} days)</h2>
+        <LineChart users={usersList} daysCount={newUsersOverTimeDays}/> {/* Pass the users array to the chart */}
       </div>
       
       {/* Recent Activity / Table */}
