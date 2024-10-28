@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import axiosInstance from "../../routes/axiosInstance";
 import logo from '../../assets/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
+import windTurbineImage from '../../assets/images/windturbine.jpg';
+import {EyeIcon, EyeSlashIcon} from "@heroicons/react/24/outline"; // Import the background image
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -10,12 +11,15 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [confirmTerms, setConfirmTerms] = useState(false);
+  const [confirmTerms, setConfirmTerms] = useState(true); // Terms and Conditions checkbox state
   const [error, setError] = useState(''); // To store any error messages
   const [token, setToken] = useState('');
   const [showTermsModal, setShowTermsModal] = useState(false); // Modal state for Terms and Conditions
   const [passwordsMatch, setPasswordsMatch] = useState(null); // Password match state
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false); // Toggle repeat password visibility
+  
   
   const { token: inviteToken } = useParams();
   
@@ -91,7 +95,7 @@ export default function SignUp() {
         }
       });
   };
-
+  
   const handleTermsModal = () => {
     setShowTermsModal(!showTermsModal); // Toggle terms modal
   };
@@ -115,7 +119,8 @@ export default function SignUp() {
         </div>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div
+            className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleSignup} className="space-y-6">
               {/* First Name */}
               <div>
@@ -170,15 +175,29 @@ export default function SignUp() {
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                   Password
                 </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md py-1.5 px-3"
-                />
+                <div className="flex items-center relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-md py-1.5 px-3 pr-10"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ height: '100%' }}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                    ) : (
+                      <EyeIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                    )}
+                  </button>
+                </div>
               </div>
               
               {/* Repeat Password */}
@@ -186,22 +205,36 @@ export default function SignUp() {
                 <label htmlFor="repeat-password" className="block text-sm font-medium leading-6 text-gray-900">
                   Repeat Password
                 </label>
-                <input
-                  id="repeat-password"
-                  name="repeat-password"
-                  type="password"
-                  required
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                  className="block w-full rounded-md py-1.5 px-3"
-                />
-                {/* Password matching message */}
+                <div className="flex items-center relative">
+                  <input
+                    id="repeat-password"
+                    name="repeat-password"
+                    type={showRepeatPassword ? 'text' : 'password'}
+                    required
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                    className="block w-full rounded-md py-1.5 px-3 pr-10"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                    onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                    style={{ height: '100%' }}
+                  >
+                    {showRepeatPassword ? (
+                      <EyeSlashIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                    ) : (
+                      <EyeIcon className="h-5 w-5 text-gray-500" aria-hidden="true"/>
+                    )}
+                  </button>
+                </div>
                 {repeatPassword && (
                   <span className={`text-sm ${passwordsMatch ? 'text-green-600' : 'text-red-600'}`}>
                     {passwordsMatch ? 'Passwords match' : 'Passwords do not match'}
                   </span>
                 )}
               </div>
+              
               
               {/* Password complexity requirements */}
               <div className="mt-4 text-sm text-gray-500">
@@ -215,21 +248,21 @@ export default function SignUp() {
               </div>
               
               {/* Terms and Conditions */}
-              <div className="flex items-start">
-                <input
-                  id="terms"
-                  name="terms"
-                  type="checkbox"
-                  required
-                  checked={confirmTerms}
-                  onChange={() => setConfirmTerms(!confirmTerms)}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-                <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-                  I agree to the <span className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
-                                       onClick={handleTermsModal}>terms and conditions</span>
-                </label>
-              </div>
+              {/*<div className="flex items-start">*/}
+              {/*  <input*/}
+              {/*    id="terms"*/}
+              {/*    name="terms"*/}
+              {/*    type="checkbox"*/}
+              {/*    required*/}
+              {/*    checked={confirmTerms}*/}
+              {/*    onChange={() => setConfirmTerms(!confirmTerms)}*/}
+              {/*    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"*/}
+              {/*  />*/}
+              {/*  <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">*/}
+              {/*    I agree to the <span className="text-indigo-600 hover:text-indigo-500 cursor-pointer"*/}
+              {/*                         onClick={handleTermsModal}>terms and conditions</span>*/}
+              {/*  </label>*/}
+              {/*</div>*/}
               
               {/* Error Message */}
               {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -262,13 +295,12 @@ export default function SignUp() {
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             
-            <div className="inline-block bg-white rounded-lg text-left shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
+            <div
+              className="inline-block bg-white rounded-lg text-left shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Terms and Conditions</h3>
               <p className="text-sm text-gray-600">
                 {/* You can add your terms and conditions content here */}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam accumsan, massa vitae volutpat vehicula, velit nisi vestibulum ligula,
-                eget placerat purus neque nec lectus. Nulla facilisi.
+              Condition terms go here.
               </p>
               <div className="mt-6 flex justify-end">
                 <button
