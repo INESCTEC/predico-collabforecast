@@ -1,13 +1,11 @@
+// src/routes/PrivateRoute.js
 import { Navigate, Outlet } from 'react-router-dom';
-import {useAuth} from "../AuthContext";
+import { useSelector } from 'react-redux';
+import { selectAuthToken } from '../slices/authSlice';
 
-// Private route to protect routes
-export default function PrivateRoute() {
-  const { isAuth } = useAuth();
-  
-  if (!isAuth) {
-    return <Navigate to="/" />;
-  }
-  
-  return <Outlet />;
-}
+const PrivateRoute = () => {
+  const token = useSelector(selectAuthToken);
+  return token ? <Outlet /> : <Navigate to="/signin" />;
+};
+
+export default PrivateRoute;

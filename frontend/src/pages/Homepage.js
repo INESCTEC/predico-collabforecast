@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../static/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../static/images/windturbine.jpg';
+import logo from '../assets/images/elia-group-logo-svg.svg';
+import windTurbineImage from '../assets/images/windturbine.jpg';
 
 function Homepage() {
   return (

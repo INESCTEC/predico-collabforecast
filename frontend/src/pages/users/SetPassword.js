@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import axiosInstance from "../../routes/axiosInstance";
-import logo from '../../static/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../static/images/windturbine.jpg'; // Import the background image
+import logo from '../../assets/images/elia-group-logo-svg.svg';
+import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 
 export default function SetPassword() {
   const [password, setPassword] = useState('');
@@ -10,7 +10,14 @@ export default function SetPassword() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const [passwordsMatch, setPasswordsMatch] = useState(null); // Password match state
   const { token } = useParams(); // Get the token from the URL params
+  
+  useEffect(() => {
+    if (confirmPassword) {
+      setPasswordsMatch(password === confirmPassword);
+    }
+  }, [password, confirmPassword]);
   
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -47,10 +54,6 @@ export default function SetPassword() {
     }
   };
   
-  const navigateToSignIn = () => {
-    navigate('/'); // Redirect to the login panel
-  };
-  
   return (
     <div className="relative min-h-screen">
       {/* Background Image */}
@@ -66,11 +69,12 @@ export default function SetPassword() {
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto" />
+          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto"/>
         </div>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div
+            className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleResetPassword} className="space-y-6">
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-900">New Password</label>
@@ -86,7 +90,8 @@ export default function SetPassword() {
               </div>
               
               <div>
-                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-900">Confirm Password</label>
+                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-900">Confirm
+                  Password</label>
                 <input
                   id="confirm-password"
                   name="confirm-password"
@@ -97,6 +102,12 @@ export default function SetPassword() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
+              {/* Password matching message */}
+              {confirmPassword && (
+                <span className={`text-sm ${passwordsMatch ? 'text-green-600' : 'text-red-600'}`}>
+                    {passwordsMatch ? 'Passwords match' : 'Passwords do not match'}
+                  </span>
+              )}
               
               {/* Password complexity requirements */}
               <div className="mt-4 text-sm text-gray-500">
@@ -118,15 +129,13 @@ export default function SetPassword() {
                 </button>
               </div>
               
-              {/* Back to login link */}
               <div className="mt-4 text-sm">
-                <a
-                  href="#"
-                  onClick={navigateToSignIn}
+                <Link
+                  to={"/signin"}
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Back to login
-                </a>
+                </Link>
               </div>
             </form>
           </div>

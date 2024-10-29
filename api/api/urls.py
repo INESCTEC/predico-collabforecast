@@ -20,7 +20,7 @@ from rest_framework import permissions
 
 from authentication.views.login import MyTokenObtainPairView, MyTokenRefreshView
 from users.views.user import TestEndpointView
-from .views import front_page_view
+from users.views.admin_user import AdminTokenObtainPairView
 
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -69,9 +69,11 @@ Restful API for the INESC TEC Collaborative Forecasting Service. (Predico - Demo
 )
 
 v1_urlpatterns = [
-    # API urls:
-    re_path('token/refresh', MyTokenRefreshView.as_view(), name='token_refresh'),
+    # Authentication endpoint for private admin access (superuser)
+    re_path('admin/token', AdminTokenObtainPairView.as_view(), name='admin_token_obtain_pair'),
     re_path('token', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    re_path('token/refresh', MyTokenRefreshView.as_view(), name='token_refresh'),
+
     re_path('market/', include('market.urls'), name="market"),
     re_path('user/', include('users.urls'), name="user"),
     re_path('data/', include('data.urls'), name="data"),
@@ -81,7 +83,7 @@ v1_urlpatterns = [
 urlpatterns = [
     path('api/v1/', include(v1_urlpatterns)),
     # Auto-Docs
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'), # noqa
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'), # noqa
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'), # noqa
 ]

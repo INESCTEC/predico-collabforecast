@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'; // Icons for success and failure messages
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axiosInstance from "../../routes/axiosInstance";
-import logo from '../../static/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../static/images/windturbine.jpg'; // Import the background image
+import logo from '../../assets/images/elia-group-logo-svg.svg';
+import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 
 export default function EmailVerification() {
   const navigate = useNavigate();
@@ -31,9 +31,6 @@ export default function EmailVerification() {
   const navigateToSignIn = () => {
     navigate('/'); // Redirect to the Sign In page
   };
-  const navigateToHomePage = () => {
-    navigate('/homepage');
-  }
   
   return (
     <div className="relative min-h-screen">
