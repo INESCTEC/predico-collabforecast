@@ -18,7 +18,9 @@ from .views.market_session_submission import (
 from .views.market_session_ensemble_forecasts import (
     MarketSessionListEnsembleForecastsView,
     MarketSessionListEnsembleForecastsMetaView,
-    MarketSessionCreateUpdateEnsembleForecastsView,
+    MarketSessionCreateEnsembleForecastsView,
+    MarketSessionListRampAlertsView,
+    MarketSessionCreateRampAlertsView
 )
 from .views.market_session_ensemble_weights import (
     MarketSessionEnsembleWeightsCreateUpdateView,
@@ -58,6 +60,9 @@ urlpatterns = [
     re_path(f'challenge/submission/({challenge_id_regex})$',
             MarketSessionCreateUpdateSubmissionView.as_view(),
             name="market-session-submission-create-update"),
+    re_path('challenge/ramp-alerts?$',
+            MarketSessionListRampAlertsView.as_view(),
+            name="market-session-ramp-alerts-list"),
     re_path('challenge/ensemble-forecasts?$',
             MarketSessionListEnsembleForecastsView.as_view(),
             name="market-session-ensemble-list"),
@@ -65,8 +70,11 @@ urlpatterns = [
             MarketSessionListEnsembleForecastsMetaView.as_view(),
             name="market-session-ensemble-meta-list"),
     re_path(f'challenge/({challenge_id_regex})/ensemble-forecasts?$',
-            MarketSessionCreateUpdateEnsembleForecastsView.as_view(),
-            name="market-session-ensemble-create-update"),
+            MarketSessionCreateEnsembleForecastsView.as_view(),
+            name="market-session-ensemble-create"),
+    re_path(f'challenge/({challenge_id_regex})/ramp-alerts?$',
+            MarketSessionCreateRampAlertsView.as_view(),
+            name="market-session-ramp-alerts-create"),
     re_path('challenge/ensemble-weights?$',
             MarketSessionEnsembleWeightsRetrieveView.as_view(),
             name="market-session-ensemble-weights-list"),

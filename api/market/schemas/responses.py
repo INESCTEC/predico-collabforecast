@@ -357,3 +357,42 @@ GetMarketSessionEnsembleWeightsResponse = openapi.Response(
 MarketSessionEnsembleWeightsResponse = {
     "GET": GetMarketSessionEnsembleWeightsResponse,
 }
+
+
+
+######################################
+# MarketSessionRampAlertsView
+######################################
+GetMarketSessionRampAlertsResponse = openapi.Response(
+    description="Success",
+    schema=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "code": create_schema(
+                type=openapi.TYPE_INTEGER,
+                enum=[200],
+                description="Response status code.",
+            ),
+            "data": create_schema(
+                type=openapi.TYPE_OBJECT, description="Response data."
+            ),
+        },
+    ),
+    examples={
+        "application/json": {
+            "code": 200,
+            "data": [
+                {
+                    "variability_quantiles": "q10",
+                    "datetime": "2024-09-24T22:00:00Z",
+                    "registered_at": "2024-09-24T15:40:53.294800Z",
+                }
+            ],
+        }
+    },
+)
+
+
+MarketSessionRampAlertsResponse = {
+    "GET": GetMarketSessionRampAlertsResponse,
+}

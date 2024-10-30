@@ -78,7 +78,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     def test_no_auth_submit_ensemble(self):
         self.client.credentials(HTTP_AUTHORIZATION="")
-        ensemble_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": "123e4567-e89b-12d3-a456-426614174000"})
+        ensemble_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": "123e4567-e89b-12d3-a456-426614174000"})
         response = self.client.post(ensemble_url, data={}, format="json")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         
@@ -89,7 +89,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     def test_normal_submit_ensemble(self):
         login_user(client=self.client, user=self.normal_user)
-        ensemble_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": "123e4567-e89b-12d3-a456-426614174000"})
+        ensemble_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": "123e4567-e89b-12d3-a456-426614174000"})
         response = self.client.post(ensemble_url, data={}, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         
@@ -107,7 +107,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         # Create forecasts data:
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
@@ -120,7 +120,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         # Create forecasts data:
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # List forecasts:
@@ -144,7 +144,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
         login_user(client=self.client, user=self.normal_user)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -165,7 +165,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
         login_user(client=self.client, user=self.super_user_2)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
     
@@ -178,7 +178,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         # Create forecasts data:
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # List forecasts:
@@ -196,7 +196,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         session.save()
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
@@ -209,7 +209,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         # Modify forecasts_data to check invalid value
         forecasts_data[0]["value"] = 'string'  # Example of a boundary condition
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
@@ -222,7 +222,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         # Modify forecasts_data to remove a sample
         forecasts_data = forecasts_data[:-1]
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
@@ -235,7 +235,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         # Modify forecasts_data to add extra sample
         forecasts_data += [forecasts_data[-1]]
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
@@ -247,7 +247,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         # Modify forecasts_data to test boundary conditions
         submission_data = create_market_ensemble_data(variable="string", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
@@ -258,7 +258,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         session.save()
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         # Simulate concurrent submissions
         response1 = self.client.post(submission_url, data=submission_data, format="json")
         response2 = self.client.post(submission_url, data=submission_data, format="json")
@@ -272,7 +272,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         session.save()
         forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
         submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        submission_url = reverse("market:market-session-ensemble-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # Retrieve and verify data

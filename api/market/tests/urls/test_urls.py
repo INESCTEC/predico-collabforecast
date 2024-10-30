@@ -72,7 +72,7 @@ class TestUrls(TestCase):
         url = reverse('market:market-session-ensemble-weights-list')
         self.assertEqual(resolve(url).func.view_class, MarketSessionEnsembleWeightsRetrieveView)
 
-        url = reverse('market:market-session-ensemble-create-update', args=[uuid.uuid4()])
+        url = reverse('market:market-session-ensemble-create', args=[uuid.uuid4()])
         self.assertEqual(resolve(url).func.view_class, MarketSessionCreateUpdateEnsembleForecastsView)
 
         url = reverse('market:market-session-submission-scores-list')
