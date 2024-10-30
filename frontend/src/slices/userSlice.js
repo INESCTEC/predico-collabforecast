@@ -6,12 +6,7 @@ export const fetchUserDetails = createAsyncThunk(
   'user/fetchUserDetails',
   async (_, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.token || localStorage.getItem('authToken');
-      const response = await axiosInstance.get('/user/user-detail', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.get('/user/user-detail');
       return response.data;
     } catch (error) {
       return rejectWithValue('Failed to fetch user details.');
@@ -24,13 +19,7 @@ export const fetchUsers = createAsyncThunk(
   'user/fetchUsers',
   async (_, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.token || localStorage.getItem('authToken');
-      const response = await axiosInstance.get('/user/list', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
+      const response = await axiosInstance.get('/user/list');
       return response.data.data;
     } catch (error) {
       return rejectWithValue('Failed to fetch users.');
@@ -43,16 +32,9 @@ export const sendInvite = createAsyncThunk(
   'user/sendInvite',
   async (email, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.token || localStorage.getItem('authToken');
       const response = await axiosInstance.post(
         '/user/register-invite',
-        { email },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        { email });
       // Assuming the response structure contains the invitation link at response.data.data.link
       return response.data.data.link;
     } catch (error) {

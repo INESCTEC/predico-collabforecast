@@ -2,15 +2,15 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.core.mail import send_mail
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.email.utils.email_utils import send_email_as_thread
 from users.models import User, PasswordResetRequest
 from users.serializers.user_reset_password import PasswordResetSerializer
-from api.email.utils.email_utils import send_email_as_thread
+
 
 class PasswordResetRequestView(APIView):
 
