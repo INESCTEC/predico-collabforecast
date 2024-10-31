@@ -2,6 +2,14 @@ import axios from 'axios';
 import store from '../slices/store';
 import {logout, refreshAccessToken, selectAuthToken} from '../slices/authSlice';
 
+// Separate axios instance for registration without interceptors
+const axiosWithoutInterceptors = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
@@ -52,4 +60,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export { axiosInstance, axiosWithoutInterceptors };
