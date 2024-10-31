@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Predico - Collaborative Forecasting Platform - Quick Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Predico</h1>
+        <h2>Collaborative Forecasting Platform - Quick Guide</h2>
+    </header>
+
+    <main>
+        <section id="introduction">
+            <h3>Introduction</h3>
+            <p>
+                Welcome to Predico, a Collaborative Forecasting Platform initiative designed to enhance forecasting accuracy through collaboration between market makers and forecasters.
+                In its current form, this platform consists exclusively of an API server, with no front-end available. Therefore, every interaction is done via HTTP requests.
+            </p>
+        </section>
+
+        <section id="definitions">
+            <h3>Definitions</h3>
+            <ul>
+                <li><strong>Market Maker:</strong> An entity that owns resources (e.g., wind farms) or manages a grid (e.g., a TSO) and seeks forecasts by opening and funding collaborative forecasting market sessions.</li>
+                <li><strong>Forecaster:</strong> An individual or organization registered in the platform, aiming to submit forecasts to collaborative forecasting challenges opened by the Market Maker, competing for the available prize money in each session.</li>
+                <li><strong>Market Session:</strong> A specific period during which Market Makers can create forecasting challenges, and Forecasters can submit forecasts for the open challenges.</li>
+                <li><strong>Market Challenge:</strong> An opportunity, published by the Market Maker, with meta-data regarding a forecasting challenge that Forecasters can try to submit forecasts for.</li>
+                <li><strong>Gate Closure Time:</strong> The deadline by which forecasts must be submitted for a market session.</li>
+                <li><strong>Forecast Variables:</strong> Quantities to be forecasted, such as quantile 10, 50, 90, and conditional mean.</li>
+                <li><strong>Ensemble Forecast:</strong> An aggregate forecast computed from multiple forecasters’ submissions.</li>
+            </ul>
+        </section>
+
+        <section id="important">
+            <h3>Important</h3>
+            <ul>
+                <li>This platform is a proof of concept, so there might be changes to improve the outcomes for all parties</li>
+            </ul>
+        </section>
+
+        <section id="sessions">
+            <h3>Collaborative Forecasting Sessions</h3>
+            <p>
+                Below, you can find a sequence diagram illustrating the dynamics of a collaborative forecasting session, which is generally organized in three separate phases.
+            </p>
+            <ol>
+                <li><strong>Phase 1:</strong> A new market session is scheduled to open.</li>
+                <li><strong>Phase 2:</strong> Market makers post new challenges, such as submitting day-ahead forecasts for specific assets.</li>
+                <li><strong>Phase 3:</strong> Forecasters log into the Collabforecast Service, download raw data, build their models, and submit forecasts.</li>
+            </ol>
+            <a href="predico-elia-interactions-sd.png" target="_blank">
+                <img src="predico-elia-interactions-sd.png" alt="Sequence Diagram">
+            </a>
+        </section>
+
+        <section id="downloads">
+            <h3>Downloads</h3>
+            <p>
+                To help you get started with the Predico platform, we've prepared resources that you can download:
+            </p>
+            <ul>
+                <li>
+                    Download the <a href="jpynb-client/forecaster_tutorial.ipynb" download>Jupyter Notebook</a> (how to use <a href="https://jupyter.org/" target="_blank">Jupyter</a>)
+                </li>
+                <li>
+                    Download the <a href="bruno-api-client/Predico-Collabforecast.zip" download>Bruno Collection</a> (how to use <a href="https://www.usebruno.com/" target="_blank">Bruno</a>)
+                </li>
+            </ul>
+            <p>
+                These resources include sample code and data to assist you in building models and submitting forecasts.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Predico Platform. By INESC TEC.</p>
+    </footer>
+</body>
+</html>
