@@ -39,9 +39,11 @@ variables:
   FUZZAPI_IMAGE: api-security
 
 
-lint:
-#  rules:
-#    - if: '$CI_COMMIT_REF_NAME == "main"'
+api_lint:
+  rules:
+    - changes:
+        - api/**/*
+    - when: never
   stage: lint
   image: python:3.12
   script:
@@ -50,9 +52,11 @@ lint:
   - poetry install --with test
   - ruff check
 
-test:
-#  rules:
-#    - if: '$CI_COMMIT_REF_NAME == "main"'
+api_test:
+  rules:
+    - changes:
+        - api/**/*
+    - when: never
   stage: test
   image: python:3.12
   services:
@@ -80,7 +84,7 @@ test:
     expire_in: 2 week
 
 
-apifuzzer_fuzz:
+api_fuzz:
     stage: fuzz
     image: $SECURE_ANALYZERS_PREFIX/$FUZZAPI_IMAGE:$FUZZAPI_VERSION$FUZZAPI_IMAGE_SUFFIX
     services:
@@ -92,6 +96,9 @@ apifuzzer_fuzz:
         POSTGRES_PASSWORD: "$POSTGRES_PASSWORD"
     allow_failure: true
     rules:
+        - changes:
+            - api/**/*
+          when: never
         - if: $API_FUZZING_DISABLED == 'true' || $API_FUZZING_DISABLED == '1'
           when: never
         - if: $API_FUZZING_DISABLED_FOR_DEFAULT_BRANCH == 'true'  &&
@@ -107,26 +114,21 @@ apifuzzer_fuzz:
         - if: $CI_COMMIT_BRANCH
     script:
         - cd api
-
         # Set up a Python virtual environment
         - python3 -m venv venv
         - source venv/bin/activate
-
         # Set up Python 3.12 environment
         - pip install --upgrade pip
         - pip install poetry
         - sudo -E poetry install --with test
-
         # Run the server
         - sudo -E apk update && sudo apk add --no-cache postgresql-client
         - until pg_isready -h postgres -p 5432; do sleep 2; done
         - sudo -E poetry run python3 manage.py migrate
         - sudo -E poetry run python3 manage.py runserver localhost:8000 &
         - sleep 5
-
         # Get authentication token
         - sudo -E poetry run python3 get_test_token.py 
-
         # Run the fuzzing analyzer
         - /peach/analyzer-fuzz-api
         - chown gitlab:nogroup gl-*
@@ -145,6 +147,10 @@ apifuzzer_fuzz:
 
 sast:
   stage: test
+  rules:
+    - changes:
+        - api/**/*
+      when: never
 
 secret_detection:
   variables:

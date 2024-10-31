@@ -5,6 +5,8 @@ services:
     restart: always
     env_file:
       - api/.env
+    ports:
+      - "5432:5432"
     volumes:
       - postgresql-data:/var/lib/postgresql/data
     networks:
@@ -57,11 +59,24 @@ services:
       - static_volume:/usr/src/django/api/staticfiles  # Serve Django static files correctly
       - media_volume:/usr/src/django/api/mediafiles    # Serve Django media files
 
+  forecast:
+    container_name: predico_forecast
+    build:
+      context: forecast
+    env_file:
+      - forecast/.env
+    networks:
+      - predico_network
+    volumes:
+      - forecast_files:/app/files
+      - ./forecast/files/logs/:/app/files/logs
+
 volumes:
   frontend_build:
   postgresql-data:
   static_volume:
   media_volume:
+  forecast_files:
 
 networks:
   predico_network:

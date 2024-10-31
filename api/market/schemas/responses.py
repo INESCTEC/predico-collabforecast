@@ -383,7 +383,7 @@ GetMarketSessionRampAlertsResponse = openapi.Response(
             "code": 200,
             "data": [
                 {
-                    "variability_quantiles": "q10",
+                    "variability_quantiles": {"q10": 0.05, "q50": 150.3, "q90": 300.5},
                     "datetime": "2024-09-24T22:00:00Z",
                     "registered_at": "2024-09-24T15:40:53.294800Z",
                 }
