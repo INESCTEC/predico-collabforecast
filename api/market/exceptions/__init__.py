@@ -22,5 +22,6 @@ from .Exception import (
     EnsembleWeightsAlreadySet,
     IncorrectSubmission,
     NotEnoughDataToSubmit,
-    NotEnoughPreviousDayDataToSubmit
+    NotEnoughPreviousDayDataToSubmit,
+    FailedToInsertRampAlerts
 )

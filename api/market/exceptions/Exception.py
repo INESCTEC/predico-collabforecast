@@ -189,6 +189,18 @@ class FailedToInsertSubmission(APIException):
     default_code = 'failed_to_insert_submission'
 
 
+
+class FailedToInsertRampAlerts(APIException):
+
+    def __init__(self):
+        super().__init__(self.default_detail)
+    status_code = 409
+    default_detail = ("There was a problem while uploading ramp alerts. "
+                      "Please contact the developers.")
+    default_code = 'failed_to_insert_ramp_alerts'
+
+
+
 class SubmissionAlreadyExists(APIException):
 
     def __init__(self, f_variable):

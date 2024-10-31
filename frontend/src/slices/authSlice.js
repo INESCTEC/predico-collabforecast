@@ -39,6 +39,25 @@ export const login = createAsyncThunk(
   }
 );
 
+export const refreshAccessToken = createAsyncThunk(
+  'auth/refreshAccessToken',
+  async (_, { getState, rejectWithValue }) => {
+    const { refreshToken } = getState().auth;
+    try {
+      const response = await axiosInstance.post('/token/refresh/', {
+        refresh: refreshToken,
+      });
+      const { access: accessToken } = response.data;
+      
+      // Store the new access token
+      localStorage.setItem('authToken', accessToken);
+      return accessToken;
+    } catch (error) {
+      return rejectWithValue('Failed to refresh access token.');
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -79,6 +98,17 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload || 'Login failed.';
+      })
+      // Handle refresh token actions
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
+        state.token = action.payload;
+      })
+      .addCase(refreshAccessToken.rejected, (state) => {
+        state.isAuth = false;
+        state.token = null;
+        state.refreshToken = null;
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('refreshToken');
       });
   },
 });
@@ -89,6 +119,7 @@ export default authSlice.reducer;
 
 export const selectAuthUser = (state) => state.auth.user;
 export const selectAuthToken = (state) => state.auth.token;
+export const selectAuthRefreshToken = (state) => state.auth.refreshToken;
 export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectAuthSuccessMessage = (state) => state.auth.successMessage;

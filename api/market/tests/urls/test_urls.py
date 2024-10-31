@@ -20,7 +20,9 @@ from ...views.market_session_submission import (
 from ...views.market_session_ensemble_forecasts import (
     MarketSessionListEnsembleForecastsView,
     MarketSessionListEnsembleForecastsMetaView,
-    MarketSessionCreateUpdateEnsembleForecastsView,
+    MarketSessionCreateEnsembleForecastsView,
+    MarketSessionListRampAlertsView,
+    MarketSessionCreateRampAlertsView
 )
 from ...views.market_session_ensemble_weights import (
     MarketSessionEnsembleWeightsCreateUpdateView,
@@ -59,9 +61,12 @@ class TestUrls(TestCase):
 
         url = reverse('market:market-session-submission-create-update', args=[uuid.uuid4()])
         self.assertEqual(resolve(url).func.view_class, MarketSessionCreateUpdateSubmissionView)
-
+        # market-session-ramp-alerts-list
         url = reverse('market:market-session-ensemble-list')
         self.assertEqual(resolve(url).func.view_class, MarketSessionListEnsembleForecastsView)
+
+        url = reverse('market:market-session-ramp-alerts-list')
+        self.assertEqual(resolve(url).func.view_class, MarketSessionListRampAlertsView)
 
         url = reverse('market:market-session-ensemble-meta-list')
         self.assertEqual(resolve(url).func.view_class, MarketSessionListEnsembleForecastsMetaView)
@@ -72,8 +77,11 @@ class TestUrls(TestCase):
         url = reverse('market:market-session-ensemble-weights-list')
         self.assertEqual(resolve(url).func.view_class, MarketSessionEnsembleWeightsRetrieveView)
 
-        url = reverse('market:market-session-ensemble-create-update', args=[uuid.uuid4()])
-        self.assertEqual(resolve(url).func.view_class, MarketSessionCreateUpdateEnsembleForecastsView)
+        url = reverse('market:market-session-ensemble-create', args=[uuid.uuid4()])
+        self.assertEqual(resolve(url).func.view_class, MarketSessionCreateEnsembleForecastsView)
+
+        url = reverse('market:market-session-ramp-alerts-create', args=[uuid.uuid4()])
+        self.assertEqual(resolve(url).func.view_class, MarketSessionCreateRampAlertsView)
 
         url = reverse('market:market-session-submission-scores-list')
         self.assertEqual(resolve(url).func.view_class, MarketSessionSubmissionScoresRetrieveView)

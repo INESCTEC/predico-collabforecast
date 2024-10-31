@@ -79,3 +79,49 @@ class MarketSessionEnsembleForecasts(models.Model):
     class Meta:
         db_table = "market_session_ensemble_forecasts"
         unique_together = ("ensemble", "datetime")
+
+
+class MarketSessionRampAlerts(models.Model):
+    # Challenge ID:
+    challenge = models.ForeignKey(
+        to="market.MarketSessionChallenge",
+        on_delete=models.CASCADE,
+    )
+    # Forecast lead-times timestamps:
+    datetime = models.DateTimeField(
+        blank=False,
+        null=False
+    )
+    # Ramp Detection Model ID:
+    model = models.CharField(
+        max_length=30,
+        null=False,
+        blank=False
+    )
+    # Alarm detection cluster id:
+    cluster_id = models.IntegerField(
+        blank=False,
+        null=False
+    )
+    iqw = models.FloatField(
+        blank=False,
+        null=False
+    )
+    # Alarm detection consecutive count:
+    consecutive_count = models.IntegerField(
+        blank=False,
+        null=False
+    )
+    # Reference quantiles:
+    variability_quantiles = models.JSONField(
+        blank=False,
+        null=False
+    )
+    # Register date:
+    registered_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        db_table = "market_session_ramp_alerts"
+        unique_together = ("challenge", "datetime")

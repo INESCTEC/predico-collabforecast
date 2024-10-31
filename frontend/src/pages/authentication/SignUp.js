@@ -11,7 +11,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [confirmTerms, setConfirmTerms] = useState(true); // Terms and Conditions checkbox state
+  // const [confirmTerms, setConfirmTerms] = useState(true); // Terms and Conditions checkbox state
   const [error, setError] = useState(''); // To store any error messages
   const [token, setToken] = useState('');
   const [showTermsModal, setShowTermsModal] = useState(false); // Modal state for Terms and Conditions
@@ -56,10 +56,10 @@ export default function SignUp() {
     }
     
     // Validate terms are agreed
-    if (!confirmTerms) {
-      setError('You must agree to the terms and conditions.');
-      return;
-    }
+    // if (!confirmTerms) {
+    //   setError('You must agree to the terms and conditions.');
+    //   return;
+    // }
     
     const headers = {
       headers: { Authorization: `Bearer ${token}` },
