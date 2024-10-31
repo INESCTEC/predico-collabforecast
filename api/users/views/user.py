@@ -62,6 +62,7 @@ class UserByTokenView(APIView):
 
 
 class GenerateRegisterTokenView(APIView):
+    schema = None  # This removes the endpoint from Swagger and other docs
     renderer_classes = (CustomRenderer,)
     permission_classes = [IsAdminUser]
     serializer_class = UserInvitationSerializer
@@ -180,6 +181,7 @@ class UserListView(APIView):
 
 
 class UserVerifyEmailView(APIView):
+    schema = None  # This removes the endpoint from Swagger and other docs
     renderer_classes = (CustomRenderer,)
     permission_classes = (AllowAny,)
 

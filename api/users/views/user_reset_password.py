@@ -13,6 +13,7 @@ from users.serializers.user_reset_password import PasswordResetSerializer
 
 
 class PasswordResetRequestView(APIView):
+    schema = None  # This removes the endpoint from Swagger and other docs
 
     @staticmethod
     def post(request):
@@ -55,6 +56,7 @@ class PasswordResetRequestView(APIView):
 
 
 class PasswordResetView(APIView):
+    schema = None
     serializer_class = PasswordResetSerializer
 
     def post(self, request):

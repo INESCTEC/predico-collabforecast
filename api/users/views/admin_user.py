@@ -34,3 +34,4 @@ class AdminTokenObtainPairSerializer(serializers.Serializer):
 
 class AdminTokenObtainPairView(TokenObtainPairView):
     serializer_class = AdminTokenObtainPairSerializer
+    schema = None  # This removes the endpoint from Swagger and other docs
