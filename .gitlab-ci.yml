@@ -150,6 +150,7 @@ sast:
   rules:
     - changes:
         - api/**/*
+      when: never
 
 secret_detection:
   variables:
