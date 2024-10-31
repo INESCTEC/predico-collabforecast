@@ -98,6 +98,7 @@ api_fuzz:
     rules:
         - changes:
             - api/**/*
+          when: never
         - if: $API_FUZZING_DISABLED == 'true' || $API_FUZZING_DISABLED == '1'
           when: never
         - if: $API_FUZZING_DISABLED_FOR_DEFAULT_BRANCH == 'true'  &&
@@ -146,6 +147,10 @@ api_fuzz:
 
 sast:
   stage: test
+  rules:
+    - changes:
+        - api/**/*
+      when: never
 
 secret_detection:
   variables:
