@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axiosInstance from '../routes/axiosInstance';
+import {axiosInstance} from '../routes/axiosInstance';
 
 // Thunk to fetch logged-in user details
 export const fetchUserDetails = createAsyncThunk(

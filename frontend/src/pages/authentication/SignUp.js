@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import axiosInstance from "../../routes/axiosInstance";
+import {axiosWithoutInterceptors} from "../../routes/axiosInstance";
 import logo from '../../assets/images/elia-group-logo-svg.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg';
 import {EyeIcon, EyeSlashIcon} from "@heroicons/react/24/outline"; // Import the background image
@@ -65,9 +65,8 @@ export default function SignUp() {
       headers: { Authorization: `Bearer ${token}` },
     };
     
-    axiosInstance
-      .post(
-        '/user/register',
+    axiosWithoutInterceptors.post(
+        '/api/v1/user/register',
         {
           email: email,
           password: password,
@@ -300,7 +299,7 @@ export default function SignUp() {
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Terms and Conditions</h3>
               <p className="text-sm text-gray-600">
                 {/* You can add your terms and conditions content here */}
-              Condition terms go here.
+                Condition terms go here.
               </p>
               <div className="mt-6 flex justify-end">
                 <button
