@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.renderers.CustomRenderer import CustomRenderer
+from api.utils.custom_schema import conditional_swagger_auto_schema
+
 from ..models import MarketSessionSubmissionScores
 from ..schemas.responses import *
 from ..schemas.query import *
@@ -27,7 +29,7 @@ class MarketSessionSubmissionScoresCreateView(APIView):
     permission_classes = (IsAdminUser,)
     renderer_classes = [CustomRenderer]
     @staticmethod
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_market_session_submission_scores",
         operation_description="Method for market maker to publish submission "
                               "scores for a challenge,",

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 
 from api.renderers.CustomRenderer import CustomRenderer
+from api.utils.custom_schema import conditional_swagger_auto_schema
 
 from ..schemas.query import *
 from ..schemas.responses import *
@@ -42,7 +43,7 @@ class UserResourcesView(APIView):
 
         return query
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_summary="List user portfolio resources",
         operation_id="get_user_resources",
         operation_description="Method for market maker to list their "
@@ -60,7 +61,7 @@ class UserResourcesView(APIView):
         serializer = self.serializer_class(query, many=True)
         return Response(data=serializer.data)
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_summary="Register user portfolio resource",
         operation_id="post_user_resources",
         operation_description="Method for market maker to register a new resource",
@@ -93,7 +94,7 @@ class UserResourcesUpdateView(APIView):
         query = self.model_class.objects.filter(user_id=user.id)
         return query
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_summary="Delete user portfolio resource",
         operation_id="delete_user_resources",
         operation_description="Method for market maker to delete their "
@@ -114,7 +115,7 @@ class UserResourcesUpdateView(APIView):
         else:
             raise user_exceptions.ResourceNotFound()
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_summary="Update user portfolio resources",
         operation_id="patch_user_resources",
         operation_description="Method for market maker to update their "

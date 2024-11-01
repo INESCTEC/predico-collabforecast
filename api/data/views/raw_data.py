@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from api.pagination import CustomPagination
 from api.renderers.CustomRenderer import CustomRenderer
 from api.utils.permissions import method_permission_classes
+from api.utils.custom_schema import conditional_swagger_auto_schema
 
 from ..schemas.query import *
 from ..schemas.responses import *
@@ -77,7 +78,7 @@ class RawDataView(APIView):
         serializer = RawDataRetrieveSerializer(address, many=True)  # noqa
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_raw_data",
         operation_description="Method for agents to post raw data "
                               "for a specific resource",

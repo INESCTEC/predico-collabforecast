@@ -1,13 +1,14 @@
 import structlog
 
 from django.db.models import Q
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, exceptions
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.renderers.CustomRenderer import CustomRenderer
+from api.utils.custom_schema import conditional_swagger_auto_schema
+
 from ..schemas.responses import *
 from ..schemas.query import *
 from ..models.market_session_ensemble_forecasts import (
@@ -51,7 +52,7 @@ class MarketSessionListEnsembleForecastsView(APIView):
         ensemble = MarketSessionEnsembleForecasts.objects.filter(query_filters).select_related('ensemble__market_session_challenge').all()  # noqa
         return ensemble
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="get_market_session_ensemble_forecasts",
         operation_description="Method for agents to list submissions for "
                               "current or previous challenges",
@@ -79,7 +80,7 @@ class MarketSessionCreateEnsembleForecastsView(APIView):
     renderer_classes = [CustomRenderer]
 
     @staticmethod
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_market_session_ensemble_forecasts",
         operation_description="Method for agents to submit forecasts "
                               "for an open challenge",
@@ -130,7 +131,7 @@ class MarketSessionListEnsembleForecastsMetaView(APIView):
         ensemble = MarketSessionEnsemble.objects.filter(query_filters).select_related('market_session_challenge').all()  # noqa
         return ensemble
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="get_market_session_ensemble_forecasts_meta",
         operation_description="Method for agents to list submissions metadata "
                               "for current or previous challenges",
@@ -177,7 +178,7 @@ class MarketSessionListRampAlertsView(APIView):
         ensemble = MarketSessionRampAlerts.objects.filter(query_filters).all()  # noqa
         return ensemble
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="get_market_session_ramp_alerts",
         operation_description="Method for agents to list ramp alerts for "
                               "current or previous challenges",
@@ -205,7 +206,7 @@ class MarketSessionCreateRampAlertsView(APIView):
     renderer_classes = [CustomRenderer]
 
     @staticmethod
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_market_session_ramp_alerts",
         operation_description="Method for agents to submit ramp alerts "
                               "for an open challenge",

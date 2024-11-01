@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from api.utils.permissions import method_permission_classes
+from api.utils.custom_schema import conditional_swagger_auto_schema
 from api.renderers.CustomRenderer import CustomRenderer
 
 from ..schemas.query import *
@@ -70,7 +71,7 @@ class MarketSessionView(APIView):
         serializer = self.serializer_class(sessions, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_market_session",
         operation_description="[AdminOnly] Method to register market session",
         request_body=serializer_class,
@@ -104,7 +105,7 @@ class MarketSessionUpdateView(APIView):
     renderer_classes = [CustomRenderer]
     serializer_class = MarketSessionSerializer
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="patch_market_session",
         operation_description="[AdminOnly] Method to update market "
                               "session details",

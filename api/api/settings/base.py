@@ -35,6 +35,7 @@ _acc_verify = os.environ.get('ACCOUNT_VERIFICATION', 'true')
 ACCOUNT_VERIFICATION = str(_acc_verify).lower() == 'true'
 PASSWORD_RESET_RATE_LIMIT = int(os.environ.get('PASSWORD_RESET_RATE_LIMIT', 3))
 INVITE_TOKEN_EXPIRATION_HOURS = int(os.environ.get('INVITE_TOKEN_EXPIRATION_HOURS', 72))
+DISABLE_ADMIN_SCHEMAS = os.environ.get('DISABLE_ADMIN_SCHEMAS', 'true').lower() == 'true'
 
 if not ACCOUNT_VERIFICATION:
     print('-' * 80)
@@ -225,7 +226,6 @@ SWAGGER_SETTINGS = {
 }
 
 # Python logging ( using structlog )
-# todo: email to admins logs for django.server & django.security
 # see more in https://docs.djangoproject.com/en/4.0/ref/logging/#django-logger
 LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath('logs')
 os.makedirs(LOG_DIR, exist_ok=True)

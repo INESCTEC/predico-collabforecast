@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.renderers.CustomRenderer import CustomRenderer
+from api.utils.custom_schema import conditional_swagger_auto_schema
+
 from ..schemas.responses import *
 from ..schemas.query import *
 from ..util.validators import validate_query_params
@@ -28,7 +30,7 @@ class MarketSessionEnsembleWeightsCreateUpdateView(APIView):
     renderer_classes = [CustomRenderer]
 
     @staticmethod
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_market_session_ensemble_weights",
         operation_description="Method for market maker to submit weights "
                               "for a challenge ensemble forecast",

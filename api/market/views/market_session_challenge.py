@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.utils.custom_schema import conditional_swagger_auto_schema
 from api.utils.permissions import method_permission_classes
 from api.email.utils.email_utils import send_email_as_thread
 from api.renderers.CustomRenderer import CustomRenderer
@@ -92,7 +93,7 @@ class MarketSessionChallengeView(APIView):
         serializer = MarketSessionChallengeRetrieveSerializer(challenge, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="post_market_session_challenge",
         operation_description="Method for agents to place a challenge to "
                               "purchase forecasts for a given resource "
@@ -131,7 +132,7 @@ class MarketSessionChallengeUpdateView(APIView):
     renderer_classes = [CustomRenderer]
 
     @staticmethod
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_id="put_market_session_challenge",
         operation_description="Method for agents to update a posted challenge",
         request_body=MarketSessionChallengeUpdateSerializer,
@@ -200,7 +201,7 @@ class MarketSessionChallengeSolutionView(APIView):
                               "for a given challenge",
         manual_parameters=market_session_challenge_solution_query_params(),
         responses={
-            # 200: MarketSessionChallengeResponse["GET"],   # todo: add schema
+            200: MarketSessionChallengeSolutionResponse["GET"],
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,

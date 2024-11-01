@@ -359,6 +359,61 @@ MarketSessionEnsembleWeightsResponse = {
 }
 
 
+###########################################
+# MarketSessionChallengeSolutionView
+###########################################
+GetMarketSessionChallengeSolutionResponse = openapi.Response(
+    description="Success",
+    schema=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "code": create_schema(
+                type=openapi.TYPE_INTEGER,
+                enum=[200],
+                description="Response status code.",
+            ),
+            "data": create_schema(
+                type=openapi.TYPE_OBJECT, description="Response data."
+            ),
+        },
+    ),
+    examples={
+        "application/json": {
+            "code": 200,
+            "data": {
+                "challenge": {
+                    "id": "d2a77ef7-2179-4493-99fb-19dd35464496",
+                    "use_case": "wind_power",
+                    "start_datetime": "2024-10-09T22:00:00Z",
+                    "end_datetime": "2024-10-10T21:45:00Z",
+                    "target_day": "2024-10-10",
+                    "registered_at": "2024-10-09T14:00:52.728633Z",
+                    "updated_at": "2024-10-09T14:00:52.728651Z",
+                    "user": "9fa9849e-35b0-4151-a6de-f1e3757f790e",
+                    "resource": "ba7203df-0618-4001-a2e9-b0a11cc477f9",
+                    "market_session": 1,
+                    "resource_name": "wind_farm_1"
+                },
+                "solution": [
+                    {
+                        "datetime": "2024-10-09T22:00:00Z",
+                        "value": 1000.05,
+                        "units": "mw",
+                        "resource": "ba7203df-0618-4001-a2e9-b0a11cc477f9",
+                        "registered_at": "2024-10-28T14:00:39.526810Z",
+                        "resource_name": "wind_farm_1"
+                    }
+                ]
+            }
+        }
+    },
+)
+
+
+MarketSessionChallengeSolutionResponse = {
+    "GET": GetMarketSessionChallengeSolutionResponse,
+}
+
 
 ######################################
 # MarketSessionRampAlertsView
