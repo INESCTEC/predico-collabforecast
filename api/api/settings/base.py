@@ -37,6 +37,9 @@ PASSWORD_RESET_RATE_LIMIT = int(os.environ.get('PASSWORD_RESET_RATE_LIMIT', 3))
 INVITE_TOKEN_EXPIRATION_HOURS = int(os.environ.get('INVITE_TOKEN_EXPIRATION_HOURS', 72))
 DISABLE_ADMIN_SCHEMAS = os.environ.get('DISABLE_ADMIN_SCHEMAS', 'true').lower() == 'true'
 
+# DB backup files directory:
+BACKUPS_PATH = (Path(BASE_DIR).parents[0]).joinpath('files', 'backups')
+
 if not ACCOUNT_VERIFICATION:
     print('-' * 80)
     print('WARNING: ACCOUNT_VERIFICATION is set to False. '
@@ -227,7 +230,7 @@ SWAGGER_SETTINGS = {
 
 # Python logging ( using structlog )
 # see more in https://docs.djangoproject.com/en/4.0/ref/logging/#django-logger
-LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath('logs')
+LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath('files', 'logs')
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # log handlers definition:
