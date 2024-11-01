@@ -28,6 +28,7 @@ services:
     volumes:
       - static_volume:/usr/src/django/api/staticfiles
       - media_volume:/usr/src/django/api/mediafiles
+      - ./api/files:/usr/src/django/files
 
   frontend:
     build:
