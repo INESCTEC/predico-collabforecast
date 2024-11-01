@@ -17,9 +17,11 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError, UntypedToken
 
+from api.utils.custom_schema import conditional_swagger_auto_schema
 from api.email.utils.email_utils import send_email_as_thread
 from api.renderers.CustomRenderer import CustomRenderer
 from api.settings.base import DEBUG
+
 from users.models.user import OneTimeToken, User, OneTimeRegisterToken
 from users.schemas.responses import *
 # cannot use django.conf.settings the "DEBUG" flag in settings.base is
@@ -107,7 +109,7 @@ class UserRegisterView(APIView):
     authentication_classes = []  # No authentication for this view
     permission_classes = (IsValidRegisterToken,)
 
-    @swagger_auto_schema(
+    @conditional_swagger_auto_schema(
         operation_summary="User registration",
         operation_id="post_user_register",
         operation_description="[Public] Method for new agent registration. "
