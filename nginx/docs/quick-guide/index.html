@@ -62,7 +62,7 @@
         /* Image Styling */
         img {
             display: block;
-            max-width: 100%;
+            max-width: 25%;
             height: auto;
             margin: 20px auto;
         }
@@ -71,6 +71,16 @@
             text-align: center;
             margin-top: 40px;
             color: #777;
+        }
+
+        .pattern {
+            width: 20%;
+            margin: 20px auto;
+            text-align: center;
+            font-size: 0.7em; /* Adjust font size */
+            line-height: 3em; /* Adjust line height */
+            font-weight: bolder;
+            color: #333;
         }
     </style>
 </head>
@@ -85,9 +95,18 @@
         <h3>Introduction</h3>
         <p>
             Welcome to Predico, a Collaborative Forecasting Platform initiative designed to enhance forecasting accuracy through collaboration between market makers and forecasters.
-            In its current form, this platform consists exclusively of an API server, with no front-end available. Therefore, every interaction is done via HTTP requests.
+            In its current form, this platform consists exclusively of an API server, with no front-end available. Therefore, every interaction is done via HTTPs requests.
         </p>
     </section>
+
+    <section id="important">
+        <h4>Important!</h4>
+        <ul>
+            <li>This platform is a <em>proof of concept</em>, so there might be changes to improve the outcomes for all parties.</li>
+        </ul>
+    </section>
+
+    <div class="pattern">///////////////</div>
 
     <section id="definitions">
         <h3>Definitions</h3>
@@ -102,12 +121,8 @@
         </ul>
     </section>
 
-    <section id="important">
-        <h3>Important</h3>
-        <ul>
-            <li>This platform is a proof of concept, so there might be changes to improve the outcomes for all parties</li>
-        </ul>
-    </section>
+    <div class="pattern">///////////////</div>
+
 
     <section id="sessions">
         <h3>Collaborative Forecasting Sessions</h3>
@@ -120,10 +135,42 @@
             <li><strong>Phase 3:</strong> Forecasters log into Predico API, download raw measurements data, build their models, and submit forecasts.</li>
             <li><strong>Phase 4:</strong> Forecasters log into Predico API, preview their skill scores and contribution importance to the final ensemble forecasts, to be delivered to the Market Maker.</li>
         </ol>
-        <a href="predico-elia-interactions-sd.png" target="_blank">
-            <img src="predico-elia-interactions-sd.png" alt="Sequence Diagram">
-        </a>
+        <div class="image-and-text">
+            <p>See the service sequence diagram, below</p>
+            <a href="predico-elia-interactions-sd.png" target="_blank">
+                <img src="predico-elia-interactions-sd.png" alt="Sequence Diagram">
+            </a>
+        </div>
     </section>
+
+    <section id="forecasting-components">
+        <h3>Forecasting Components Breakdown</h3>
+        <p>
+            The Predico platform's forecasting process is structured into various modules, as illustrated in the diagram below. This breakdown highlights the main stages of wind power and wind power variability forecasting, and how the contributions from different forecasters are evaluated.
+        </p>
+        <ul>
+            <li><strong>Data Value Assessment:</strong> Using methods such as Permutation Importance and Shapley Values, this component assesses the value of data inputs, helping identify the most influential variables in forecasting accuracy.</li>
+            <li><strong>Forecasting:</strong> This is divided into two parallel processes:
+                <ul>
+                    <li><strong>Wind Power:</strong> Forecasts are generated through a series of steps including feature engineering, hyperparameter optimization, model training, and the final forecast generation.</li>
+                    <li><strong>Wind Power Variability:</strong> A similar process is followed here, focusing on capturing fluctuations in wind power output, which includes feature engineering, hyperparameter optimization, model training, and forecast generation.</li>
+                </ul>
+            </li>
+            <li><strong>Wind Ramp Detection:</strong> Identifies sudden changes or "ramps" in wind power, which are crucial for managing grid stability and operational decisions.</li>
+            <li><strong>Forecast Skill Evaluation:</strong> This stage evaluates the performance of forecasters using metrics like Root Mean Square Error (RMSE) and Pinball Loss.
+                These scores help rank forecasters based on their forecast skill, per challenge participation.</li>
+        </ul>
+        <p>The interaction of these components with market makers and forecasters is shown in the diagram:</p>
+
+        <div class="image-and-text">
+            <p>See the service forecasting modules diagram, below</p>
+            <a href="modules-breakdown.png" target="_blank">
+                <img src="modules-breakdown.png" alt="Forecasting Components Breakdown Diagram">
+            </a>
+        </div>
+    </section>
+
+    <div class="pattern">///////////////</div>
 
     <section id="resources">
         <h3>Useful Resources</h3>
@@ -132,10 +179,13 @@
         </p>
         <ul>
             <li>
+                Read the platform <a href="rulebook/predico_rulebook.pdf" download>Participation Rulebook</a>.
+            </li>
+            <li>
                 Check our <a href="https://predico-elia.inesctec.pt/redoc/" target="_blank">API documentation</a> for detailed information on how to interact with the platform.
             </li>
             <li>
-                Download the <a href="jpynb-client/forecaster_tutorial.ipynb" download>Forecaster Jupyter Notebook</a> (see more on <a href="https://jupyter.org/" target="_blank">how to use Jupyter</a>).
+                Download the Forecaster <a href="jpynb-client/forecaster_tutorial.ipynb" download>Jupyter Notebook</a> (see more on <a href="https://jupyter.org/" target="_blank">how to use Jupyter</a>).
             </li>
             <li>
                 Download the <a href="bruno-api-client/Predico-Collabforecast.zip" download>Bruno Collection</a> (see more on <a href="https://www.usebruno.com/" target="_blank">how to use Bruno</a>).
@@ -145,6 +195,9 @@
             These resources include sample code and data to assist you in building models and submitting forecasts.
         </p>
     </section>
+
+
+    <div class="pattern">///////////////</div>
 
     <section id="contact">
         <h3>Contact Us</h3>
