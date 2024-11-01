@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {DocumentIcon, BookOpenIcon, LockClosedIcon, ClipboardDocumentCheckIcon} from '@heroicons/react/24/solid';
+import { Link } from 'react-router-dom';
+import { DocumentIcon, BookOpenIcon, LockClosedIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/solid';
 import logo from '../assets/images/elia-group-logo-svg.svg';
 import windTurbineImage from '../assets/images/windturbine.jpg';
 
@@ -88,7 +88,7 @@ function Homepage() {
             
             {/* Additional Links as Side Notes */}
             <div className="mt-8 text-left">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Other resources:</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Other resources</h3>
               <div className="space-y-2">
                 <p className="text-sm text-gray-600">
                   <a href="https://predico-elia.inesctec.pt/quick-guide/bruno-api-client/Predico-Collabforecast.zip"
@@ -108,6 +108,23 @@ function Homepage() {
                   <Link to="/forgot-password" className="hover:underline text-indigo-600">
                     Forgot Password
                   </Link> - Reset your password if you've forgotten it
+                </p>
+              </div>
+            </div>
+            
+            {/* Support Links */}
+            <div className="mt-4 text-left border-t border-gray-300 pt-4">
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Email</h3>
+              <div className="space-y-1 text-gray-600 text-sm ">
+                <p>
+                  <a href="mailto:predico@inesctec.pt" className="hover:underline text-indigo-600">
+                    Technical support
+                  </a> - For assistance with technical issues, system errors, or troubleshooting
+                </p>
+                <p>
+                  <a href="mailto:predico@elia.be" className="hover:underline text-indigo-600">
+                    Other questions
+                  </a> - For inquiries related to logistics, administration, or general questions
                 </p>
               </div>
             </div>
