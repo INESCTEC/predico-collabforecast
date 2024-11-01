@@ -3,7 +3,7 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import {axiosWithoutInterceptors} from "../../routes/axiosInstance";
 import logo from '../../assets/images/elia-group-logo-svg.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg';
-import {EyeIcon, EyeSlashIcon} from "@heroicons/react/24/outline"; // Import the background image
+import {EyeIcon, EyeSlashIcon} from "@heroicons/react/24/outline";
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -11,15 +11,13 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  // const [confirmTerms, setConfirmTerms] = useState(true); // Terms and Conditions checkbox state
-  const [error, setError] = useState(''); // To store any error messages
+  const [error, setError] = useState('');
   const [token, setToken] = useState('');
-  const [showTermsModal, setShowTermsModal] = useState(false); // Modal state for Terms and Conditions
-  const [passwordsMatch, setPasswordsMatch] = useState(null); // Password match state
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(null);
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false); // Toggle repeat password visibility
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   
   const { token: inviteToken } = useParams();
   
@@ -29,7 +27,6 @@ export default function SignUp() {
     }
   }, [inviteToken]);
   
-  // Check password match on every change
   useEffect(() => {
     if (repeatPassword) {
       setPasswordsMatch(password === repeatPassword);
@@ -39,27 +36,18 @@ export default function SignUp() {
   const handleSignup = async (e) => {
     e.preventDefault();
     
-    // Password complexity requirements regex
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
     
-    // Validate passwords match
     if (password !== repeatPassword) {
       setError('Passwords do not match.');
       return;
     }
     
-    // Validate password complexity
     if (!passwordRegex.test(password)) {
       setError('Password must be at least 8 characters long, include an uppercase letter, a ' +
         'lowercase letter, a number, and a special character.');
       return;
     }
-    
-    // Validate terms are agreed
-    // if (!confirmTerms) {
-    //   setError('You must agree to the terms and conditions.');
-    //   return;
-    // }
     
     const headers = {
       headers: { Authorization: `Bearer ${token}` },
@@ -101,7 +89,6 @@ export default function SignUp() {
   
   return (
     <div className="relative min-h-screen">
-      {/* Background Image */}
       <div
         className="absolute inset-0 h-full"
         style={{
@@ -120,6 +107,12 @@ export default function SignUp() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div
             className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+            {/* Helper Title */}
+            <p className="text-center text-sm font-medium text-gray-600 mb-6">
+              This sign-up form requires a valid invitation token. Tokens are time-sensitive and will expire after a
+              limited period.
+            </p>
+            
             <form onSubmit={handleSignup} className="space-y-6">
               {/* First Name */}
               <div>
@@ -234,7 +227,6 @@ export default function SignUp() {
                 )}
               </div>
               
-              
               {/* Password complexity requirements */}
               <div className="mt-4 text-sm text-gray-500">
                 <p>Your password must meet the following requirements:</p>
@@ -245,23 +237,6 @@ export default function SignUp() {
                   <li>Has at least one special character (e.g., !, @, #, $)</li>
                 </ul>
               </div>
-              
-              {/* Terms and Conditions */}
-              {/*<div className="flex items-start">*/}
-              {/*  <input*/}
-              {/*    id="terms"*/}
-              {/*    name="terms"*/}
-              {/*    type="checkbox"*/}
-              {/*    required*/}
-              {/*    checked={confirmTerms}*/}
-              {/*    onChange={() => setConfirmTerms(!confirmTerms)}*/}
-              {/*    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"*/}
-              {/*  />*/}
-              {/*  <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">*/}
-              {/*    I agree to the <span className="text-indigo-600 hover:text-indigo-500 cursor-pointer"*/}
-              {/*                         onClick={handleTermsModal}>terms and conditions</span>*/}
-              {/*  </label>*/}
-              {/*</div>*/}
               
               {/* Error Message */}
               {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -285,34 +260,6 @@ export default function SignUp() {
           </div>
         </div>
       </div>
-      
-      {/* Terms and Conditions Modal */}
-      {showTermsModal && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen px-4 text-center">
-            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            
-            <div
-              className="inline-block bg-white rounded-lg text-left shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Terms and Conditions</h3>
-              <p className="text-sm text-gray-600">
-                {/* You can add your terms and conditions content here */}
-                Condition terms go here.
-              </p>
-              <div className="mt-6 flex justify-end">
-                <button
-                  onClick={handleTermsModal}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

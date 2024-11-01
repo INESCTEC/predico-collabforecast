@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {Link} from 'react-router-dom'; // To navigate back to login
+import { useState } from 'react';
+import { Link } from 'react-router-dom'; // To navigate back to login
 import { axiosInstance } from "../../routes/axiosInstance";
 import logo from '../../assets/images/elia-group-logo-svg.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
@@ -46,6 +46,12 @@ export default function ForgotPassword() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div
             className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+            
+            {/* Helper Title */}
+            <p className="text-center text-sm font-medium text-gray-600 mb-6">
+              Enter your email to reset your password
+            </p>
+            
             <form onSubmit={handleForgotPassword} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-900">Email address</label>
