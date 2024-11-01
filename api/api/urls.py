@@ -1,19 +1,4 @@
 # ruff: noqa: E501
-"""api URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.conf import settings
 from django.urls import path, include, re_path
 from rest_framework import permissions
@@ -31,25 +16,19 @@ schema_view = get_schema_view(
         default_version='v1',
         description="""
 #### Description:
-Restful API for the INESC TEC Collaborative Forecasting Service. (Predico - Demo Version)
+Restful API for **Predico - Collaborative Forecasting Service** (Proof of Concept Version).
+
+### Visit the [Official Landing Page](https://predico-elia.inesctec.pt/)
 
 ## Main functions:
-- **User management**:
-    * Register new user
-    * User verification / authentication
-    * User password reset
-    * Manage User Resources (i.e., assets in user portfolio) (create/update/delete)
-
 - **Market management**:
-    * Manage (List/Create/Update) Market Sessions
-    * Manage (List/Create/Update) forecasting challenges per Market Sessions
-    * Manage (List/Create) ensemble forecasts /weights per forecasting challenges
-    * Manage (List/Create) user forecast submissions per forecasting challenge
+    * List market sessions and challenges
+    * List ensemble forecasts / weights / contributions per forecasting challenges
+    * Manage (List/Create/Update) user forecast submissions per forecasting challenge
 
 - **Data management**:
-    * Raw Data Ingestion (market maker measurements)
-    * Historical Forecasts Data Ingestion (individual forecasters data)
-    * Data Access based on period and resource params
+    * Upload and access your historical forecasts data
+    * Access raw measurements data, published by the Market Maker
 
 ## Developers // Contacts:
 - andre.f.garcia@inesctec.pt
@@ -57,6 +36,9 @@ Restful API for the INESC TEC Collaborative Forecasting Service. (Predico - Demo
 - giovanni.buroni@inesctec.pt
 - jose.r.andrade@inesctec.pt
 - ricardo.j.bessa@inesctec.pt
+
+By: INESC TEC - Centre for Power and Energy Systems (2024)
+
 """,
         license=openapi.License(
             name="GNU AFFERO GENERAL PUBLIC LICENSE",
