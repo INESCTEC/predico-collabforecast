@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 from django.conf import settings
 
 from drf_yasg.utils import swagger_auto_schema
@@ -12,5 +13,5 @@ def conditional_swagger_auto_schema(*args, **kwargs):
         if not settings.DISABLE_ADMIN_SCHEMAS:
             return swagger_auto_schema(*args, **kwargs)(view_func)
         else:
-            return swagger_auto_schema(auto_schema=None, *args, **kwargs)(view_func)
+            return swagger_auto_schema(*args, auto_schema=None, **kwargs)(view_func)
     return decorator
