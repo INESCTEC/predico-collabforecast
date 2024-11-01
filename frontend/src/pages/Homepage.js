@@ -29,8 +29,8 @@ function Homepage() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-3xl">
           <div
             className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12 text-center">
-            <h2 className="text-xs text-gray-700 mb-6">Explore the documentation for more details or sign in to access
-              your dashboard</h2>
+            {/*<h2 className="text-xs text-gray-700 mb-6">Explore the documentation for more details or sign in to access*/}
+            {/*  your dashboard</h2>*/}
             
             {/* Grid Layout */}
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
