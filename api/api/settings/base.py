@@ -225,7 +225,6 @@ SWAGGER_SETTINGS = {
 }
 
 # Python logging ( using structlog )
-# todo: email to admins logs for django.server & django.security
 # see more in https://docs.djangoproject.com/en/4.0/ref/logging/#django-logger
 LOG_DIR = (Path(BASE_DIR).parents[0]).joinpath('logs')
 os.makedirs(LOG_DIR, exist_ok=True)

@@ -112,15 +112,13 @@ class MarketSessionListSubmissionView(APIView):
         if challenge_id is None:
             raise exceptions.ValidationError("Query parameter 'challenge' is required.")
 
-        # Validate query parameters:
-        validate_query_params(
-            challenge_id=challenge_id
-        )
-        
         # If user is not superuser, filter by user_id else give the superuser
         # the ability to filter by user_id
         user_id = request.query_params.get('user') if user.is_superuser else user.id  # noqa
 
+        # Validate query parameters:
+        validate_query_params(challenge_id=challenge_id, user_id=user_id)
+        
         # Construct query filters using Q objects for conditional filtering
         query_filters = Q()
 

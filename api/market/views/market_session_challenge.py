@@ -200,7 +200,7 @@ class MarketSessionChallengeSolutionView(APIView):
                               "for a given challenge",
         manual_parameters=market_session_challenge_solution_query_params(),
         responses={
-            # 200: MarketSessionChallengeResponse["GET"],   # todo: add schema
+            200: MarketSessionChallengeSolutionResponse["GET"],
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
