@@ -33,6 +33,7 @@ if __name__ == '__main__':
     # ---- Backup Table:
     backup_table_parser = backup_subparsers.add_parser("table", help="Backup a table")
     backup_table_parser.add_argument("--table_name", type=str, help="Name of the table to backup (if not declared, creates copy for all tables in db)", required=False)
+    backup_table_parser.add_argument("--directory", type=str, help="Directory to save the backup csv files", required=False)
     # ---- Backup Database:
     backup_database_parser = backup_subparsers.add_parser("database", help="Backup the entire database")
     backup_database_parser.add_argument('--file_name', action="store", help="file output by the pg_dump command", required=True)
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     if args.group == "backup":
         if args.backup_option == "table":
             print(f"Backing up table: {args.table_name}")
-            backup_tables_to_csv(args.table_name)
+            backup_tables_to_csv(args.table_name, args.directory)
         elif args.backup_option == "database":
             print("Backing up database")
             backup_full_database(args.file_name)

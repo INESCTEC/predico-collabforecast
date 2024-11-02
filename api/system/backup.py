@@ -29,21 +29,25 @@ def list_tables():
     return db_tables
 
 
-def backup_tables_to_csv(table_name):
+def backup_tables_to_csv(table_name, files_dir=None):
     if table_name is None:
         db_tables = list_tables()
         for table in db_tables:
-            backup_database_table(table_name=table)
+            backup_database_table(table_name=table, files_dir=files_dir)
     else:
-        backup_database_table(table_name=table_name)
+        backup_database_table(table_name=table_name, files_dir=files_dir)
 
 
-def backup_database_table(table_name):
-    backup_dir = os.path.join(settings.BACKUPS_PATH, "csv")
+def backup_database_table(table_name, files_dir=None):
+    if files_dir is None:
+        backup_dir = os.path.join(settings.BACKUPS_PATH, "csv")
+    else:
+        backup_dir = os.path.join(settings.BACKUPS_PATH, "csv", files_dir)
+        
     backup_filepath = os.path.join(backup_dir, f"{table_name}.csv")
     os.makedirs(backup_dir, exist_ok=True)
 
-    command = f"\COPY (SELECT * FROM {table_name}) TO '{backup_filepath}' WITH CSV HEADER"
+    command = fr"\COPY (SELECT * FROM {table_name}) TO '{backup_filepath}' WITH CSV HEADER"
 
     if sys.platform == 'linux':
         run_psql = fr"""
