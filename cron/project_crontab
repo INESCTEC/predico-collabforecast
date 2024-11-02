@@ -14,7 +14,9 @@ PROJECT_PATH=<insert_project_path_here>
 5 12 * * * cd $PROJECT_PATH && docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py run_session
 
 # [Every day] Run db maintenance scripts
-# [at 00h00 UTC] Backup database
+# [at 00h00 UTC] Backup database (dump)
 0 0 * * * cd $PROJECT_PATH && docker compose -f docker-compose.prod.yml run --rm app python db_maintenance.py backup database --file_name=backup_`date +20\%y\%m\%d`.bak
+# [at 00h00 UTC] Backup database tables (csv)
+0 0 * * * cd $PROJECT_PATH && docker compose -f docker-compose.prod.yml run --rm app python db_maintenance.py backup tables --directory=`date +20\%y\%m\%d`
 # [at 23h00 UTC] Vacuum database
 0 23 * * * cd $PROJECT_PATH && docker compose -f docker-compose.prod.yml run --rm app python db_maintenance.py vacuum database
