@@ -43,21 +43,28 @@ def list_tables():
     return db_tables
 
 
-def restore_tables_from_csv(table_name):
+def restore_tables_from_csv(table_name, files_dir=None):
     if table_name is None:
         db_tables = list_tables()
         for table in db_tables:
-            restore_database_table(table_name=table)
+            restore_database_table(table_name=table, files_dir=files_dir)
     else:
-        restore_database_table(table_name=table_name)
+        restore_database_table(table_name=table_name, files_dir=files_dir)
 
 
-def restore_database_table(table_name):
-    backup_dir = os.path.join(settings.BACKUPS_PATH, "csv")
+def restore_database_table(table_name, files_dir=None):
+    if files_dir is None:
+        backup_dir = os.path.join(settings.BACKUPS_PATH, "csv")
+    else:
+        backup_dir = os.path.join(settings.BACKUPS_PATH, "csv", files_dir)
+        
     backup_filepath = os.path.join(backup_dir, f"{table_name}.csv")
-    os.makedirs(backup_dir, exist_ok=True)
+    
+    # Check if file exists. If not, raise error:
+    if not os.path.exists(backup_filepath):
+        raise FileNotFoundError(f"File '{backup_filepath}' not found.")
 
-    command = f"\COPY {table_name} FROM '{backup_filepath}' WITH CSV HEADER"
+    command = fr"\COPY {table_name} FROM '{backup_filepath}' WITH CSV HEADER"
 
     if sys.platform == 'linux':
         run_psql = fr"""
