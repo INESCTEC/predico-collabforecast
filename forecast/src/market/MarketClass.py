@@ -420,13 +420,12 @@ class MarketClass:
             ramps_ = ramps_.drop(columns=quantiles_)
             ramps_["datetime"] = ramps_.index.strftime("%Y-%m-%dT%H:%M:%SZ")
             ramps_ = ramps_.to_dict(orient="records")
-
-        # todo: check api responses
-        api_controller.post_market_ramp_alerts(
-            challenge_id=buyer_output["challenge_id"],
-            model_id="idw_based",
-            ramp_alerts=ramps_
-        )
+            # todo: check api responses
+            api_controller.post_market_ramp_alerts(
+                challenge_id=buyer_output["challenge_id"],
+                model_id="idw_based",
+                ramp_alerts=ramps_
+            )
 
 
     @staticmethod
