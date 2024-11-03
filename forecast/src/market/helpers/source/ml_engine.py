@@ -229,8 +229,8 @@ def create_ensemble_forecasts(ens_params,
     # assert df_train_ensemble.isna().sum().sum() == 0
     drop_nans_with_warning(df_train_ensemble)
     # Reindex train ensemble quantile dataframes accordingly:
-    df_train_ensemble_quantile10 = df_train_ensemble_quantile10.loc[df_train_ensemble.index]
-    df_train_ensemble_quantile90 = df_train_ensemble_quantile90.loc[df_train_ensemble.index]
+    df_train_ensemble_quantile10 = df_train_ensemble_quantile10.reindex(df_train_ensemble.index)
+    df_train_ensemble_quantile90 = df_train_ensemble_quantile90.reindex(df_train_ensemble.index)
 
     # raise exception if not enough data
     check_minimum_data_training(df_train_ensemble, minimum_rows = 4*24*20)  # minimum 20 days of data
