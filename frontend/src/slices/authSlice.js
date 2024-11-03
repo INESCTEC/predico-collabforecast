@@ -1,14 +1,14 @@
 // src/slices/authSlice.js
 
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {axiosInstance} from '../routes/axiosInstance';
+import {axiosInstance, axiosWithoutInterceptors} from '../routes/axiosInstance';
 
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password, rememberMe }, { rejectWithValue }) => {
     try {
       // Authenticate user and get tokens
-      const response = await axiosInstance.post('/admin/token', { email, password });
+      const response = await axiosWithoutInterceptors.post('/admin/token', { email, password });
       
       if (response.status === 200) {
         const { access: accessToken, refresh: refreshToken } = response.data;

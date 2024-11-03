@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'; // Icons for success and failure messages
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from "../../routes/axiosInstance";
@@ -47,11 +47,16 @@ export default function EmailVerification() {
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto" />
+          <img
+            alt="Predico"
+            src={logo}
+            className="mx-auto h-8 sm:h-12 md:h-16 lg:h-20 w-auto"
+          />
         </div>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div
+            className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <div className="text-center">
               {status === null && (
                 <p className="text-sm text-gray-600">
@@ -61,7 +66,7 @@ export default function EmailVerification() {
               
               {status === true && (
                 <>
-                  <CheckCircleIcon className="mx-auto h-16 w-16 text-green-600" aria-hidden="true" />
+                  <CheckCircleIcon className="mx-auto h-16 w-16 text-green-600" aria-hidden="true"/>
                   <h2 className="mt-6 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
                     Email Verified!
                   </h2>
@@ -73,7 +78,7 @@ export default function EmailVerification() {
               
               {status === false && (
                 <>
-                  <XCircleIcon className="mx-auto h-16 w-16 text-red-600" aria-hidden="true" />
+                  <XCircleIcon className="mx-auto h-16 w-16 text-red-600" aria-hidden="true"/>
                   <h2 className="mt-6 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
                     Email Verification Failed
                   </h2>

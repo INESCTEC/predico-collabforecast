@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {axiosWithoutInterceptors} from "../../routes/axiosInstance";
 import logo from '../../assets/images/elia-group-logo-svg.svg';
@@ -13,7 +13,7 @@ export default function SignUp() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [error, setError] = useState('');
   const [token, setToken] = useState('');
-  const [showTermsModal, setShowTermsModal] = useState(false);
+  // const [showTermsModal, setShowTermsModal] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(null);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +54,7 @@ export default function SignUp() {
     };
     
     axiosWithoutInterceptors.post(
-        '/api/v1/user/register',
+        '/user/register',
         {
           email: email,
           password: password,
@@ -83,9 +83,9 @@ export default function SignUp() {
       });
   };
   
-  const handleTermsModal = () => {
-    setShowTermsModal(!showTermsModal); // Toggle terms modal
-  };
+  // const handleTermsModal = () => {
+  //   setShowTermsModal(!showTermsModal); // Toggle terms modal
+  // };
   
   return (
     <div className="relative min-h-screen">
@@ -101,7 +101,11 @@ export default function SignUp() {
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto"/>
+          <img
+            alt="Predico"
+            src={logo}
+            className="mx-auto h-8 sm:h-12 md:h-16 lg:h-20 w-auto"
+          />
         </div>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">

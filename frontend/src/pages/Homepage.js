@@ -22,7 +22,11 @@ function Homepage() {
       <div className="flex flex-col justify-start sm:px-6 lg:px-8 pt-12">
         {/* Logo */}
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Predico" src={logo} className="mx-auto h-10 w-auto"/>
+          <img
+            alt="Predico"
+            src={logo}
+            className="mx-auto h-8 sm:h-12 md:h-16 lg:h-20 w-auto"
+          />
         </div>
         
         {/* Grid Section */}

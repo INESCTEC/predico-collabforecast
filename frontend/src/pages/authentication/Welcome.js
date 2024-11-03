@@ -1,7 +1,8 @@
 import {CheckCircleIcon} from '@heroicons/react/24/outline'; // Importing an icon for success message
 import {Link, useNavigate} from 'react-router-dom';
 import logo from '../../assets/images/elia-group-logo-svg.svg';
-import windTurbineImage from '../../assets/images/windturbine.jpg'; // Importing the background image
+import windTurbineImage from '../../assets/images/windturbine.jpg';
+import React from "react"; // Importing the background image
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -26,9 +27,9 @@ export default function Welcome() {
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
-            alt="Your Company"
+            alt="Predico"
             src={logo}
-            className="mx-auto h-10 w-auto"
+            className="mx-auto h-8 sm:h-12 md:h-16 lg:h-20 w-auto"
           />
         </div>
         
