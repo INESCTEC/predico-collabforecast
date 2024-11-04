@@ -114,6 +114,11 @@ class MarketTasks(object):
             logger.error(f"{msg_} Failed! {time() - t0:.2f}s")
         except Exception:
             logger.exception(f"{msg_} Failed! {time() - t0:.2f}s")
+        finally:
+            market = MarketController()
+            logger.info("Finishing market session ...")
+            market.finish_market_session()
+            logger.success("Finishing market session ... Ok!")
 
 
 if __name__ == '__main__':

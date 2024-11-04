@@ -297,7 +297,9 @@ def create_ensemble_forecasts(ens_params,
 
             # Prepare test data second stage
             X_test_augmented, y_test = prepare_pre_test_data(ens_params, quantile, df_test_ensemble, df_test_ensemble_quantile10, df_test_ensemble_quantile90)
-            assert len(X_test_augmented) == len(y_test) == 96, 'Test dataframe must have 96 rows'
+            assert 92 <= len(X_test_augmented) <= 100, 'Test dataframe must have between 92 and 100 rows'
+            assert 92 <= len(y_test) <= 100, 'Test dataframe must have between 92 and 100 rows'
+            assert len(X_test_augmented) == len(y_test), 'Test dataframe must have the same nr of rows in inputs and targets'
 
             predictions_insample = fitted_model.predict(X_train_augmented)
             predictions_outsample = fitted_model.predict(X_test_augmented)
