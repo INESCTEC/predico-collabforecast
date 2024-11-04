@@ -7,7 +7,11 @@ from loguru import logger
 from joblib import Parallel, delayed
 
 # -- Configs:
-from ...conf import settings
+try:
+    from conf import settings
+except ImportError:
+    # this is needed for testing purposes
+    from ...conf import settings
 
 # -- Market entities classes:
 from ..market.BuyerClass import BuyerClass

@@ -5,7 +5,12 @@ import pandas as pd
 from typing import Union, Dict
 from dataclasses import dataclass, field
 
-from ...conf import settings
+try:
+    from conf import settings
+except ImportError:
+    # this is needed for testing purposes
+    from ...conf import settings
+
 from .helpers.class_helpers import ValidatorClass
 
 
