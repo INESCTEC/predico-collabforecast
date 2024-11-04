@@ -1,0 +1,11 @@
+[
+    {"user": "s1", "variable": "q50", "market_session_challenge_resource_id": "b1r1"},
+    {"user": "s2", "variable": "q50", "market_session_challenge_resource_id": "b1r1"},
+    {"user": "s3", "variable": "q50", "market_session_challenge_resource_id": "b1r1"},
+    {"user": "s1", "variable": "q10", "market_session_challenge_resource_id": "b1r1"},
+    {"user" : "s2", "variable":"q10", "market_session_challenge_resource_id":"b1r1"},
+    {"user" : "s3", "variable":"q10", "market_session_challenge_resource_id":"b1r1"},
+    {"user": "s1", "variable": "q90", "market_session_challenge_resource_id": "b1r1"},
+    {"user" : "s2", "variable":"q90", "market_session_challenge_resource_id":"b1r1"},
+    {"user" : "s3", "variable":"q90", "market_session_challenge_resource_id":"b1r1"}
+    ]

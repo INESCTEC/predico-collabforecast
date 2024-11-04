@@ -1,8 +1,8 @@
 import os
 
 from loguru import logger
-from src.market.helpers.source.ensemble.stack_generalization.test_importance.utils import load_model_info
-from src.market.helpers.source.ensemble.stack_generalization.test_importance.forecasters_contributions import calculate_contributions
+from .ensemble.stack_generalization.test_importance.utils import load_model_info
+from .ensemble.stack_generalization.test_importance.forecasters_contributions import calculate_contributions
 
 
 def compute_forecasters_contributions(buyer_resource_name, ens_params, df_y_test, previous_day_forecast_range, use_case, challenge_id):
