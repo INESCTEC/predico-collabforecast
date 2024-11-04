@@ -1,8 +1,11 @@
 import pandas as pd
 import pickle
+
 from loguru import logger
-from src.market.helpers.source.ensemble.stack_generalization.hyperparam_optimization.models.utils.cross_validation import score_func_10, score_func_50, score_func_90
-from src.market.helpers.source.ensemble.stack_generalization.second_stage.create_data_second_stage import create_2stage_dataframe, create_augmented_dataframe_2stage
+
+from ..hyperparam_optimization.models.utils.cross_validation import score_func_10, score_func_50, score_func_90
+from ..second_stage.create_data_second_stage import create_2stage_dataframe, create_augmented_dataframe_2stage
+
 
 def load_model_info(file_path):
     " Load model info"
