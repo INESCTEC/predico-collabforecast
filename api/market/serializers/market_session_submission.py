@@ -129,85 +129,39 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
         # ---------------------------------------------------------------
         # 4) Check if the user fulfills the minimum historical
         # forecasts data for this challenge
-        # 4.1) Users should have a minimum samples of historical forecasts
-        # -- Past submissions historical data count:
+
+        # Users should have a minimum samples of historical forecasts
+        # -- Past submissions historical data:
+        last_date_ = challenge.start_datetime
+        first_date_ = last_date_ - pd.Timedelta(days=40)
         data_count_1 = MarketSessionSubmissionForecasts.objects.filter(
             submission__user_id=self.context.get('request').user.id,
             submission__variable=variable_id,
             submission__market_session_challenge__resource_id=challenge.resource_id,
-        ).count()
-        # -- Initial historical data count:
+            submission__market_session_challenge__start_datetime__gte=first_date_,
+            submission__market_session_challenge__end_datetime__lte=last_date_,
+        ).values_list('datetime', flat=True)
+
+        # -- Historical Forecast data upload data:
         data_count_2 = IndividualForecasts.objects.filter(
             user_id=self.context.get('request').user.id,
             variable=variable_id,
             resource_id=challenge.resource_id,
-        ).count()
-        if (
-                data_count_1 + data_count_2) < settings.MIN_RAW_DATA_COUNT_TO_CHALLENGE:
+            datetime__gte=first_date_,
+            datetime__lte=last_date_
+        ).values_list('datetime', flat=True)
+
+        # -- Combine queried samples datetimes and remove duplicates:
+        combined_datetimes = list(set(data_count_1) | set(data_count_2))
+
+        # Check if there are sufficient historical forecast samples to
+        # be able to run the ML ensemble models (and accept this submission):
+        if len(combined_datetimes) < settings.MIN_RAW_DATA_COUNT_TO_CHALLENGE:
             raise market_exceptions.NotEnoughDataToSubmit(
                 resource_id=challenge.resource_id,
                 min_data_count=settings.MIN_RAW_DATA_COUNT_TO_CHALLENGE
             )
 
-        # 4.2) Users should have forecasts for all the timestamps of the
-        #  previous day:
-        # -- Get the previous day:
-        previous_day = challenge.target_day - pd.Timedelta(days=1)
-        # Prev day start / end datetimes:
-        # Create start / end datetime for the forecast (local tz):
-        start_datetime = dt.datetime.combine(previous_day, dt.time(0, 0, 0))  # noqa
-        if settings.FORECAST_TIME_RESOLUTION_MINUTES == 15:
-            end_datetime = dt.datetime.combine(previous_day, dt.time(23, 45, 0))  # noqa
-        elif settings.FORECAST_TIME_RESOLUTION_MINUTES == 60:
-            end_datetime = dt.datetime.combine(previous_day, dt.time(23, 0, 0))  # noqa
-        else:
-            raise ValueError("Invalid FORECAST_TIME_RESOLUTION_MINUTES value. "
-                             "Please contact the developers.")
-        # Localize to resource timezone:
-        resource_tz = pytz.timezone(challenge.resource.timezone)
-        start_datetime = resource_tz.localize(start_datetime)
-        end_datetime = resource_tz.localize(end_datetime)
-        # Convert localized dt objects to UTC:
-        start_datetime = start_datetime.astimezone(pytz.utc)
-        end_datetime = end_datetime.astimezone(pytz.utc)
-        # Get range of expected timestamps:
-        expected_prev_day_ts = pd.date_range(
-            start=start_datetime,
-            end=end_datetime,
-            freq=f'{settings.FORECAST_TIME_RESOLUTION_MINUTES}T',
-            tz="utc"
-        )
-        expected_prev_day_ts = [x.strftime("%Y-%m-%dT%H:%M:%SZ")
-                                for x in expected_prev_day_ts]
-        # -- Attempt to get prev day forecasts from previous challenge
-        prev_day_ts_1 = MarketSessionSubmissionForecasts.objects.filter(
-            submission__user_id=self.context.get('request').user.id,
-            submission__variable=variable_id,
-            submission__market_session_challenge__target_day=previous_day,
-        ).values_list('datetime', flat=True)
-
-        prev_day_ts_2 = []
-        if len(prev_day_ts_1) < len(expected_prev_day_ts):
-            # -- Attempt to get the count of previous day forecasts from
-            # initial historical upload table
-            prev_day_ts_2 = IndividualForecasts.objects.filter(
-                user_id=self.context.get('request').user.id,
-                variable=variable_id,
-                resource_id=challenge.resource_id,
-                datetime__gte=start_datetime,
-                datetime__lte=end_datetime,
-            ).values_list('datetime', flat=True)
-        # -- Concatenate both lists:
-        prev_day_ts = list(set(list(prev_day_ts_1) + list(prev_day_ts_2)))
-        prev_day_ts = [x.strftime("%Y-%m-%dT%H:%M:%SZ") for x in prev_day_ts]
-        # -- Check if expected dates exist on DB:
-        missing_leadtimes = [x for x in expected_prev_day_ts
-                             if x not in prev_day_ts]
-        if len(missing_leadtimes) > 0:
-            raise market_exceptions.NotEnoughPreviousDayDataToSubmit(
-                resource_id=challenge.resource_id,
-                time_resolution=settings.FORECAST_TIME_RESOLUTION_MINUTES
-            )
         # Necessary for email:
         attrs["resource"] = challenge.resource_id
         return attrs
