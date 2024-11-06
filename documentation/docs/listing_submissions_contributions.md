@@ -20,3 +20,32 @@ Here's how you can retrieve the list your past submissions.
 
 
 <a href="../examples/download_submissions_contributions.py" download="download_submissions_contributions.py"><b>Download Full Example</b></a>
+
+### JSON Example Response 
+??? example "Click to view Example Response"
+
+    ```json
+    {
+      "code": 200,
+      "data": [
+        {
+          "ensemble": "ac63fe9a-302c-45a1-bbe6-812b85f48dc2",
+          "variable": "q10",
+          "rank": 1,
+          "total_participants": 3
+        },
+        {
+          "ensemble": "87380061-cefe-4bc4-9aaa-87d9304dd342",
+          "variable": "q90",
+          "rank": 1,
+          "total_participants": 3
+        },
+        {
+          "ensemble": "96afa99b-adbe-41ec-8a6c-16c092367520",
+          "variable": "q50",
+          "rank": 1,
+          "total_participants": 3
+        }
+      ]
+    }
+    ```

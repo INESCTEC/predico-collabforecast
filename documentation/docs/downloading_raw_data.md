@@ -19,7 +19,9 @@ First, select a challenge from the list of challenges you have retrieved:
 --8<-- "docs/examples/download_raw_measurements.py:28:34"
 ```
 
-## Getting more information on the data availability for this challenge target resource measurements data
+## List challenge resource info
+
+This allows you to get more information on the data availability for this challenge target resource raw measurements.
 
 
 ```python title="download_raw_measurements.py"
