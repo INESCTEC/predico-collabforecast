@@ -18,14 +18,15 @@ The information below helps forecasters to understand critical definitions (voca
 
 ## Collaborative Forecasting Sessions
 
-Below, you can find a sequence diagram illustrating the dynamics of a collaborative forecasting session, which is generally organized in three separate phases.
+Below, you can find a sequence diagram illustrating the dynamics of a collaborative forecasting session, which is generally organized in four separate phases.
 
 - **Phase 1**: A new market session is scheduled to open.
 - **Phase 2**: Market Makers post new challenges, such as submitting day-ahead forecasts for specific assets (aka resources) in their portfolio.
 - **Phase 3**: Forecasters log into Predico API, download raw measurements data, build their models, and submit forecasts.
 - **Phase 4**: Forecasters log into Predico API, preview their skill scores and contribution importance to the final ensemble forecasts, to be delivered to the Market Maker.
 
-See the **<a href="../static/predico-elia-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.
+!!! tip "Check this out"
+    See the **<a href="../static/predico-elia-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.
 
 
 ## Forecasting Components Breakdown
@@ -39,7 +40,9 @@ The Predico platform's forecasting process is structured into various modules, a
 - **Wind Ramp Detection**: Identifies sudden changes or "ramps" in wind power, which are crucial for managing grid stability and operational decisions.
 - **Forecast Skill Evaluation**: This stage evaluates the performance of forecasters using metrics like Root Mean Square Error (RMSE) and Pinball Loss. These scores help rank forecasters based on their forecast skill, per challenge participation.
 
-The interaction of these components with market makers and forecasters is shown in the **<a href="../static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.
+
+!!! tip "Check this out"
+    The interaction of these components with market makers and forecasters is shown in the **<a href="../static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.
 
 
 ## Timezone and Time Resolution

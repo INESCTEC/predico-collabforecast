@@ -26,7 +26,7 @@ theme:
 extra_css:
   - extra.css
 nav:
-  - Home: home.md
+  - Home: index.md
   - Getting Started: getting_started.md
   - Forecaster Application: application.md
   - Forecaster Interactions:
