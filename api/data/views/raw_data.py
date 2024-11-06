@@ -59,7 +59,10 @@ class RawDataView(APIView):
     @swagger_auto_schema(
         operation_id="get_raw_data",
         operation_description="Method to get raw data for a specific "
-                              "agent resource",
+                              "agent resource. You can know more about the "
+                              "data to be retrieved "
+                              "(n_samples, start/end datetimes) via "
+                              "a GET request to the /user/resource/ endpoint.",
         manual_parameters=raw_data_query_params(),
         responses={
             200: RawDataResponse["GET"],

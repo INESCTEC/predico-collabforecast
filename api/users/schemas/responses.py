@@ -101,14 +101,20 @@ GetUserResourcesResponse = openapi.Response(
             "code": 200,
             "data": [
                 {
-                    "id": "ba7203df-0618-4001-a2e9-b0a11cc477f9",
-                    "name": "wind_farm_x",
+                    "id": "c02f6644-2e65-4931-8a86-fa694b481a4a",
+                    "name": "wind_farm_elia",
                     "timezone": "Europe/Brussels",
-                    "registered_at": "2024-09-18T15:16:29.749186Z",
-                    "updated_at": "2024-09-18T15:16:29.749213Z",
-                    "user": "9fa9849e-35b0-4151-a6de-f1e3757f790e",
+                    "registered_at": "2024-11-03T23:35:43.285606Z",
+                    "updated_at": "2024-11-03T23:35:43.285624Z",
+                    "user": "04103cca-6079-4c93-83f0-ef90bffb3a73",
+                    "measurements_metadata": {
+                        "n_samples": 5565,
+                        "start_datetime": "2024-09-02T23:45:00Z",
+                        "end_datetime": "2024-10-30T22:45:00Z",
+                        "last_update_datetime": "2024-11-03T23:39:55.285225Z"
+                    }
                 }
-            ],
+            ]
         },
     },
 )
