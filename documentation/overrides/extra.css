@@ -4,6 +4,12 @@ html {
   overflow-y: scroll;
 }
 
+/* Ensure body takes the full viewport height to prevent flickering */
+body {
+  min-height: 100vh;
+  margin: 0; /* Remove any default margin that might cause unwanted overflow */
+}
+
 .md-header {
   background-color: #ffffff;
 }

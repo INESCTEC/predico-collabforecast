@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { DocumentIcon, BookOpenIcon, LockClosedIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/solid';
 import logo from '../assets/images/elia-group-logo-svg.svg';
+import { ArchiveBoxIcon } from '@heroicons/react/24/outline';
 import windTurbineImage from '../assets/images/windturbine.jpg';
 
 function Homepage() {
@@ -40,14 +41,14 @@ function Homepage() {
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
               {/* Quick Guide Documentation Card */}
               <a
-                href="http://predico-elia.inesctec.pt/quick-guide"
+                href="http://predico-elia.inesctec.pt/docs/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center rounded-lg p-6 bg-transparent hover:bg-white hover:bg-opacity-30 hover:shadow-lg transition-transform transform"
               >
-                <ClipboardDocumentCheckIcon className="h-12 w-12 text-gray-700 mb-4" aria-hidden="true"/>
-                <h3 className="text-lg font-semibold text-gray-700">Quick Guide Documentation</h3>
-                <p className="text-sm text-gray-600 mt-2 text-center">Get started with a quick guide</p>
+                <ArchiveBoxIcon className="h-12 w-12 text-gray-700 mb-4" aria-hidden="true"/>
+                <h3 className="text-lg font-semibold text-gray-700">Start Documentation</h3>
+                <p className="text-sm text-gray-600 mt-2 text-center">Step-by-step instructions and key resources.</p>
               </a>
               
               {/* Swagger Documentation Card */}

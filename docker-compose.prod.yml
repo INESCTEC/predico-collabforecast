@@ -71,7 +71,7 @@ services:
     working_dir: /documentation  # Set the working directory to /docs
     networks:
       - predico_network
-    restart: unless-stopped
+    restart: "no"
 
 #  forecast:
 #    container_name: predico_forecast
