@@ -2,7 +2,7 @@
 
 #### 1. What is Predico?
 
-Predico is a Collaborative Forecasting Platform designed to improve forecasting accuracy by facilitating collaboration between Market Makers (e.g., wind farm owners, grid operators) and Forecasters. It operates through API interactions only and has no front-end interface.
+   - Predico is a Collaborative Forecasting Platform designed to improve forecasting accuracy by facilitating collaboration between Market Makers (e.g., wind farm owners, grid operators) and Forecasters. It operates through API interactions only and has no front-end interface.
 
 
 #### 2. Who are the main participants?
