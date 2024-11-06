@@ -1,5 +1,8 @@
 /* Overrides for MkDocs Material Navbar */
-
+/* Force the vertical scrollbar to always appear */
+html {
+    overflow-y: scroll;
+}
 .md-header {
   background-color: #D35400;
 }
