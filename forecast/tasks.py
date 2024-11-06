@@ -98,7 +98,7 @@ class MarketTasks(object):
             # Close open market session (no more submissions):
             market.close_market_session()
             # Run market session:
-            status = market.run_market_session()
+            status = market.run_market_session(backup_session_inputs=True)
             if status:
                 logger.success(f"{msg_} Ok! {time() - t0:.2f}s")
             else:

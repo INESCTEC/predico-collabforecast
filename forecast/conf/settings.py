@@ -53,6 +53,7 @@ DATABASES = {
 }
 
 # Model configs:
+SESSIONS_DIR = os.path.join(BASE_PATH, "files", "sessions")
 MODEL_FILES_DIR = os.path.join(BASE_PATH, "files", "models")
 os.makedirs(MODEL_FILES_DIR, exist_ok=True)
 

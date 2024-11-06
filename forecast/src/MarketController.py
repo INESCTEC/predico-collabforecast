@@ -18,6 +18,7 @@ from .market.helpers.db_helpers import (
     get_sellers_submissions,
     get_challenges_without_weights
 )
+from .market.helpers.backup_helpers import store_session_datasets
 
 
 class MarketController:
@@ -119,7 +120,7 @@ class MarketController:
             close_ts=dt.datetime.utcnow()
         )
 
-    def run_market_session(self):
+    def run_market_session(self, backup_session_inputs=False):
         """
         Run last 'closed' market session. Session state is updated to
         'running' during execution and to 'finished' once it is complete.
@@ -164,6 +165,18 @@ class MarketController:
                 start_date=launch_time - pd.DateOffset(months=12),
                 end_date=forec_end_dt,
             )
+
+            if backup_session_inputs:
+                try:
+                    store_session_datasets(
+                        session_id=session_data["id"],
+                        buyer_measurements=measurements,
+                        sellers_forecasts=sellers_forecasts,
+                        challenges_data=challenges_data,
+                        sellers_resources=sellers_resources
+                    )
+                except Exception:
+                    logger.exception("Failed to backup session inputs")
 
             # ################################
             # Create & Run Market Session

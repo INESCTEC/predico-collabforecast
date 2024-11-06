@@ -158,8 +158,9 @@ class NotEnoughDataToSubmit(APIException):
                       "minimum historical forecast samples requirement "
                       "to participate in this challenge. "
                       "To ensure your eligibility, please submit at least "
-                      "({}) historical samples to Resource ID '{}', via "
-                      "POST request to the "
+                      "({}) historical forecast samples for the 40 days "
+                      "prior to this challenge start date, to Resource ID "
+                      "'{}', via POST request to the "
                       "'/data/individual-forecasts/historical' endpoint.")
     default_code = 'not_enough_data_to_submit'
 
