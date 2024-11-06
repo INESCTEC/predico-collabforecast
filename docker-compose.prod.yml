@@ -69,15 +69,13 @@ services:
     networks:
       - predico_network
     volumes:
-      - forecast_files:/app/files
-      - ./forecast/files/logs/:/app/files/logs
+      - ./forecast/files/:/app/files/
 
 volumes:
   frontend_build:
   postgresql-data:
   static_volume:
   media_volume:
-  forecast_files:
 
 networks:
   predico_network:
