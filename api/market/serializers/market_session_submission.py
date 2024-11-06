@@ -107,12 +107,12 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
         # ---------------------------------------------------------------
         # 3) If the user is submitting a forecast for any quantile other than
         # Q50, ensure Q50 forecasts exist first:
-        if variable_id != MarketSessionSubmission.ForecastsVariable.Q50:
-            if not MarketSessionSubmissionForecasts.objects.filter(
+        if variable_id != MarketSessionSubmission.ForecastsVariable.Q50 and (
+                not MarketSessionSubmissionForecasts.objects.filter(
                 submission__user_id=user_id,
                 submission__variable=MarketSessionSubmission.ForecastsVariable.Q50,
                 submission__market_session_challenge_id=challenge_id
-            ).exists():
+            ).exists()):
                 raise market_exceptions.MissingQ50Forecasts()
         # ---------------------------------------------------------------
         # 4) Check if user is sending forecasts for expected dates
