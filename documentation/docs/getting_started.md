@@ -3,7 +3,7 @@
 The information below helps forecasters to understand critical definitions (vocabulary) and the general workflow of our collaborative forecasting platform.
 
 !!! important "Important"
-    This information is thoroughly detailed on the <a href="static/predico_rulebook.pdf" download>Participation Rulebook</a>. Please read it carefully before proceeding.
+    This information is thoroughly detailed on the <a href="../static/predico_rulebook.pdf" download>Participation Rulebook</a>. Please read it carefully before proceeding.
 
 ## Definitions
     
@@ -25,7 +25,7 @@ Below, you can find a sequence diagram illustrating the dynamics of a collaborat
 - **Phase 3**: Forecasters log into Predico API, download raw measurements data, build their models, and submit forecasts.
 - **Phase 4**: Forecasters log into Predico API, preview their skill scores and contribution importance to the final ensemble forecasts, to be delivered to the Market Maker.
 
-See the **<a href="static/predico-elia-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.
+See the **<a href="../static/predico-elia-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.
 
 
 ## Forecasting Components Breakdown
@@ -39,7 +39,7 @@ The Predico platform's forecasting process is structured into various modules, a
 - **Wind Ramp Detection**: Identifies sudden changes or "ramps" in wind power, which are crucial for managing grid stability and operational decisions.
 - **Forecast Skill Evaluation**: This stage evaluates the performance of forecasters using metrics like Root Mean Square Error (RMSE) and Pinball Loss. These scores help rank forecasters based on their forecast skill, per challenge participation.
 
-The interaction of these components with market makers and forecasters is shown in the **<a href="static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.
+The interaction of these components with market makers and forecasters is shown in the **<a href="../static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.
 
 
 ## Forecast Submissions
@@ -61,6 +61,6 @@ It is important that forecasters understand the following rules and guidelines w
 
 The Predico platform evaluates the submitted forecasts based on both forecast skill and forecast contribution (i.e., to the final ensemble).
 
-This information is thoroughly detailed on the <a href="static/predico_rulebook.pdf" download>Participation Rulebook</a>.
+This information is thoroughly detailed on the <a href="../static/predico_rulebook.pdf" download>Participation Rulebook</a>.
 
 
