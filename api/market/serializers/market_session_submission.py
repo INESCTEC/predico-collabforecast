@@ -75,9 +75,16 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
                                                 allow_null=False)
 
     def validate(self, attrs):
+        user_id = self.context.get('request').user.id
         challenge_id = self.context.get('challenge_id')
         variable_id = attrs["variable"]
         attrs["challenge_id"] = challenge_id
+        # ---------------------------------------------------------------
+        # 0) Check if quantile reference is valid:
+        if str(variable_id).lower() not in settings.FORECAST_VARIABLES:
+            raise serializers.ValidationError(
+                {"variable": f"Invalid value. Must be one of: {settings.FORECAST_VARIABLES}"}  # noqa
+            )
         # ---------------------------------------------------------------
         # 1) Check if user is sending forecasts for an existing challenge
         try:
@@ -98,7 +105,17 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
                 challenge_id=challenge_id,
             )
         # ---------------------------------------------------------------
-        # 3) Check if user is sending forecasts for expected dates
+        # 3) If the user is submitting a forecast for any quantile other than
+        # Q50, ensure Q50 forecasts exist first:
+        if variable_id != MarketSessionSubmission.ForecastsVariable.Q50:
+            if not MarketSessionSubmissionForecasts.objects.filter(
+                submission__user_id=user_id,
+                submission__variable=MarketSessionSubmission.ForecastsVariable.Q50,
+                submission__market_session_challenge_id=challenge_id
+            ).exists():
+                raise market_exceptions.MissingQ50Forecasts()
+        # ---------------------------------------------------------------
+        # 4) Check if user is sending forecasts for expected dates
         # in forecast horizon
         expected_leadtimes = pd.date_range(
             start=challenge.start_datetime,
@@ -127,9 +144,8 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
                 f_variable=variable_id
             )
         # ---------------------------------------------------------------
-        # 4) Check if the user fulfills the minimum historical
+        # 5) Check if the user fulfills the minimum historical
         # forecasts data for this challenge
-
         # Users should have a minimum samples of historical forecasts
         # -- Past submissions historical data:
         last_date_ = challenge.start_datetime
@@ -161,7 +177,7 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
                 resource_id=challenge.resource_id,
                 min_data_count=settings.MIN_RAW_DATA_COUNT_TO_CHALLENGE
             )
-
+        # ---------------------------------------------------------------
         # Necessary for email:
         attrs["resource"] = challenge.resource_id
         return attrs
