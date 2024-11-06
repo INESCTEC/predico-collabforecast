@@ -19,6 +19,7 @@ from .market.helpers.db_helpers import (
     get_challenges_without_weights
 )
 from .market.helpers.backup_helpers import store_session_datasets
+from .market.helpers.stats_helpers import log_session_stats
 
 
 class MarketController:
@@ -150,6 +151,11 @@ class MarketController:
         else:
             # Get challenge end date (forecasts query limiter):
             forec_end_dt = max([dt.datetime.strptime(x["end_datetime"], "%Y-%m-%dT%H:%M:%SZ") for x in challenges_data])  # noqa
+
+        try:
+            log_session_stats(session_info)
+        except Exception:
+            logger.exception("Failed to log session stats.")
 
         try:
             # ################################
