@@ -59,23 +59,37 @@ services:
       - frontend_build:/usr/share/nginx/html  # Correcting the path for admin frontend
       - static_volume:/usr/src/django/api/staticfiles  # Serve Django static files correctly
       - media_volume:/usr/src/django/api/mediafiles    # Serve Django media files
+      - mkdocs_build:/usr/share/nginx/html/docs # Serve MkDocs build output
 
-  forecast:
-    container_name: predico_forecast
-    build:
-      context: forecast
-    env_file:
-      - forecast/.env
+  mkdocs:
+    image: squidfunk/mkdocs-material:latest
+    container_name: predico_mkdocs
+    volumes:
+      - ./documentation:/documentation  # Mount your MkDocs source directory
+      - mkdocs_build:/documentation/site
+    command: build --clean  # Build the MkDocs site
+    working_dir: /documentation  # Set the working directory to /docs
     networks:
       - predico_network
-    volumes:
-      - ./forecast/files/:/app/files/
+    restart: unless-stopped
+
+#  forecast:
+#    container_name: predico_forecast
+#    build:
+#      context: forecast
+#    env_file:
+#      - forecast/.env
+#    networks:
+#      - predico_network
+#    volumes:
+#      - ./forecast/files/:/app/files/
 
 volumes:
   frontend_build:
   postgresql-data:
   static_volume:
   media_volume:
+  mkdocs_build:
 
 networks:
   predico_network:
