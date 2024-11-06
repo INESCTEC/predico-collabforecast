@@ -14,6 +14,9 @@ This platform was developed and is maintained by (INESC TEC)[https://www.inescte
 
 See the [Getting Started](getting_started.md) section.
 
+!!! tip "Check this out"
+    Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
+
 ## Documentation Outline
 
 This platform consists exclusively of an API server, with no front-end available. 

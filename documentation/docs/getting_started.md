@@ -5,6 +5,9 @@ The information below helps forecasters to understand critical definitions (voca
 !!! important "Important"
     This information is thoroughly detailed on the <a href="../static/predico_rulebook.pdf" download>Participation Rulebook</a>. Please read it carefully before proceeding.
 
+!!! tip "Check this out"
+    Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
+
 ## Definitions
     
 - **Market Maker**: An entity that owns resources (e.g., wind farms) or manages a grid (e.g., a TSO) and seeks forecasts by opening and funding collaborative forecasting market sessions.
