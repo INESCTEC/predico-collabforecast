@@ -19,7 +19,7 @@ Predico is a Collaborative Forecasting Platform designed to improve forecasting 
 
 #### 4. How do I register as a Forecaster?
 
-   - Forecasters must apply by emailing predico@elia.be. Upon acceptance, you will receive a registration link. A historical forecast submission of at least 30 days, in 15-minute intervals, is mandatory for your first participation.
+   - Forecasters must apply by emailing [predico@elia.be](mailto:predico@elia.be). Upon acceptance, you will receive a registration link. A historical forecast submission of at least 30 days, in 15-minute intervals, is mandatory for your first participation.
 
 
 #### 5. How are forecasts submitted?
@@ -68,6 +68,6 @@ In contrast, forecasters are ranked based on pinball loss when evaluating foreca
 
 #### 13. Who can I contact for more information?
 
-   - For any inquiries, you can reach out to Elia at predico@elia.be.
+   - For any inquiries, you can reach out to Elia at [predico@elia.be](mailto:predico@elia.be).
 
 Feel free to consult the API documentation for technical details and guidelines on submission formats.
