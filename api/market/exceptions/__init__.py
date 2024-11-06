@@ -23,5 +23,6 @@ from .Exception import (
     IncorrectSubmission,
     NotEnoughDataToSubmit,
     NotEnoughPreviousDayDataToSubmit,
-    FailedToInsertRampAlerts
+    FailedToInsertRampAlerts,
+    MissingQ50Forecasts
 )
