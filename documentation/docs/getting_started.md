@@ -42,6 +42,23 @@ The Predico platform's forecasting process is structured into various modules, a
 The interaction of these components with market makers and forecasters is shown in the **<a href="../static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.
 
 
+## Timezone and Time Resolution
+
+The Predico platform operates in the Central European Time (CET) timezone. Forecasters should be aware of the following time resolution requirements:
+
+- **Timezone**: All times mentioned in the platform are in UTC.
+- **Challenges Forecast Horizon**: Challenges are typically day-ahead, covering the 24-hour period. 
+The start/end datetimes of the forecast are defined according to target country timezone (in this case, Belgium, CET). 
+
+Therefore the forecasted values for a specific day should cover:
+
+- **from 22:00 to 21:45 UTC** (DST Time / Summer Time)
+- **from 23:00 to 22:45 UTC** (Standard Time / Winter Time)
+
+!!! info "Daylight Saving Time (DST)"
+    - The platform adjusts for DST changes in March and October. On these days, the number of forecasted values per day will be 92 and 100, respectively.
+    - Every forecasting challenge has information on the expected forecast leadtimes (start/end datetimes) to help forecasters prepare their submissions accordingly.
+
 ## Forecast Submissions
 
 Forecasters can submit forecasts for open Market Challenges, competing for the prize money available. They may commence or stop contributing to the market at any time.
@@ -49,6 +66,7 @@ Forecasters can submit forecasts for open Market Challenges, competing for the p
 It is important that forecasters understand the following rules and guidelines when submitting forecasts:
 
 - **Submission Timing**: Forecasts must be submitted before the gate closure time for that market session. Late submissions will not be considered.
+- **Submission Period**: Market sessions are open from 10:00 to 11:00 CET daily.
 - **Submission Method**: Forecasts are submitted to the platform's API via HTTP requests. There is no front-end provided.
 - **Latest Forecast Considered**: Only the latest forecast from a forecaster in a market session will be considered.
 - **Unique Submissions**: A forecaster may not submit multiple forecasts for the same variable (e.g., two P50 submissions) under the same or different forecaster IDs for the same challenge. A Forecaster can update their original submissions using a specific API endpoint. The latest valid submissions (before Gate Closure Time) will be considered.
