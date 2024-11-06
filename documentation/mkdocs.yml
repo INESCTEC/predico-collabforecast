@@ -30,7 +30,7 @@ nav:
   - Authentication: authentication.md
   - Forecaster Interactions:
       - Listing Open Market Sessions: listing_open_market_sessions.md
-      - Listing Challenges for Open Sessions: listing_challenges_for_open_sessions.md
+      - Listing Challenges for Open Sessions: listing_challenges_for_open_session.md
       - Downloading Raw Data: downloading_raw_data.md
       - Preparing Forecast: preparing_forecast.md
       - Submitting Forecast: submitting_forecast.md
