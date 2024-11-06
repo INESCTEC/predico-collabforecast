@@ -8,7 +8,7 @@ This documentation is designed to help forecasters to **learn** more about the p
 !!! warning "Important"
     This platform is a proof of concept, so there might be changes to improve the outcomes for all parties.
     
-This platform was developed and is maintained by (INESC TEC)[https://www.inesctec.pt/pt] Centre for Power and Energy Systems (CPES).
+This platform was developed and is maintained by [INESC TEC](https://www.inesctec.pt/pt) Centre for Power and Energy Systems (CPES).
 
 ## Where to start?
 
