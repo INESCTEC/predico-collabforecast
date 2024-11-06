@@ -20,10 +20,10 @@ class UserResourcesRetrieveSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        count_measurement = RawData.objects.filter(resource_id=instance.id).count()
-        first_measurement = RawData.objects.filter(resource_id=instance.id).order_by('datetime').first()
-        last_measurement = RawData.objects.filter(resource_id=instance.id).order_by('datetime').last()
-        last_update = RawData.objects.filter(resource_id=instance.id).order_by('registered_at').last()
+        count_measurement = RawData.objects.filter(resource_id=instance.id).count()  # noqa
+        first_measurement = RawData.objects.filter(resource_id=instance.id).order_by('datetime').first()  # noqa
+        last_measurement = RawData.objects.filter(resource_id=instance.id).order_by('datetime').last()  # noqa
+        last_update = RawData.objects.filter(resource_id=instance.id).order_by('registered_at').last()  # noqa
         representation["measurements_metadata"] = {
             "n_samples": count_measurement,
             "start_datetime": first_measurement.datetime if first_measurement else None,
