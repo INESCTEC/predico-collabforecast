@@ -16,14 +16,14 @@ To participate in the Predico Collaborative Forecasting Platform, interested for
 !!! info "Registration"
 
     Forecasters apply to participate by sending an email to [predico@elia.be](mailto:predico@elia.be).  
-    **Upon acceptance by Elia Group**, they receive a registration link to complete their registration.
+    **Upon acceptance by Elia**, they receive a registration link to complete their registration.
 
 [//]: # (<div class="custom-callout" markdown="1">)
 
 [//]: # ()
 [//]: # (Forecasters apply to participate by sending an email to <a href="mailto:predico@elia.be">predico@elia.be</a>.  )
 
-[//]: # (Upon acceptance by Elia Group, they receive a registration link to complete their registration.)
+[//]: # (Upon acceptance by Elia, they receive a registration link to complete their registration.)
 
 [//]: # ()
 [//]: # (</div>)

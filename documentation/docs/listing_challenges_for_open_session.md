@@ -1,6 +1,6 @@
 # Listing Challenges for Open Market Sessions
 
-After retrieving the open market sessions, you may want to list the challenges associated with a specific open market session. Challenges are opportunities published by the Market Maker (Elia Group) that Forecasters can submit forecasts for.
+After retrieving the open market sessions, you may want to list the challenges associated with a specific open market session. Challenges are opportunities published by the Market Maker (Elia) that Forecasters can submit forecasts for.
 
 !!! info "Prerequisites"
     - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
