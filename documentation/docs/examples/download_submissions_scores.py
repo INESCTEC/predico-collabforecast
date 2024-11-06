@@ -15,14 +15,14 @@ response = requests.get(
 
 # Check if the request was successful
 if response.status_code == 200:
-    challenges = response.json()
+    submissions = response.json()
 else:
     print("Failed to retrieve submissions.")
     print(f"Status code: {response.status_code}")
     exit()
 
 # Select a submission and respective challenge:
-selected_submission = challenges[0]
+selected_submission = submissions["data"][0]
 submission_id = selected_submission['id']
 challenge_id = selected_submission['market_session_challenge']
 print("Selected Submission:")

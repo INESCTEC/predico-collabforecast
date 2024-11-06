@@ -22,8 +22,7 @@ response = requests.get(
 if response.status_code == 200:
     challenges = response.json()
     print("Challenges for Open Market Session:")
-    for challenge in challenges:
-        print(f"- Challenge ID: {challenge['id']}, Name: {challenge['name']}")
+    print(challenges)
 else:
     print("Failed to retrieve challenges.")
     print(f"Status code: {response.status_code}")

@@ -19,12 +19,20 @@ First, select a challenge from the list of challenges you have retrieved:
 --8<-- "docs/examples/download_raw_measurements.py:28:34"
 ```
 
-## Retrieving Raw Data for a Challenge
+## Getting more information on the data availability for this challenge target resource measurements data
 
-Here's how you can retrieve the raw data for a specific challenge using Python:
 
 ```python title="download_raw_measurements.py"
---8<-- "docs/examples/download_raw_measurements.py:35:68"
+--8<-- "docs/examples/download_raw_measurements.py:36:43"
+```
+
+
+## Retrieving Raw Data for a Challenge
+
+Retrieve the raw data for the selected resource:
+
+```python title="download_raw_measurements.py"
+--8<-- "docs/examples/download_raw_measurements.py:45:71"
 ```
 
 <a href="../examples/download_raw_measurements.py" download="download_raw_measurements.py"><b>Download Full Example</b></a>

@@ -16,9 +16,7 @@ response = requests.get(
 # Check if the request was successful
 if response.status_code == 200:
     market_sessions = response.json()
-    print("Open Market Sessions:")
-    for session in market_sessions:
-        print(f"- Session ID: {session['id']}, Name: {session['name']}")
+    print(market_sessions)
 else:
     print(f"Failed to retrieve market sessions.")
     print(f"Status code: {response.status_code}")
