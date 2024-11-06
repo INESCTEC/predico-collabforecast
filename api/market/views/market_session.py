@@ -107,8 +107,7 @@ class MarketSessionUpdateView(APIView):
 
     @conditional_swagger_auto_schema(
         operation_id="patch_market_session",
-        operation_description="[AdminOnly] Method to update market "
-                              "session details",
+        operation_description="Update market session details",
         request_body=serializer_class,
         responses={
             400: 'Bad request',

@@ -75,11 +75,11 @@ class MarketSessionListSubmissionForecastsView(APIView):
 
     @swagger_auto_schema(
         operation_id="get_market_session_submission_forecasts",
-        operation_description="Method for agents to list submission "
-                              "forecasts for market challenges",
+        operation_description="Method for forecasters to list submitted "
+                              "forecasts (timeseries) for market challenges",
         manual_parameters=market_session_challenge_submission_query_params(),
         responses={
-            200: MarketSessionChallengeResponse["GET"],
+            200: MarketSessionListSubmissionForecastsResponse["GET"],
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
@@ -138,8 +138,8 @@ class MarketSessionListSubmissionView(APIView):
 
     @swagger_auto_schema(
         operation_id="get_market_session_submission",
-        operation_description="Method for agents to list submissions for "
-                              "current or previous challenges",
+        operation_description="Method for forecasters to list submitted "
+                              "forecasts (general data) for market challenges",
         manual_parameters=market_session_challenge_submission_query_params(),
         responses={
             200: MarketSessionListSubmissionResponse["GET"],
@@ -167,8 +167,8 @@ class MarketSessionCreateUpdateSubmissionView(APIView):
     @staticmethod
     @swagger_auto_schema(
         operation_id="post_market_session_submission",
-        operation_description="Method for agents to submit forecasts "
-                              "for an open challenge",
+        operation_description="Method for forecasters to publish their "
+                              "forecast submissions to open challenges.",
         request_body=MarketSessionSubmissionCreateUpdateSerializer,
         responses={
             400: 'Bad request',
@@ -204,8 +204,8 @@ class MarketSessionCreateUpdateSubmissionView(APIView):
     @staticmethod
     @swagger_auto_schema(
         operation_id="put_market_session_submission",
-        operation_description="Method for agents to submit forecasts "
-                              "for an open challenge",
+        operation_description="Method for forecasters to update their forecast "
+                              "submissions to open challenges",
         request_body=MarketSessionSubmissionCreateUpdateSerializer,
         responses={
             400: 'Bad request',

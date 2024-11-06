@@ -123,8 +123,9 @@ class MarketSessionEnsembleWeightsRetrieveView(APIView):
     @swagger_auto_schema(
         operation_id="get_market_session_ensemble_weights",
         operation_description="List challenge details and respective "
-                              "forecaster(s) contributtion "
-                              "for each ensemble forecast.",
+                              "forecaster(s) contribution "
+                              "for each ensemble forecast (1 per ensemble "
+                              "quantile forecast).",
         manual_parameters=market_session_submission_scores_query_params(),
         responses={
             200: MarketSessionEnsembleWeightsResponse["GET"],

@@ -140,7 +140,7 @@ class IndividualForecastsHistoricalCreateRetrieveView(APIView):
 
     @swagger_auto_schema(
         operation_id="get_individual_forecasts_historical",
-        operation_description="Method to get initial historical forecasts "
+        operation_description="List initial historical forecasts "
                               "upload reference, for a specific market "
                               "resource.",
         manual_parameters=individual_forecasts_historical_query_params(),
@@ -164,8 +164,8 @@ class IndividualForecastsHistoricalCreateRetrieveView(APIView):
     @staticmethod
     @swagger_auto_schema(
         operation_id="post_individual_forecasts_historical",
-        operation_description="Method for agents to post historical "
-                              "forecasts for a specific market resource.",
+        operation_description="Publish initial historical forecasts for a "
+                              "specific market maker resource.",
         request_body=IndividualForecastsHistoricalCreateSerializer,
         responses={
             400: 'Bad request',
