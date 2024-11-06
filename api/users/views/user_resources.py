@@ -55,10 +55,9 @@ class UserResourcesView(APIView):
         return query
 
     @swagger_auto_schema(
-        operation_summary="List user portfolio resources",
+        operation_summary="List market maker resources",
         operation_id="get_user_resources",
-        operation_description="Method for market maker to list their "
-                              "registered resources",
+        operation_description="List available resources (market maker assets) information.",  # noqa
         manual_parameters=user_resources_query_params(),
         responses={
             200: UserResourcesResponse["GET"],

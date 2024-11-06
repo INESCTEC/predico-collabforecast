@@ -54,8 +54,8 @@ class MarketSessionListEnsembleForecastsView(APIView):
 
     @conditional_swagger_auto_schema(
         operation_id="get_market_session_ensemble_forecasts",
-        operation_description="Method for agents to list submissions for "
-                              "current or previous challenges",
+        operation_description="Method for market makers to list ensemble "
+                              "forecasts for previous sessions.",
         manual_parameters=market_session_list_ensemble_query_params(),
         responses={
             200: MarketSessionEnsembleForecastsResponse["GET"],
@@ -82,8 +82,8 @@ class MarketSessionCreateEnsembleForecastsView(APIView):
     @staticmethod
     @conditional_swagger_auto_schema(
         operation_id="post_market_session_ensemble_forecasts",
-        operation_description="Method for agents to submit forecasts "
-                              "for an open challenge",
+        operation_description="Method for market maker to register ensemble "
+                              "forecasts.",
         request_body=MarketSessionEnsembleCreateSerializer,
         responses={
             400: 'Bad request',
@@ -133,8 +133,7 @@ class MarketSessionListEnsembleForecastsMetaView(APIView):
 
     @conditional_swagger_auto_schema(
         operation_id="get_market_session_ensemble_forecasts_meta",
-        operation_description="Method for agents to list submissions metadata "
-                              "for current or previous challenges",
+        operation_description="Method for market makers to list ensemble metadata.",
         manual_parameters=market_session_list_ensemble_query_params(),
         responses={
             # 200: MarketSessionEnsembleForecastsResponse["GET"],
@@ -180,8 +179,8 @@ class MarketSessionListRampAlertsView(APIView):
 
     @conditional_swagger_auto_schema(
         operation_id="get_market_session_ramp_alerts",
-        operation_description="Method for agents to list ramp alerts for "
-                              "current or previous challenges",
+        operation_description="Method for market makers to list ramp alerts "
+                              "for previous challenges",
         manual_parameters=market_session_list_ensemble_query_params(),
         responses={
             200: MarketSessionRampAlertsResponse["GET"],
@@ -208,7 +207,7 @@ class MarketSessionCreateRampAlertsView(APIView):
     @staticmethod
     @conditional_swagger_auto_schema(
         operation_id="post_market_session_ramp_alerts",
-        operation_description="Method for agents to submit ramp alerts "
+        operation_description="Method for market makers to submit ramp alerts "
                               "for an open challenge",
         request_body=MarketSessionRampAlertsCreateSerializer,
         responses={

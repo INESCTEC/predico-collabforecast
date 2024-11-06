@@ -149,8 +149,7 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
 
     @swagger_auto_schema(
         operation_id="get_market_session_submission_scores",
-        operation_description="Method for market maker to list challenges "
-                              "and respective weights attribution",
+        operation_description="List forecast skill scores for a challenge.",
         manual_parameters=market_session_submission_scores_query_params(),
         responses={
             200: MarketSessionEnsembleWeightsResponse["GET"],
