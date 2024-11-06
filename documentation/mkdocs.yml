@@ -1,0 +1,54 @@
+site_name: Predico
+theme:
+  name: material
+  logo: null
+  custom_dir: overrides
+  highlightjs: true
+  features:
+    - navigation.expand
+    - navigation.sections
+    - navigation.instant
+    - code-copy
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+extra_css:
+  - extra.css
+nav:
+  - Introduction: introduction.md
+  - Authentication: authentication.md
+  - Forecaster Interactions:
+      - Listing Open Market Sessions: listing_open_market_sessions.md
+      - Listing Challenges for Open Sessions: listing_challenges_for_open_sessions.md
+      - Downloading Raw Data: downloading_raw_data.md
+      - Preparing Forecast: preparing_forecast.md
+      - Submitting Forecast: submitting_forecast.md
+      - Submitting Historical Forecasts (First Time Only): submitting_historical_forecasts.md
+      - Previewing Submissions: previewing_submissions.md
+      - Previewing Submitted Forecasts: previewing_submitted_forecasts.md
+      - Previewing Forecast Skill Scores: previewing_forecast_skill_scores.md
+      - Previewing Forecast Contributions: previewing_forecast_contributions.md
+  - Other:
+    - Contacts: contacts_useful_links.md
+    - Useful Links: useful_links.md
+markdown_extensions:
+  - tables
+  - codehilite
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.details
+  - pymdownx.tabbed
+  - toc:
+      permalink: true
