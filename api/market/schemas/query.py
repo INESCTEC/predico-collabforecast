@@ -94,6 +94,20 @@ def market_session_challenge_submission_query_params():
     return [
         openapi.Parameter("challenge", openapi.IN_QUERY,
                           type=openapi.TYPE_STRING,
+                          required=False,
+                          description="Filter by challenge identifier"),
+        openapi.Parameter("submission", openapi.IN_QUERY,
+                          type=openapi.TYPE_STRING,
+                          required=False,
+                          description="Filter by challenge submission "
+                                      "identifier"),
+    ]
+
+
+def market_session_challenge_submission_forecasts_query_params():
+    return [
+        openapi.Parameter("challenge", openapi.IN_QUERY,
+                          type=openapi.TYPE_STRING,
                           required=True,
                           description="Filter by challenge identifier"),
         openapi.Parameter("submission", openapi.IN_QUERY,
@@ -102,6 +116,7 @@ def market_session_challenge_submission_query_params():
                           description="Filter by challenge submission "
                                       "identifier"),
     ]
+
 
 
 def market_session_list_ensemble_weights_query_params():

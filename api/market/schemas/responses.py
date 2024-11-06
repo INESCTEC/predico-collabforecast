@@ -322,31 +322,27 @@ GetMarketSessionEnsembleWeightsResponse = openapi.Response(
             "code": 200,
             "data": [
                 {
-                    "challenge": "a3200cce-d169-4fbd-b4a5-fa6b0afa3263",
-                    "use_case": "wind_power_ramp",
-                    "start_datetime": "2024-06-27T22:00:00Z",
-                    "end_datetime": "2024-06-28T21:45:00Z",
-                    "resource": "b92c96d1-f5ee-4f96-a4cc-216a92acb10b",
-                    "ensemble_data": [
+                    "code": 200,
+                    "data": [
                         {
-                            "id": "0ce29243-b8eb-4f3f-8723-aa7204b1de53",
-                            "model": "LR",
+                            "ensemble": "80f61367-4033-47fd-9ae8-8ffd638e746c",
                             "variable": "q10",
-                            "weights": None,
+                            "rank": 1,
+                            "total_participants": 3
                         },
                         {
-                            "id": "fe4431a0-00c1-4598-91f4-58a80a73a7b1",
-                            "model": "LR",
+                            "ensemble": "18042e5a-bdca-4f78-b065-1b5963890095",
                             "variable": "q90",
-                            "weights": None,
+                            "rank": 1,
+                            "total_participants": 3
                         },
                         {
-                            "id": "8f8a49e5-dcb3-467a-ac1f-e46a981182ca",
-                            "model": "LR",
+                            "ensemble": "1a3fc825-f289-4351-8383-d608b70f3d4c",
                             "variable": "q50",
-                            "weights": None,
-                        },
-                    ],
+                            "rank": 1,
+                            "total_participants": 3
+                        }
+                    ]
                 }
             ],
         }
@@ -451,3 +447,90 @@ GetMarketSessionRampAlertsResponse = openapi.Response(
 MarketSessionRampAlertsResponse = {
     "GET": GetMarketSessionRampAlertsResponse,
 }
+
+
+
+############################################
+# MarketSessionSubmissionScoresRetrieveView
+############################################
+GetMarketSessionSubmissionScoresRetrieveResponse = openapi.Response(
+    description="Success",
+    schema=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "code": create_schema(
+                type=openapi.TYPE_INTEGER,
+                enum=[200],
+                description="Response status code.",
+            ),
+            "data": create_schema(
+                type=openapi.TYPE_OBJECT, description="Response data."
+            ),
+        },
+    ),
+    examples={
+        "application/json": {
+            "code": 200,
+            "data": {
+                "personal_metrics": [
+                    {
+                        "submission": "c83b7fe4-faac-47f8-8eaa-c0a6a1ab0de2",
+                        "variable": "q50",
+                        "metric": "mae",
+                        "value": 87.017,
+                        "rank": 1,
+                        "total_participants": 3
+                    },
+                    {
+                        "submission": "c83b7fe4-faac-47f8-8eaa-c0a6a1ab0de2",
+                        "variable": "q50",
+                        "metric": "pinball",
+                        "value": 43.508,
+                        "rank": 1,
+                        "total_participants": 3
+                    },
+                    {
+                        "submission": "c83b7fe4-faac-47f8-8eaa-c0a6a1ab0de2",
+                        "variable": "q50",
+                        "metric": "rmse",
+                        "value": 106.97,
+                        "rank": 1,
+                        "total_participants": 3
+                    }
+                ],
+                "general_metrics": [
+                    {
+                        "submission__variable": "q50",
+                        "metric": "mae",
+                        "avg_value": 493.211,
+                        "min_value": 87.017,
+                        "max_value": 1302.641,
+                        "std_value": 572.354
+                    },
+                    {
+                        "submission__variable": "q50",
+                        "metric": "pinball",
+                        "avg_value": 246.606,
+                        "min_value": 43.508,
+                        "max_value": 651.321,
+                        "std_value": 286.178
+                    },
+                    {
+                        "submission__variable": "q50",
+                        "metric": "rmse",
+                        "avg_value": 543.524,
+                        "min_value": 106.97,
+                        "max_value": 1413.905,
+                        "std_value": 615.454
+                    }
+                ]
+            }
+        }
+    },
+)
+
+
+MarketSessionSubmissionScoresRetrieveResponse = {
+    "GET": GetMarketSessionSubmissionScoresRetrieveResponse,
+}
+

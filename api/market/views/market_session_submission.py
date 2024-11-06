@@ -39,7 +39,6 @@ class MarketSessionListSubmissionForecastsView(APIView):
 
         # If user is not superuser, filter by user_id else give the superuser
         # the ability to filter by user_id
-        # todo: validate user_id for all other endpoints that do this.
         user_id = request.query_params.get('user') if user.is_superuser else user.id  # noqa
 
         # Enforce required parameters:
@@ -77,7 +76,7 @@ class MarketSessionListSubmissionForecastsView(APIView):
         operation_id="get_market_session_submission_forecasts",
         operation_description="Method for forecasters to list submitted "
                               "forecasts (timeseries) for market challenges",
-        manual_parameters=market_session_challenge_submission_query_params(),
+        manual_parameters=market_session_challenge_submission_forecasts_query_params(),
         responses={
             200: MarketSessionListSubmissionForecastsResponse["GET"],
             400: 'Bad request',
@@ -107,10 +106,6 @@ class MarketSessionListSubmissionView(APIView):
     def queryset(request):
         user = request.user
         challenge_id = request.query_params.get('challenge')
-
-        # Enforce required parameters:
-        if challenge_id is None:
-            raise exceptions.ValidationError("Query parameter 'challenge' is required.")
 
         # If user is not superuser, filter by user_id else give the superuser
         # the ability to filter by user_id
