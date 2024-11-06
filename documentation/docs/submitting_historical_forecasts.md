@@ -24,61 +24,31 @@ challenge_id = selected_challenge["id"]
 
 ## Preparing Historical Forecast Data
 
-Prepare the historical forecast data for submission. In this example, we'll generate random data for 
-the historical forecasts:
+Prepare the historical forecast data for submission. 
 
-```python title="prepare_historical_forecast.py"
+!!! important "Important"
 
-headers = {
-    'Accept': 'application/json',
-    'Authorization': f'Bearer {access_token}'
-}
-# Create 1month of historical data (sampled from uniform dist):
-# Generate datetime values for the challenge period:
-n_historical_days = 35
+    In this example, our submission will be exclusively composed by random samples.
+    However, you should prepare your model based on the raw measurements data for the challenge `resource` (see 
+    [Downloading Raw Data](downloading_raw_data.md) section), and any external information sources you might have access to.
 
-dt_now = pd.to_datetime(dt.datetime.utcnow()).round("15min")
-hist_datetime_range = pd.date_range(start=dt_now - pd.DateOffset(days=n_historical_days), 
-                                    end=dt_now.replace(hour=23, minute=45, second=00), 
-                                    freq='15min')
-hist_datetime_range = [x.strftime("%Y-%m-%dT%H:%M:%SZ") for x in hist_datetime_range]
 
-# Generate random values for the "value" column
-hist_values = np.random.uniform(low=0.0, high=1.0, size=len(hist_datetime_range))
-hist_values = [round(x, 3) for x in hist_values]
-
-# Prepare historical data for 3 different quantiles submissions Q10, Q50, Q90
-hist_submission_list = []
-for qt in ["q10", "q50", "q90"]:
-    qt_forec = pd.DataFrame({
-    'datetime': hist_datetime_range,
-    'value': hist_values,
-    })
-    hist_submission_list.append({
-        "resource": resource_id,
-        "variable": qt, 
-        "launch_time": dt_now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "forecasts": qt_forec.to_dict(orient="records")
-    })
+```python title="submit_historical_forecast.py"
+--8<-- "docs/examples/submit_historical_forecast.py:47:74"
 ```
+
 
 ## Submitting Historical Forecast Data
 
 After preparing your historical forecast data, submit it to the Predico platform:
 
+!!! warning "Important"
+    - **Forecast Integrity**: Ensure that your historical forecasts are realistic (i.e., for an out-of-sample set). Providing unrealistic historical forecasts (e.g., overfitting to historical data) may compromise your submission. Remember, payment is based on ex-post performance calculations and not on the quality of this initial historical forecasts.
+    - **Submission Volume**: Avoid transferring a high volume of samples in a single request to prevent potential request failures. It's recommended to batch your submissions appropriately.
+
+
 ```python title="submit_historical_forecast.py"
-for submission in hist_submission_list:
-    response = requests.post(url=f"https://predico-elia.inesctec.pt/data/individual-forecasts/historical",
-                            json=submission,
-                            headers=headers)
+--8<-- "docs/examples/submit_historical_forecast.py:75:87"
+```
 
-    # Check if the request was successful
-
-    if response.status_code == 201:
-        print(f"Forecast submission successful for {submission['variable']} quantile.")
-    else:
-        print(f"Failed to submit forecast for {submission['variable']} quantile. Status code: {response.status_code}")
-
-``` 
-
-
+<a href="../examples/submit_historical_forecast.py" download="submit_historical_forecast.py"><b>Download Full Example</b></a>

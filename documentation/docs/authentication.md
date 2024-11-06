@@ -11,18 +11,18 @@ To authenticate with the Predico API, you need to obtain an access token using y
 Here is how you can retrieve an access token using Python:
 
 ```python title="authentication.py"
-import requests
-
-email = "your_email@example.com"
-password = "your_password"
-
-response = requests.post('https://predico-elia.inesctec.pt/api/v1/token',
-                         data={'email': email, 'password': password})
-
-# Check if authentication was successful
-if response.status_code == 200:
-    token = response.json().get('access')
-    print(f"Access Token: {token}")
-else:
-    print("Authentication failed. Please check your credentials.")
+--8<-- "docs/examples/authentication.py"
 ```
+
+<a href="../examples/authentication.py" download="authentication.py"><b>Download Full Example</b></a>
+
+### JSON Example Response 
+??? example "Click to view Example Response"
+
+    ```json
+    {
+      "access": "jwt_access_token",
+      "refresh": "jwt_refresh_token"
+    }
+    ```
+

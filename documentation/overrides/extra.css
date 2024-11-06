@@ -1,12 +1,12 @@
 /* Overrides for MkDocs Material Navbar */
 /* Force the vertical scrollbar to always appear */
 html {
-    overflow-y: scroll;
+  overflow-y: scroll;
+  text-align: justify;
 }
 .md-header {
   background-color: #D35400;
 }
-
 
 .md-header__title, .md-header__subtitle, .md-header__button, .md-header__link {
   color: #000000; /* Adjust as necessary for contrast */
@@ -22,11 +22,6 @@ html {
 .md-header__title {
   text-align: left;
 }
-
-/*!* Ensure the title container occupies the full width *!*/
-/*.md-header__title {*/
-/*  flex: none;*/
-/*}*/
 
 /* Remove padding from the inner header container */
 .md-header__inner {
@@ -63,11 +58,6 @@ html {
   padding: 0.5rem;
 }
 
-/* Navigation Background */
-/*.md-sidebar {*/
-/*  background-color: #FFF5E5;*/
-/*}*/
-
 /* Mobile Navigation Styles */
 .md-dialog__content .md-nav__link {
   color: #D35400;
@@ -91,4 +81,3 @@ html {
 .custom-callout p {
   margin: 0;
 }
-

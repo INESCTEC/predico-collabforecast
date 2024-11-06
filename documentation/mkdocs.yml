@@ -43,9 +43,11 @@ nav:
     - Contacts: contacts_useful_links.md
     - Useful Links: useful_links.md
 markdown_extensions:
+  - pymdownx.snippets
   - tables
   - codehilite
   - admonition
+  - attr_list
   - pymdownx.superfences
   - pymdownx.highlight
   - pymdownx.details

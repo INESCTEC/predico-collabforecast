@@ -16,52 +16,22 @@ After downloading the raw measurements data, the next step for Forecasters is to
 
 First, select a challenge from the list of challenges you have retrieved:
 
-```python title="select_challenge.py"
-# Unpack selected challenge information
-resource_id = selected_challenge["resource"]
-challenge_id = selected_challenge["id"]
-start_datetime = selected_challenge["start_datetime"]
-end_datetime = selected_challenge["end_datetime"]
-
-print(f"""
-Challenge ID: {challenge_id}
-Resource ID: {resource_id}
-Start DT: {start_datetime}
-End DT: {end_datetime}
-""")
+```python title="submit_forecast.py"
+--8<-- "docs/examples/submit_forecast.py:31:38"
 ```
 
-## Preparing Forecast Data
+## Preparing Forecast Submissions Time-series Data
 
-Next, prepare the forecast data for submission. In this example, we'll generate random data for the forecast:
+Next, prepare the forecast data for submission. 
 
-```python title="prepare_forecast.py"
-# Create a random 24h submission:
-# Generate datetime values for the challenge period:
-datetime_range = pd.date_range(start=start_datetime, 
-                               end=end_datetime, 
-                               freq='15T')
-datetime_range = [x.strftime("%Y-%m-%dT%H:%M:%SZ") for x in datetime_range]
-# Generate random values for the "value" column
-values = np.random.uniform(low=0.0, high=1.0, size=len(datetime_range))
-values = [round(x, 3) for x in values]
+!!! important "Important"
 
-# Reuse this data to prepare 3 different quantiles submissions Q10, Q50, Q90
-submission_list = []
-for qt in ["q10", "q50", "q90"]:
-    qt_forec = pd.DataFrame({
-    'datetime': datetime_range,
-    'value': values,
-    })
-    submission_list.append({
-        "variable": qt, 
-        "forecasts": qt_forec.to_dict(orient="records")
-    })
+    In this example, our submission will be exclusively composed by random samples.
+    However, you should prepare your model based on the raw measurements data for the challenge `resource` (see 
+    [Downloading Raw Data](downloading_raw_data.md) section), and any external information sources you might have access to.
 
-# Your submissions:
-print("Submission List:")
-for i, submission in enumerate(submission_list):
-    print("-"*79)
-    print(f"Submission #{i+1}")
-    print(json.dumps(submission, indent=3))
+```python title="submit_forecast.py"
+--8<-- "docs/examples/submit_forecast.py:46:75"
 ```
+
+<a href="../examples/submit_forecast.py" download="submit_forecast.py"><b>Download Full Example</b></a>

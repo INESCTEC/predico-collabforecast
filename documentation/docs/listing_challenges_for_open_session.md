@@ -10,34 +10,33 @@ After retrieving the open market sessions, you may want to list the challenges a
 
 Here's how you can retrieve the list of registered challenges for a specific open market session using Python:
 
-```python title="listing_challenges_for_open_session.py"
-import requests
-
-access_token = "your_access_token"
-open_market_session_id = "your_open_market_session_id"
-
-headers = {
-    'Authorization': f'Bearer {access_token}',
-    'Accept': 'application/json'
-}
-
-params = {
-    'market_session': open_market_session_id
-}
-
-response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
-    params=params,
-    headers=headers
-)
-
-# Check if the request was successful
-if response.status_code == 200:
-    challenges = response.json()
-    print("Challenges for Open Market Session:")
-    for challenge in challenges:
-        print(f"- Challenge ID: {challenge['id']}, Name: {challenge['name']}")
-else:
-    print(f"Failed to retrieve challenges. Status code: {response.status_code}")
-
+```python title="list_challenges_for_open_session.py"
+--8<-- "docs/examples/list_challenges_for_open_session.py"
 ```
+
+<a href="../examples/list_challenges_for_open_session.py" download="list_challenges_for_open_session.py"><b>Download Full Example</b></a>
+
+
+### JSON Example Response 
+??? example "Click to view Example Response"
+
+    ```json
+    {
+      "code": 200,
+      "data": [
+        {
+          "id": "ef3a473f-0fcf-4880-8b42-93f6bf732e3a",
+          "use_case": "wind_power",
+          "start_datetime": "2024-06-24T22:00:00Z",
+          "end_datetime": "2024-06-25T21:45:00Z",
+          "target_day": "2024-06-25",
+          "registered_at": "2024-06-24T09:19:33.990638Z",
+          "updated_at": "2024-06-24T09:19:33.990638Z",
+          "user": "3ca74375-2ac0-46f4-b4bf-7cf013d0c28f",
+          "resource": "b92c96d1-f5ee-4f96-a4cc-216a92acb10b",
+          "market_session": 1,
+          "resource_name": "wind_farm_x"
+        }
+      ]
+    }
+    ```
