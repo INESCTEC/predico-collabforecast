@@ -27,21 +27,23 @@ extra_css:
   - extra.css
 nav:
   - Introduction: introduction.md
-  - Authentication: authentication.md
+  - Getting Started: getting_started.md
+  - Forecaster Application: application.md
   - Forecaster Interactions:
-      - Listing Open Market Sessions: listing_open_market_sessions.md
-      - Listing Challenges for Open Sessions: listing_challenges_for_open_session.md
+      - Authentication: authentication.md
+      - Listing Open Sessions: listing_open_sessions.md
+      - Listing Challenges: listing_challenges.md
       - Downloading Raw Data: downloading_raw_data.md
-      - Preparing Forecast: preparing_forecast.md
-      - Submitting Forecast: submitting_forecast.md
+      - Preparing a Forecast: preparing_forecast.md
+      - Submitting a Forecast: submitting_forecast.md
       - Submitting Historical Forecasts (First Time Only): submitting_historical_forecasts.md
-      - Previewing Submissions: previewing_submissions.md
-      - Previewing Submitted Forecasts: previewing_submitted_forecasts.md
-      - Previewing Forecast Skill Scores: previewing_forecast_skill_scores.md
-      - Previewing Forecast Contributions: previewing_forecast_contributions.md
+      - Listing Submissions: listing_submissions.md
+      - Listing Submission Scores: listing_submission_scores.md
+      - Listing Submission Contributions: listing_submission_contribution.md
   - Other:
-    - Contacts: contacts_useful_links.md
+    - Contacts: contacts.md
     - Useful Links: useful_links.md
+    - FAQ: faq.md
 markdown_extensions:
   - pymdownx.snippets
   - tables

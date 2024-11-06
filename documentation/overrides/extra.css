@@ -2,10 +2,10 @@
 /* Force the vertical scrollbar to always appear */
 html {
   overflow-y: scroll;
-  text-align: justify;
 }
+
 .md-header {
-  background-color: #D35400;
+  background-color: #ffffff;
 }
 
 .md-header__title, .md-header__subtitle, .md-header__button, .md-header__link {
@@ -30,28 +30,23 @@ html {
 
 /* Navigation Link Styles */
 .md-nav__link {
-  color: #D35400;
 }
 
 .md-nav__link:hover {
-  color: #A04000;
   text-decoration: underline;
 }
 
 .md-nav__link--active {
-  color: #E67E22;
   font-weight: bold;
 }
 
 /* Navigation Icon Styles */
 .md-nav__link .md-nav__icon {
-  color: #D35400;
 }
 
 /* Section Title Styles */
 .md-nav__title {
   font-size: 1rem;
-  color: #A04000;
   font-weight: bold;
   margin-top: 1rem;
   background-color: #FDDAB1;
@@ -60,18 +55,15 @@ html {
 
 /* Mobile Navigation Styles */
 .md-dialog__content .md-nav__link {
-  color: #D35400;
 }
 
 .md-dialog__content .md-nav__title {
   font-size: 1rem;
-  color: #000000;
   font-weight: bold;
   margin-top: 1rem;
 }
 
 .custom-callout {
-  border: 2px solid #D35400; /* Dark orange border */
   background-color: #FFF5E5; /* Light orange background */
   padding: 1rem;
   border-radius: 8px;
