@@ -23,7 +23,7 @@ Below you can find examples for the following functionalities:
 
 ### Application:
 * Forecasters apply to participate by sending an email to predico@elia.be.
-* Upon acceptance (by Elia Group), they receive a registration link to complete their registration. 
+* Upon acceptance (by Elia), they receive a registration link to complete their registration. 
 
 ### Useful Links:
 
@@ -167,7 +167,7 @@ else:
 
 ### 2.2 List collab forecasting challenges for open session
 
-Market Challenges are opportunities, published by the Market Maker (Elia Group), with meta-data regarding a forecasting challenge that Forecasters can try to submit forecasts for.
+Market Challenges are opportunities, published by the Market Maker (Elia), with meta-data regarding a forecasting challenge that Forecasters can try to submit forecasts for.
 
 **(see the official [documentation](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) for this endpoint)**
 

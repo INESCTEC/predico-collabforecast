@@ -152,7 +152,7 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
         operation_description="List forecast skill scores for a challenge.",
         manual_parameters=market_session_submission_scores_query_params(),
         responses={
-            200: MarketSessionEnsembleWeightsResponse["GET"],
+            200: MarketSessionSubmissionScoresRetrieveResponse["GET"],
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
