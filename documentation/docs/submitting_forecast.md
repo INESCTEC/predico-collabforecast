@@ -5,7 +5,7 @@ Forecasters can submit forecasts for open Market Challenges, competing for the p
 !!! info "Prerequisites"
 
     - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
-    - **Selected Challenge**: You should have a selected challenge from the [Listing Challenges for Open Sessions](listing_challenges_for_open_session.md) section.
+    - **Selected Challenge**: You should have a selected challenge from the [Listing Challenges](listing_challenges.md) section.
     - **Prepared Forecast Data**: Follow the [Preparing a Forecast](preparing_forecast.md) section to prepare your forecast submissions.
 
 

@@ -4,7 +4,7 @@ Forecasters must submit historical forecast samples to the Predico platform befo
 
 !!! info "Prerequisites"
     - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
-    - **Selected Challenge**: You should have a selected challenge from the [Listing Challenges for Open Sessions](listing_challenges_for_open_session.md) section.
+    - **Selected Challenge**: You should have a selected challenge from the [Listing Challenges](listing_challenges.md) section.
     - **Prepared Historical Forecast Data**: Follow the steps outlined below to prepare your historical forecasts.
 
 ## Overview

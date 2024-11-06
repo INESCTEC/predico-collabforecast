@@ -4,7 +4,7 @@ After retrieving the open market sessions, you may want to list the challenges a
 
 !!! info "Prerequisites"
     - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
-    - **Open Market Session ID**: You should have the ID of the open market session you're interested in. See [Listing Open Market Sessions](listing_open_market_sessions.md) to retrieve it.
+    - **Open Market Session ID**: You should have the ID of the open market session you're interested in. See [Listing Open Sessions](listing_open_sessions.md) to retrieve it.
 
 ## Retrieving Challenges for an Open Market Session
 

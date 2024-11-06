@@ -10,7 +10,7 @@ After downloading the raw measurements data, the next step for Forecasters is to
 
     - **Python Environment**: Ensure you have Python installed with the necessary libraries (`pandas`, `numpy`, `requests`).
     - **Access Token**: A valid access token is required for authentication. Refer to the [Authentication](authentication.md) section if needed.
-    - **Challenges List**: A list of challenges retrieved from the [Listing Challenges for Open Sessions](listing_challenges_for_open_session.md) section.
+    - **Challenges List**: A list of challenges retrieved from the [Listing Challenges](listing_challenges.md) section.
 
 ## Selecting a Challenge
 

@@ -2,7 +2,7 @@
 
 Before interacting with the Predico API, you need to authenticate using your registered email and password.
 **Ensure that you have completed the registration process and that your email address has been validated**. 
-If you haven't registered yet, please refer to the [Forecaster Application](introduction.md) section for instructions.
+If you haven't registered yet, please refer to the [Forecaster Application](home.md) section for instructions.
 
 ## Retrieving an Access Token
 

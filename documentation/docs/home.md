@@ -7,6 +7,8 @@ This documentation is designed to help forecasters to **learn** more about the p
 
 !!! warning "Important"
     This platform is a proof of concept, so there might be changes to improve the outcomes for all parties.
+    
+This platform was developed and is maintained by (INESC TEC)[https://www.inesctec.pt/pt] Centre for Power and Energy Systems (CPES).
 
 ## Where to start?
 
@@ -27,8 +29,8 @@ The following sections are designed to be followed sequentially to ensure a smoo
 6. [Submitting a Forecast](submitting_forecast.md): Submit the forecast to the Predico API Platform.
 7. [Submitting Historical Forecasts](submitting_historical_forecasts.md): Submit historical forecast samples to the Predico API Platform.
 8. [Listing Submissions](listing_submissions.md): Retrieve a list of forecasts submitted by the forecaster.
-9. [Listing Submission Scores](listing_submission_scores.md): Retrieve the forecast skill scores for your submissions.
-10. [Listing Submission Contribution](listing_submission_contribution.md): Retrieve the forecast contribution for your submissions (to the final ensemble forecasts).
+9. [Listing Submission Scores](listing_submissions_scores.md): Retrieve the forecast skill scores for your submissions.
+10. [Listing Submission Contribution](listing_submissions_contributions.md): Retrieve the forecast contribution for your submissions (to the final ensemble forecasts).
 
 !!! important "Important"
     While the provided code examples are demonstrated in [**Python**](https://www.python.org/), the fundamental logic and sequential 

@@ -9,7 +9,7 @@ After selecting a challenge, the next step is to download the raw observed data 
 !!! info "Prerequisites"
 
     - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
-    - **Challenges List**: You should have a list of challenges retrieved. See [Listing Challenges for Open Sessions](listing_challenges_for_open_session.md) to obtain this list.
+    - **Challenges List**: You should have a list of challenges retrieved. See [Listing Challenges](listing_challenges.md) section to obtain this list.
 
 ## Selecting a Challenge
 

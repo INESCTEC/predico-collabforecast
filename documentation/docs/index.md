@@ -1,17 +1,15 @@
-# Welcome to MkDocs
+# Predico - Collaborative Forecasting Platform
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+## Overview 
+Welcome to **Predico**, a Collaborative Forecasting Platform initiative designed to enhance forecasting accuracy through collaboration between market makers and forecasters.
 
-## Commands
+This documentation is designed to help forecasters to **learn** more about the platform and **interact** with it, effectively.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+!!! warning "Important"
+    This platform is a proof of concept, so there might be changes to improve the outcomes for all parties.
 
-## Project layout
+This platform was developed and is maintained by (INESC TEC)[https://www.inesctec.pt/pt] Centre for Power and Energy Systems (CPES).
+    
+## Where to start?
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+See the [Home](home.md) section.
