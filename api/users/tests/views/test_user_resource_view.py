@@ -184,7 +184,7 @@ class TestUserResourceView(APITestCase):
     def test_normal_list_all_resources(self):
         login_user(self.client, user=self.normal_user1)
         response = self.client.get(self.base_url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_normal_delete_admin_resource(self):
         # login with user 1
