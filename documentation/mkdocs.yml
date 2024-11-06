@@ -26,7 +26,7 @@ theme:
 extra_css:
   - extra.css
 nav:
-  - Introduction: introduction.md
+  - Home: home.md
   - Getting Started: getting_started.md
   - Forecaster Application: application.md
   - Forecaster Interactions:
@@ -38,8 +38,8 @@ nav:
       - Submitting a Forecast: submitting_forecast.md
       - Submitting Historical Forecasts (First Time Only): submitting_historical_forecasts.md
       - Listing Submissions: listing_submissions.md
-      - Listing Submission Scores: listing_submission_scores.md
-      - Listing Submission Contributions: listing_submission_contribution.md
+      - Listing Submission Scores: listing_submissions_scores.md
+      - Listing Submission Contributions: listing_submissions_contributions.md
   - Other:
     - Contacts: contacts.md
     - Useful Links: useful_links.md

@@ -1,13 +1,16 @@
 # Predico - Collaborative Forecasting Platform
 
 ## Overview 
-Welcome to Predico, a Collaborative Forecasting Platform initiative designed to enhance forecasting accuracy through collaboration between market makers and forecasters.
+Welcome to **Predico**, a Collaborative Forecasting Platform initiative designed to enhance forecasting accuracy through collaboration between market makers and forecasters.
 
 This documentation is designed to help forecasters to **learn** more about the platform and **interact** with it, effectively.
 
 !!! warning "Important"
     This platform is a proof of concept, so there might be changes to improve the outcomes for all parties.
 
+## Where to start?
+
+See the [Getting Started](getting_started.md) section.
 
 ## Documentation Outline
 
