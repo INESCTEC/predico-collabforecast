@@ -158,8 +158,9 @@ class NotEnoughDataToSubmit(APIException):
                       "minimum historical forecast samples requirement "
                       "to participate in this challenge. "
                       "To ensure your eligibility, please submit at least "
-                      "({}) historical samples to Resource ID '{}', via "
-                      "POST request to the "
+                      "({}) historical forecast samples for the 40 days "
+                      "prior to this challenge start date, to Resource ID "
+                      "'{}', via POST request to the "
                       "'/data/individual-forecasts/historical' endpoint.")
     default_code = 'not_enough_data_to_submit'
 
@@ -263,3 +264,13 @@ class EnsembleWeightsAlreadySet(APIException):
     default_detail = ("The ensemble weights are already set for ensemble "
                       "ID '{}'. Please use the PUT endpoint to update it.")
     default_code = 'ensemble_weights_already_set'
+
+
+class MissingQ50Forecasts(APIException):
+
+    def __init__(self):
+        super().__init__(self.default_detail)
+    status_code = 409
+    default_detail = ("You must provide forecasts for the quantile 50 "
+                      "before submitting other quantiles.")
+    default_code = 'missing_q50_forecasts'

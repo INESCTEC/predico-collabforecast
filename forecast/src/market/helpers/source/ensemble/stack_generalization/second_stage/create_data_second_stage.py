@@ -63,8 +63,10 @@ def create_2stage_dataframe(df_train_ensemble, df_test_ensemble, y_train, y_test
     assert df_train_ensemble.shape[0] == len(predictions_insample), "Length mismatch between train data and in-sample predictions"
     assert df_test_ensemble.shape[0] == len(predictions_outsample), "Length mismatch between test data and out-sample predictions"
     assert len(y_train) == len(predictions_insample), "Length mismatch between targets and in-sample predictions"
-    assert len(y_test) == 96, "Length should be 96"
-    assert len(predictions_outsample) == 96, "Length should be 96"
+    assert 92 <= len(y_test) <= 100, "Length should be between 92 and 100"
+    assert 92 <= len(predictions_outsample) <= 100, "Length should be 96"
+    assert len(y_test) == len(predictions_outsample), "Length mismatch between targets and out-sample predictions"
+
     " Create 2-stage ensemble dataframe."
     # Creating DataFrame for in-sample predictions
     df_insample = pd.DataFrame(predictions_insample, columns=['predictions'], index=df_train_ensemble.index)
@@ -131,10 +133,11 @@ def prepare_pre_test_data(params, quantile, df_test_ensemble, df_test_ensemble_q
     """
     # Assertions for input validation
     assert isinstance(df_test_ensemble, pd.DataFrame), "df_test_ensemble should be a DataFrame"
-    assert len(df_test_ensemble) == 96, "df_test_ensemble should have 96 rows"
-    assert len(df_test_ensemble_q10) == 96 or df_test_ensemble_q10.empty, "df_test_ensemble_q10 should have 96 rows or be empty"
-    assert len(df_test_ensemble_q90) == 96 or df_test_ensemble_q90.empty, "df_test_ensemble_q90 should have 96 rows or be empty"
+    assert  92 <= len(df_test_ensemble) <= 100, 'df_test_ensemble should have between 92 and 100 rows'
+    assert  92 <= len(df_test_ensemble_q10) <= 100 or df_test_ensemble_q10.empty, 'df_test_ensemble_q10 should have between 92 and 100 rows or be empty'
+    assert  92 <= len(df_test_ensemble_q90) <= 100 or df_test_ensemble_q90.empty, 'df_test_ensemble_q90 should have between 92 and 100 rows or be empty'
     assert "norm_targ" in df_test_ensemble.columns, "'norm_targ' should be in df_test_ensemble columns"
+
     target_column = "norm_targ"
     # Get the test data (features and target)
     X_test = df_test_ensemble.drop(columns=[target_column]).values

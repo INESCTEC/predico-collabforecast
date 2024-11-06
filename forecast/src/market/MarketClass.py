@@ -3,9 +3,15 @@ import gc
 import pandas as pd
 
 from time import time
-from conf import settings
 from loguru import logger
 from joblib import Parallel, delayed
+
+# -- Configs:
+try:
+    from conf import settings
+except ImportError:
+    # this is needed for testing purposes
+    from ...conf import settings
 
 # -- Market entities classes:
 from ..market.BuyerClass import BuyerClass
@@ -15,14 +21,11 @@ from ..market.util.custom_exceptions import (
     NoMarketUsersExceptions
 )
 
-# -- Mock data imports:
-# from src.market.helpers.model_helpers import create_forecast
-# from src.market.helpers.model_helpers import create_forecast_mock as create_forecast
-
 from ..market.helpers.source.ml_engine import create_ensemble_forecasts
 from ..market.helpers.source.ensemble.stack_generalization.wind_ramp.detector import wind_ramp_detector
 from ..market.helpers.source.assessment_contributions import compute_forecasters_contributions
 from ..market.helpers.source.assessment_forecast_skill import compute_forecasters_skill_scores
+
 
 class MarketClass:
     DEBUG = False
@@ -420,13 +423,12 @@ class MarketClass:
             ramps_ = ramps_.drop(columns=quantiles_)
             ramps_["datetime"] = ramps_.index.strftime("%Y-%m-%dT%H:%M:%SZ")
             ramps_ = ramps_.to_dict(orient="records")
-
-        # todo: check api responses
-        api_controller.post_market_ramp_alerts(
-            challenge_id=buyer_output["challenge_id"],
-            model_id="idw_based",
-            ramp_alerts=ramps_
-        )
+            # todo: check api responses
+            api_controller.post_market_ramp_alerts(
+                challenge_id=buyer_output["challenge_id"],
+                model_id="idw_based",
+                ramp_alerts=ramps_
+            )
 
 
     @staticmethod

@@ -98,7 +98,7 @@ class MarketTasks(object):
             # Close open market session (no more submissions):
             market.close_market_session()
             # Run market session:
-            status = market.run_market_session()
+            status = market.run_market_session(backup_session_inputs=True)
             if status:
                 logger.success(f"{msg_} Ok! {time() - t0:.2f}s")
             else:
@@ -114,6 +114,11 @@ class MarketTasks(object):
             logger.error(f"{msg_} Failed! {time() - t0:.2f}s")
         except Exception:
             logger.exception(f"{msg_} Failed! {time() - t0:.2f}s")
+        finally:
+            market = MarketController()
+            logger.info("Finishing market session ...")
+            market.finish_market_session()
+            logger.success("Finishing market session ... Ok!")
 
 
 if __name__ == '__main__':

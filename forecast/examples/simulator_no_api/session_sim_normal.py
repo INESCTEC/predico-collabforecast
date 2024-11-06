@@ -1,14 +1,14 @@
 # flake8: noqa
+import os
 import gc
-import sys
 
 from time import time
 from copy import deepcopy
 from loguru import logger
 
 # -- If needed to run via command line, add root proj to sys path:
-sys.path.append(r"C:\Users\jrsa\Coding\project_ELIA\data-sharing-barter-incentives-forecast")
-from src.market import MarketClass
+os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from forecast.src.market import MarketClass
 
 from simulation import SessionGenerator, AgentsLoader, SimulatorManager
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # Set base simulation parameters:
     N_JOBS = 1
     simulation_params = {
-        "dataset_path": "files/datasets/example_elia_just_q50",
+        "dataset_path": "files/datasets/example_elia",
         "report_name_suffix": "test",
         "nr_sessions": 10,
         "first_lt_utc": "2023-02-15T10:30:00Z",

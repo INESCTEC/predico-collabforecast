@@ -112,7 +112,7 @@ class UserRegisterView(APIView):
     @conditional_swagger_auto_schema(
         operation_summary="User registration",
         operation_id="post_user_register",
-        operation_description="[Public] Method for new agent registration. "
+        operation_description="Method for new agent registration. "
                               "An email is issued with validation link upon "
                               "registration.",
         request_body=UserRegistrationSerializer,

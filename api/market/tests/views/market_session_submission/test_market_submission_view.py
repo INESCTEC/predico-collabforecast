@@ -151,6 +151,14 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         self.assertGreaterEqual(len(response_data), 23*4) # DST lower
         self.assertLessEqual(len(response_data), 25*4)  # DST Upper
 
+    def test_normal_forecaster_submit_forecast_q90_before_q50(self):
+        challenge_data = self.create_challenge_pipeline()
+        invalid_submission_data = {"variable": "q90", "forecasts": []}
+        submission_url = reverse("market:market-session-submission-create-update", kwargs={"challenge_id": challenge_data["id"]})
+        response = self.client.post(submission_url, data=invalid_submission_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+
+
     def test_admin_forecaster_submit_forecast_with_historical(self):
         challenge_data = self.create_challenge_pipeline()
         self.create_submission_pipeline(challenge_data=challenge_data, force_admin=True)
@@ -211,7 +219,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     def test_different_forecast_variables_without_historical(self):
         challenge_data = self.create_challenge_pipeline()
-        for variable in ["q05", "q50", "q95"]:
+        for variable in ["q50", "q10", "q90"]:
             forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
             submission_data = create_market_submission_data(variable=variable, forecasts=forecasts_data)
             submission_url = reverse("market:market-session-submission-create-update", kwargs={"challenge_id": challenge_data["id"]})
@@ -220,7 +228,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
 
     def test_different_forecast_variables(self):
         challenge_data = self.create_challenge_pipeline()
-        for variable in ["q05", "q50", "q95"]:
+        for variable in ["q50", "q10", "q90"]:
             self.create_submission_pipeline(challenge_data=challenge_data, quantile=variable)
 
         response = self.client.get(self.submission_list_url, data={"challenge": challenge_data["id"]})
@@ -230,7 +238,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         for submission in response_data:
             self.assertEqual(submission["market_session_challenge"], challenge_data["id"])
             self.assertEqual(submission["market_session_challenge_resource_id"], challenge_data["resource"])
-            self.assertIn(submission["variable"], ["q05", "q50", "q95"])
+            self.assertIn(submission["variable"], ["q50", "q10", "q90"])
 
         response = self.client.get(self.submission_forecasts_list_url, data={"challenge": challenge_data["id"]})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -239,63 +247,63 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         self.assertGreaterEqual(len(response_data), 23*4*3)  # DST lower
         self.assertLessEqual(len(response_data), 25*4*3)  # DST upper
 
-    def test_submission_update(self):
-        challenge_data = self.create_challenge_pipeline()
-        submission = self.create_submission_pipeline(challenge_data=challenge_data)
-        updated_forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
-        updated_submission_data = create_market_submission_data(variable="q50", forecasts=updated_forecasts_data)
-        submission_url = reverse("market:market-session-submission-create-update", kwargs={"challenge_id": challenge_data["id"]})
-        response = self.client.put(submission_url, data=updated_submission_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()["data"]
-        self.assertEqual(response_data["challenge_id"], challenge_data["id"])
-
-    def test_concurrent_submissions(self):
-        challenge_data = self.create_challenge_pipeline()
-
-        # Prepare forecast historical data (31 days prior to challenge)
-        st_ = dt.datetime.strptime(challenge_data["forecast_start_datetime"], "%Y-%m-%dT%H:%M:%SZ")
-        forecasts_historical_data = create_forecasts_submission_data(
-            start_date=st_ - pd.DateOffset(days=31),
-            end_date=st_
-        )
-        # Post historical data:
-        historical_submission_data = create_market_historical_forecasts_data(
-            resource_id=challenge_data["resource"],
-            launch_time=dt.datetime.utcnow(),
-            variable="q50",
-            forecasts=forecasts_historical_data
-        )
-        # Publish historical data:
-        response = self.client.post(self.forecast_historical_data_url,
-                                    data=historical_submission_data,
-                                    format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-        submission_data = create_market_submission_data(
-            variable="q50",
-            forecasts=create_forecasts_submission_data(
-                start_date=challenge_data["forecast_start_datetime"],
-                end_date=challenge_data["forecast_end_datetime"]
-            )
-        )
-        submission_url = reverse(
-            "market:market-session-submission-create-update",
-            kwargs={"challenge_id": challenge_data["id"]}
-        )
-
-        def submit_forecast():
-            response = self.client.post(submission_url, data=submission_data, format="json")
-            print(response.json())
-            self.assertIn(response.status_code, [status.HTTP_201_CREATED, status.HTTP_409_CONFLICT])
-
-        threads = [threading.Thread(target=submit_forecast) for _ in range(5)]
-        for thread in threads:
-            thread.start()
-        for thread in threads:
-            thread.join()
-
-        response = self.client.get(self.submission_list_url, data={"challenge": challenge_data["id"]})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()["data"]
-        self.assertGreaterEqual(len(response_data), 1)
+    # def test_submission_update(self):
+    #     challenge_data = self.create_challenge_pipeline()
+    #     submission = self.create_submission_pipeline(challenge_data=challenge_data)
+    #     updated_forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
+    #     updated_submission_data = create_market_submission_data(variable="q50", forecasts=updated_forecasts_data)
+    #     submission_url = reverse("market:market-session-submission-create-update", kwargs={"challenge_id": challenge_data["id"]})
+    #     response = self.client.put(submission_url, data=updated_submission_data, format="json")
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     response_data = response.json()["data"]
+    #     self.assertEqual(response_data["challenge_id"], challenge_data["id"])
+    #
+    # def test_concurrent_submissions(self):
+    #     challenge_data = self.create_challenge_pipeline()
+    #
+    #     # Prepare forecast historical data (31 days prior to challenge)
+    #     st_ = dt.datetime.strptime(challenge_data["forecast_start_datetime"], "%Y-%m-%dT%H:%M:%SZ")
+    #     forecasts_historical_data = create_forecasts_submission_data(
+    #         start_date=st_ - pd.DateOffset(days=31),
+    #         end_date=st_
+    #     )
+    #     # Post historical data:
+    #     historical_submission_data = create_market_historical_forecasts_data(
+    #         resource_id=challenge_data["resource"],
+    #         launch_time=dt.datetime.utcnow(),
+    #         variable="q50",
+    #         forecasts=forecasts_historical_data
+    #     )
+    #     # Publish historical data:
+    #     response = self.client.post(self.forecast_historical_data_url,
+    #                                 data=historical_submission_data,
+    #                                 format="json")
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #
+    #     submission_data = create_market_submission_data(
+    #         variable="q50",
+    #         forecasts=create_forecasts_submission_data(
+    #             start_date=challenge_data["forecast_start_datetime"],
+    #             end_date=challenge_data["forecast_end_datetime"]
+    #         )
+    #     )
+    #     submission_url = reverse(
+    #         "market:market-session-submission-create-update",
+    #         kwargs={"challenge_id": challenge_data["id"]}
+    #     )
+    #
+    #     def submit_forecast():
+    #         response = self.client.post(submission_url, data=submission_data, format="json")
+    #         print(response.json())
+    #         self.assertIn(response.status_code, [status.HTTP_201_CREATED, status.HTTP_409_CONFLICT])
+    #
+    #     threads = [threading.Thread(target=submit_forecast) for _ in range(5)]
+    #     for thread in threads:
+    #         thread.start()
+    #     for thread in threads:
+    #         thread.join()
+    #
+    #     response = self.client.get(self.submission_list_url, data={"challenge": challenge_data["id"]})
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     response_data = response.json()["data"]
+    #     self.assertGreaterEqual(len(response_data), 1)

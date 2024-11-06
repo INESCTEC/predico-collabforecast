@@ -73,8 +73,7 @@ class MarketSessionChallengeView(APIView):
 
     @swagger_auto_schema(
         operation_id="get_market_session_challenge",
-        operation_description="Method for agents to list challenges for their "
-                              "resources in market sessions",
+        operation_description="List market session(s) challenge(s).",
         manual_parameters=market_session_challenge_query_params(),
         responses={
             200: MarketSessionChallengeResponse["GET"],
@@ -95,10 +94,10 @@ class MarketSessionChallengeView(APIView):
 
     @conditional_swagger_auto_schema(
         operation_id="post_market_session_challenge",
-        operation_description="Method for agents to place a challenge to "
-                              "purchase forecasts for a given resource "
+        operation_description="Method for market makers to register challenge "
+                              "to obtain forecasts for a given resource "
                               "in their portfolio and a specific "
-                              "market session",
+                              "market session.",
         request_body=MarketSessionChallengeCreateSerializer,
         responses={
             400: 'Bad request',

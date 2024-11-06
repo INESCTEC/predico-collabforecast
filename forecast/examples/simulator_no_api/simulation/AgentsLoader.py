@@ -4,7 +4,7 @@ import json
 import pandas as pd
 
 from loguru import logger
-from conf import settings
+from forecast.conf import settings
 
 
 class AgentsLoader:
