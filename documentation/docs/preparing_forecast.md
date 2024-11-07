@@ -35,3 +35,8 @@ Next, prepare the forecast data for submission.
 ```
 
 <a href="../examples/submit_forecast.py" download="submit_forecast.py"><b>Download Full Example</b></a>
+
+
+## What's next?
+
+Learn how to submit your forecasts on the Predico platform in the [Submitting a Forecast](submitting_forecast.md) section.

@@ -8,14 +8,12 @@ This documentation is designed to help forecasters to **learn** more about the p
 !!! warning "Important"
     This platform is a proof of concept, so there might be changes to improve the outcomes for all parties.
     
-This platform was developed and is maintained by [INESC TEC](https://www.inesctec.pt/pt) Centre for Power and Energy Systems (CPES).
+This platform was developed and is maintained by [INESC TEC](https://www.inesctec.pt/pt) Centre for Power and Energy Systems (CPES) developers.
 
 ## Where to start?
 
-See the [Getting Started](getting_started.md) section.
+Start by the [Introduction](introduction.md) section to understand the critical definitions and the general workflow of our collaborative forecasting platform.
 
-!!! tip "Check this out"
-    Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
 
 ## Documentation Outline
 

@@ -12,3 +12,8 @@ This ensures that all participants meet the necessary criteria and are properly 
 !!! warning "Important"
     - **Serious Applicants Only**: Only serious applications will be considered. Forecasters' submitted forecasts should perform as well as or better than Elia's current forecast, published on Elia's Open Data Portal (https://opendata.elia.be/). Elia may request a one-day, day-ahead forecast before enrolling the Forecaster to verify seriousness.
     - **Single Forecaster ID**: For now, a maximum of one account can be issued per individual or organization wanting to participate as a Forecaster.
+
+
+## What's next?
+
+Learn how to authenticate on the Predico platform in the [Authentication](authentication.md) section.

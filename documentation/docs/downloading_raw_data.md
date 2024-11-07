@@ -2,14 +2,27 @@
 
 After selecting a challenge, the next step is to download the raw observed data associated with the challenge's resource. Market Makers send time-series data periodically, which includes raw measurement data for their registered resources (e.g., wind farm #1).
 
-!!! info "Note"
-    - This step can be replicated for every challenge. In this example, we'll select the first challenge from the list.
+!!! important "Important"
     - The data is provided at a **15-minute resolution**, resulting in a large volume of samples. Therefore, **pagination** (Limit/Offset Strategy) is required to retrieve all data properly.
 
-!!! info "Prerequisites"
 
-    - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
-    - **Challenges List**: You should have a list of challenges retrieved. See [Listing Challenges](listing_challenges.md) section to obtain this list.
+## API Endpoints:
+
+To interact with the Predicto API and retrieve information about 
+the raw measurements for a specific challenge target resource,
+you can use the following endpoints:
+
+- **GET** [`/api/v1/market/challenge`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
+- **GET** [`/api/v1/data/raw-measurements/`](https://predico-elia.inesctec.pt/redoc/#tag/data/operation/get_raw_data) - Retrieve raw measurements for a specific challenge target resource.
+
+
+!!! important "Access Token Required"
+    An access token must be included in the `Authorization` header of your request. If you haven't obtained an access token yet, please refer to the [Authentication](authentication.md) section.
+
+
+!!! tip "Check this out"
+    Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
+
 
 ## Selecting a Challenge
 
@@ -71,3 +84,7 @@ Retrieve the raw data for the selected resource:
       }
     }
     ```
+
+## What's next?
+
+Learn how to prepare a forecast submission in the [Preparing a Forecast](preparing_forecast.md) section.

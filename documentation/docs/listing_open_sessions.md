@@ -1,9 +1,21 @@
 # Listing Open Sessions
 
-To interact with the Predico API and retrieve information about open market sessions, you need to make an authenticated GET request to the `/api/v1/market/session` endpoint.
+The most basic type of interaction is to list existing market sessions. Specifically, to check if there is any open market session available at this moment.
 
-!!! info "Access Token Required"
+## API Endpoints:
+
+To interact with the Predicto API and retrieve information about 
+open market sessions, 
+you can use the following endpoints:
+
+- **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
+
+!!! important "Access Token Required"
     An access token must be included in the `Authorization` header of your request. If you haven't obtained an access token yet, please refer to the [Authentication](authentication.md) section.
+
+!!! tip "Check this out"
+    Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
+
 
 ## Retrieving Current Open Sessions
 
@@ -41,3 +53,7 @@ Market sessions run periodically once a day, so if the response is empty, you ma
       ]
     }
     ```
+
+## What's next?
+
+Learn how to list session challenges information on the Predico platform in the [Listing Challenges](listing_challenges.md) section.

@@ -1,10 +1,25 @@
-# Listing Challenges for Open Market Sessions
+# Listing Challenges for Market Sessions
 
-After retrieving the open market sessions, you may want to list the challenges associated with a specific open market session. Challenges are opportunities published by the Market Maker (Elia) that Forecasters can submit forecasts for.
+After retrieving the open market sessions, you may want to list the challenges associated with a specific market session. 
+Challenges are opportunities published by the Market Maker (Elia) that Forecasters can submit forecasts for.
+
+## API Endpoints:
+
+To interact with the Predicto API and retrieve information about 
+challenges published in open market sessions, 
+you can use the following endpoints:
+
+- **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
+- **GET** [`/api/v1/market/challenge`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
+
 
 !!! info "Prerequisites"
     - **Access Token**: Ensure you have a valid access token. Refer to the [Authentication](authentication.md) section if needed.
     - **Open Market Session ID**: You should have the ID of the open market session you're interested in. See [Listing Open Sessions](listing_open_sessions.md) to retrieve it.
+
+!!! tip "Check this out"
+    Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
+
 
 ## Retrieving Challenges for an Open Market Session
 
@@ -40,3 +55,7 @@ Here's how you can retrieve the list of registered challenges for a specific ope
       ]
     }
     ```
+
+## What's next?
+
+Learn how to download measurements data information (published by Market Makers) on the Predico platform in the [Downloading Raw Data](downloading_raw_data.md) section.
