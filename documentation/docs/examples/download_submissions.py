@@ -38,8 +38,8 @@ response = requests.get(
 
 # Check if the request was successful
 if response.status_code == 200:
-    submission_contributions = response.json()
-    print(submission_contributions)
+    submission_forecasts = response.json()
+    print(submission_forecasts)
 else:
     print("Failed to retrieve submission forecasts.")
     print(f"Status code: {response.status_code}")
