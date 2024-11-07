@@ -13,7 +13,7 @@ open_market_session_id = "your_open_market_session_id"
 # Request the challenges for the open market session:
 response = requests.get(
     url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
-    params={'market_session': open_market_session_id},
+    params={'market_session': int(open_market_session_id)},
     headers=headers
 )
 
