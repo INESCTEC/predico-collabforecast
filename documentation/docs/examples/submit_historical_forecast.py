@@ -2,6 +2,7 @@ import json
 import requests
 import numpy as np
 import pandas as pd
+import datetime as dt 
 
 # Authenticate via `/token` endpoint
 access_token = "your_access_token_here"
@@ -16,7 +17,7 @@ open_market_session_id = "your_open_market_session_id"
 # Request the challenges for the open market session:
 response = requests.get(
     url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
-    params={'market_session': open_market_session_id},
+    params={'market_session': int(open_market_session_id)},
     headers=headers
 )
 
@@ -29,7 +30,7 @@ else:
     exit()
 
 # Select the first challenge of the list of challenges previous retrieved
-selected_challenge = challenges[0]
+selected_challenge = challenges["data"][0]
 
 # Unpack selected challenge information
 resource_id = selected_challenge["resource"]
