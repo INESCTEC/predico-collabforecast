@@ -7,7 +7,7 @@ In a real-world scenario, you would replace this with your forecasting model bas
 
 !!! info "Note"
     - **Example Purpose**: This example demonstrates preparing a 24-hour forecast submission with 15-minute interval samples using random data. Replace this with your forecasting model for actual use.
-    - **Quantiles**: The forecast includes three quantiles: Q10, Q50, and Q90, representing the 10th, 50th, and 90th percentiles, respectively.
+    - **Quantiles**: The example submission includes values for three variables, specifically 'quantiles' 10, 50, and 90.
 
 !!! info "Prerequisites"
 

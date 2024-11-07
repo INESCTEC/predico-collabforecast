@@ -34,6 +34,10 @@ In this example, we'll submit the random data generated in [Preparing a Forecast
 !!! warning "Important"
     - **First-Time Submission Requirement**: Before making your first submission, you must fulfill at least **1 month of historical forecast samples** submitted to the Predico platform. Refer to [Historical Forecast Submission](submitting_historical_forecasts.md) for detailed instructions.
 
+!!! note "On updating your submission"
+    - If you wish to update your submission, you can do so by submitting a new forecast. The latest submission will overwrite the previous one.
+
+
 ```python title="submit_forecast.py"
 --8<-- "docs/examples/submit_forecast.py:76:87"
 ```
