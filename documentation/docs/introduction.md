@@ -42,7 +42,7 @@ The Predico platform's forecasting process is structured into various modules, a
     * ***Wind Power***: Forecasts are generated through a series of steps including feature engineering, hyperparameter optimization, model training, and the final forecast generation.
     * ***Wind Power Variability***: A similar process is followed here, focusing on capturing fluctuations in wind power output, which includes feature engineering, hyperparameter optimization, model training, and forecast generation.
 - **Wind Ramp Detection**: Identifies sudden changes or "ramps" in wind power, which are crucial for managing grid stability and operational decisions.
-- **Forecast Skill Evaluation**: This stage evaluates the performance of forecasters using metrics like Root Mean Square Error (RMSE) and Pinball Loss. These scores help rank forecasters based on their forecast skill, per challenge participation.
+- **Forecast Skill Evaluation**: This stage evaluates the performance of forecasters using metrics like Root Mean Squared Error (RMSE) and Pinball Loss. These scores help rank forecasters based on their forecast skill, per challenge participation.
 
 
 !!! tip "Check this out"
