@@ -33,6 +33,12 @@ Here's how you can retrieve the list of registered challenges for a specific ope
 
 
 ### JSON Example Response 
+
+After running the example script, you will receive a response containing a list of market challenges. 
+It's important to verify whether the response contains any data, as there may be not challenges created yet, by the Market Maker. 
+
+If the response is empty, you may need to try again later.
+
 ??? example "Click to view Example Response"
 
     ```json

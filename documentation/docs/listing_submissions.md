@@ -31,6 +31,12 @@ Here's how you can retrieve the list your past submissions.
 
 
 ### JSON Example Response 
+
+After running the example script, you will have access your submissions list and the respective forecasted time-series. 
+
+If no data is received, please confirm if you are requesting data for the right challenge and/or resource identifier. 
+
+
 ??? example "Click to view Example Response"
 
     ```json

@@ -37,6 +37,15 @@ Here's how you can retrieve the list your past submissions.
 
 
 ### JSON Example Response 
+
+After running the example script, you will have access your submissions scores to the final ensemble forecasts.
+
+Note that you will only have access to submission scores once the evaluation phase of the challenge has been completed (which depends on the measurements data availability for the challenge period).
+
+If you are not seeing any data during some days, please confirm if you are requesting data for the right challenge identifier. 
+
+
+
 ??? example "Click to view Example Response"
 
     ```json

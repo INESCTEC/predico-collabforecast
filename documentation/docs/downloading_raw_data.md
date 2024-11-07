@@ -54,6 +54,11 @@ Retrieve the raw data for the selected resource:
 
 
 ### JSON Example Response 
+
+After running the example script, you will have access to the full dataset of raw measurements data published by the Market Maker. 
+If no data is received, please confirm if you are requesting data for the right resource identifier. 
+
+
 ??? example "Click to view Example Response"
 
     ```json

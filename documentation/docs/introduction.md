@@ -51,16 +51,16 @@ The Predico platform's forecasting process is structured into various modules, a
 
 ## Timezone and Time Resolution
 
-The Predico platform operates in the Central European Time (CET) timezone. Forecasters should be aware of the following time resolution requirements:
+The Predico platform operates in the Central European Time (CET). Forecasters should be aware of the following requirements:
 
 - **Timezone**: All times mentioned in the platform are in UTC.
 - **Challenges Forecast Horizon**: Challenges are typically day-ahead, covering the 24-hour period. 
 The start/end datetimes of the forecast are defined according to target country timezone (in this case, Belgium, CET). 
 
-Therefore the forecasted values for a specific day should cover:
+Therefore forecasted values for a specific day should cover:
 
-- **from 22:00 to 21:45 UTC** (DST Time / Summer Time)
-- **from 23:00 to 22:45 UTC** (Standard Time / Winter Time)
+- **Period from 22:00 to 21:45 UTC** (DST Time / Summer Time)
+- **Period from 23:00 to 22:45 UTC** (Standard Time / Winter Time)
 
 !!! info "Daylight Saving Time (DST)"
     - The platform adjusts for DST changes in March and October. On these days, the number of forecasted values per day will be 92 and 100, respectively.
@@ -72,12 +72,12 @@ Forecasters can submit forecasts for open Market Challenges, competing for the p
 
 It is important that forecasters understand the following rules and guidelines when submitting forecasts:
 
-- **Submission Timing**: Forecasts must be submitted before the gate closure time for that market session. Late submissions will not be considered.
+- **Submission Timing**: Forecasts must be submitted before the gate closure time (11:00 CET) for that market session. Late submissions will not be considered.
 - **Submission Period**: Market sessions are open from 10:00 to 11:00 CET daily.
-- **Submission Method**: Forecasts are submitted to the platform's API via HTTP requests. There is no front-end provided.
+- **Submission Method**: Forecasts are submitted to the platform's API via HTTPs requests. There is no front-end provided.
 - **Latest Forecast Considered**: Only the latest forecast from a forecaster in a market session will be considered.
-- **Unique Submissions**: A forecaster may not submit multiple forecasts for the same variable (e.g., two P50 submissions) under the same or different forecaster IDs for the same challenge. A Forecaster can update their original submissions using a specific API endpoint. The latest valid submissions (before Gate Closure Time) will be considered.
-- **Forecast Coverage**: Forecasts must cover the entire period mentioned in the challenge (start and end date). Given the fixed 15-minute time resolution for the submissions, Forecasters, should submit up to 96 forecasted quantities per variable (P10, P50, P90, conditional mean) per challenge, except for DST change days where these quantities might vary.
+- **Unique Submissions**: A forecaster may not submit multiple forecasts for the same variable (e.g., two quantile 50 submissions) under the same or different forecaster IDs for the same challenge. A Forecaster can update their original submissions using a specific API endpoint. The latest valid submissions (before Gate Closure Time) will be considered.
+- **Forecast Coverage**: Forecasts must cover the entire period mentioned in the challenge (start and end date). Given the fixed 15-minute time resolution for the submissions, Forecasters, should submit up to 96 forecasted quantities per variable (i.e., quantiles 10, 50, 90) per challenge, except for DST change days where these quantities might vary.
 - **Time Resolution Compliance**: Forecasts must match the time resolution specified in the challenge.
 - **Forecast Data Format**: Forecasts must be submitted in a specific format, as detailed in the [Preparing a Forecast](preparing_forecast.md) section.
 

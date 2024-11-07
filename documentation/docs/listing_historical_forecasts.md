@@ -42,6 +42,17 @@ Retrieve the raw data for the selected resource:
 
 
 ### JSON Example Response 
+
+After running the example script, you will have access your historical forecasted time-series. 
+
+If no data is received, please confirm if you are requesting data for the right challenge and/or resource identifier. 
+
+!!! warning "Warning"
+
+    - You will not have access to your submissions via this endpoint, just the initial historical forecasts upload. 
+    - To access your submitted forecasts (to challenges), please refer to the [Listing Submissions](listing_submissions.md) section.
+
+
 ??? example "Click to view Example Response"
 
     ```json

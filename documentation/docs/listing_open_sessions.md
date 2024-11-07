@@ -6,7 +6,7 @@ The most basic type of interaction is to list existing market sessions. Specific
 
 To interact with the Predicto API and retrieve information about 
 open market sessions, 
-you can use the following endpoints:
+you can use the following endpoint:
 
 - **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
 
