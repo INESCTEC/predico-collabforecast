@@ -35,7 +35,7 @@ In this example, we'll submit the random data generated in [Preparing a Forecast
     - **First-Time Submission Requirement**: Before making your first submission, you must fulfill at least **1 month of historical forecast samples** submitted to the Predico platform. Refer to [Historical Forecast Submission](submitting_historical_forecasts.md) for detailed instructions.
 
 !!! note "On updating your submission"
-    - If you wish to update your submission, you can do so by submitting a new forecast. The latest submission will overwrite the previous one.
+    - If you wish to update your submission, you can do so by submitting a new forecast using the [PUT method](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/put_market_session_submission). The latest submission will overwrite the previous one.
 
 
 ```python title="submit_forecast.py"

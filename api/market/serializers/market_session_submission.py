@@ -105,7 +105,17 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
                 challenge_id=challenge_id,
             )
         # ---------------------------------------------------------------
-        # 3) If the user is submitting a forecast for any quantile other than
+        # 3) Check if a submission for this challenge (w/ same variable) exists:
+        if MarketSessionSubmission.objects.filter(
+                user_id=user_id,
+                variable=variable_id,
+                market_session_challenge_id=challenge_id
+        ).exists():
+            raise market_exceptions.SubmissionAlreadyExists(
+                f_variable=variable_id,
+            )
+        # ---------------------------------------------------------------
+        # 4) If the user is submitting a forecast for any quantile other than
         # Q50, ensure Q50 forecasts exist first:
         if variable_id != MarketSessionSubmission.ForecastsVariable.Q50 and (
                 not MarketSessionSubmissionForecasts.objects.filter(
@@ -115,7 +125,7 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
             ).exists()):
                 raise market_exceptions.MissingQ50Forecasts()
         # ---------------------------------------------------------------
-        # 4) Check if user is sending forecasts for expected dates
+        # 5) Check if user is sending forecasts for expected dates
         # in forecast horizon
         expected_leadtimes = pd.date_range(
             start=challenge.start_datetime,
@@ -144,7 +154,7 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
                 f_variable=variable_id
             )
         # ---------------------------------------------------------------
-        # 5) Check if the user fulfills the minimum historical
+        # 6) Check if the user fulfills the minimum historical
         # forecasts data for this challenge
         # Users should have a minimum samples of historical forecasts
         # -- Past submissions historical data:
@@ -187,16 +197,6 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
         challenge_id = validated_data["challenge_id"]
         forecasts_data = validated_data["forecasts"]
         variable_id = validated_data["variable"]
-
-        # Check if a submission for this challenge (w/ same variable) exists:
-        if MarketSessionSubmission.objects.filter(
-                user_id=user_id,
-                variable=variable_id,
-                market_session_challenge_id=challenge_id
-        ).exists():
-            raise market_exceptions.SubmissionAlreadyExists(
-                f_variable=variable_id,
-            )
 
         try:
             # Prepare atomic transaction (all or nothing)

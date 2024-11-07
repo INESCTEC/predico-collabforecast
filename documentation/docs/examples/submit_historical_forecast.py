@@ -75,7 +75,7 @@ for qt in ["q10", "q50", "q90"]:
 
 # Submit historical forecasts:
 for submission in hist_submission_list:
-    response = requests.post(url=f"https://predico-elia.inesctec.pt/data/individual-forecasts/historical",
+    response = requests.post(url=f"https://predico-elia.inesctec.pt/api/v1/data/individual-forecasts/historical",
                             json=submission,
                             headers=headers)
 
