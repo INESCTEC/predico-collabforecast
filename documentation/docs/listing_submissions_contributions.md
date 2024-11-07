@@ -21,6 +21,7 @@ Here's how you can retrieve the list your past submissions.
 
 <a href="../examples/download_submissions_contributions.py" download="download_submissions_contributions.py"><b>Download Full Example</b></a>
 
+
 ### JSON Example Response 
 ??? example "Click to view Example Response"
 

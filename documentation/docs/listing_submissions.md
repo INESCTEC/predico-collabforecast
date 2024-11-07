@@ -10,6 +10,9 @@ Here's how you can retrieve the list your past submissions.
 --8<-- "docs/examples/download_submissions.py"
 ```
 
+<a href="../examples/download_submissions.py" download="download_submissions.py"><b>Download Full Example</b></a>
+
+
 ### JSON Example Response 
 ??? example "Click to view Example Response"
 
