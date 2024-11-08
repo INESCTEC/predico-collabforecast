@@ -106,14 +106,19 @@ class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):
             )
         # ---------------------------------------------------------------
         # 3) Check if a submission for this challenge (w/ same variable) exists:
-        if MarketSessionSubmission.objects.filter(
+        # Note: this should only be executed for POST requests
+        # Check if the user is performing a POST request
+        # (i.e. creating a new submission)
+        if self.context.get('request', 'POST').method == 'POST':
+            submission_exists = MarketSessionSubmission.objects.filter(
                 user_id=user_id,
                 variable=variable_id,
                 market_session_challenge_id=challenge_id
-        ).exists():
-            raise market_exceptions.SubmissionAlreadyExists(
-                f_variable=variable_id,
-            )
+            ).exists()
+            if submission_exists:
+                raise market_exceptions.SubmissionAlreadyExists(
+                    f_variable=variable_id
+                )
         # ---------------------------------------------------------------
         # 4) If the user is submitting a forecast for any quantile other than
         # Q50, ensure Q50 forecasts exist first:
