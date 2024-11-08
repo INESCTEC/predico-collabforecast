@@ -43,8 +43,9 @@ nav:
       - Listing Submission Contributions: listing_submissions_contributions.md
       - Listing Historical Forecasts: listing_historical_forecasts.md
   - Other:
-    - Contacts: contacts.md
+    - Reporting Issues: reporting.md
     - Useful Links: useful_links.md
+    - Contacts: contacts.md
     - FAQ: faq.md
 markdown_extensions:
   - pymdownx.snippets
