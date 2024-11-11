@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 import { Link } from 'react-router-dom';
 import { DocumentIcon, BookOpenIcon, LockClosedIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/solid';
 import logo from '../assets/images/elia-group-logo-svg.svg';
@@ -38,7 +38,7 @@ function Homepage() {
             {/*  your dashboard</h2>*/}
             
             {/* Grid Layout */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
               {/* Quick Guide Documentation Card */}
               <a
                 href="http://predico-elia.inesctec.pt/docs/"
@@ -47,21 +47,10 @@ function Homepage() {
                 className="flex flex-col items-center rounded-lg p-6 bg-transparent hover:bg-white hover:bg-opacity-30 hover:shadow-lg transition-transform transform"
               >
                 <ArchiveBoxIcon className="h-12 w-12 text-gray-700 mb-4" aria-hidden="true"/>
-                <h3 className="text-lg font-semibold text-gray-700">Start Documentation</h3>
+                <h3 className="text-lg font-semibold text-gray-700">Service Documentation</h3>
                 <p className="text-sm text-gray-600 mt-2 text-center">Step-by-step instructions and key resources.</p>
               </a>
-              
-              {/* Swagger Documentation Card */}
-              <a
-                href="https://predico-elia.inesctec.pt/swagger/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center rounded-lg p-6 bg-transparent hover:bg-white hover:bg-opacity-30 hover:shadow-lg transition-transform transform"
-              >
-                <DocumentIcon className="h-12 w-12 text-gray-700 mb-4" aria-hidden="true"/>
-                <h3 className="text-lg font-semibold text-gray-700">Swagger Documentation</h3>
-                <p className="text-sm text-gray-600 mt-2 text-center">View API documentation with Swagger</p>
-              </a>
+
               
               {/* Redoc Documentation Card */}
               <a
@@ -103,6 +92,13 @@ function Homepage() {
                   </a> - Access in-depth documentation
                 </p>
                 <p className="text-sm text-gray-600">
+                  <a href="https://predico-elia.inesctec.pt/quick-guide/bruno-api-client/Predico-Collabforecast.zip"
+                     target="_self"
+                     rel="noopener noreferrer" className="hover:underline text-indigo-600">
+                    Swagger Documentation
+                  </a> - View API documentation with Swagger
+                </p>
+                <p className="text-sm text-gray-600">
                   <a href="https://predico-elia.inesctec.pt/quick-guide/jpynb-client/forecaster_tutorial.ipynb"
                      target="_self" rel="noopener noreferrer"
                      className="hover:underline text-indigo-600">
@@ -116,20 +112,15 @@ function Homepage() {
                 </p>
               </div>
             </div>
-            
+
             {/* Support Links */}
             <div className="mt-4 text-left border-t border-gray-300 pt-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Email</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Contacts</h3>
               <div className="space-y-1 text-gray-600 text-sm ">
                 <p>
                   <a href="mailto:predico@inesctec.pt" className="hover:underline text-indigo-600">
-                    Technical support
+                    Email
                   </a> - For assistance with technical issues, system errors, or troubleshooting
-                </p>
-                <p>
-                  <a href="mailto:predico@elia.be" className="hover:underline text-indigo-600">
-                    Other questions
-                  </a> - For inquiries related to logistics, administration, or general questions
                 </p>
               </div>
             </div>
