@@ -92,7 +92,7 @@ function Homepage() {
                   </a> - Access in-depth documentation
                 </p>
                 <p className="text-sm text-gray-600">
-                  <a href="https://predico-elia.inesctec.pt/quick-guide/bruno-api-client/Predico-Collabforecast.zip"
+                  <a href="https://predico-elia.inesctec.pt/swagger/"
                      target="_self"
                      rel="noopener noreferrer" className="hover:underline text-indigo-600">
                     Swagger Documentation
