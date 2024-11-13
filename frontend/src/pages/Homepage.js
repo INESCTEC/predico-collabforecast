@@ -118,7 +118,7 @@ function Homepage() {
               <h3 className="text-sm font-semibold text-gray-700 mb-2">Contacts</h3>
               <div className="space-y-1 text-gray-600 text-sm ">
                 <p>
-                  <a href="mailto:predico@inesctec.pt" className="hover:underline text-indigo-600">
+                  <a href="mailto:predico@elia.be" className="hover:underline text-indigo-600">
                     Email
                   </a> - For assistance with technical issues, system errors, or troubleshooting
                 </p>
