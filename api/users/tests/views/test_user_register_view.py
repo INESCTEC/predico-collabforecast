@@ -134,14 +134,14 @@ class TestUserRegisterView(APITestCase):
         # Admin creates an invitation token:
         invite_token = self.admin_creates_invite_token()
         data = self.normal_user_1.copy()
-        data["password"] = "3o4as92!"
+        data["password"] = "N3as!"
         # User uses this token to register:
         client_headers = {"Authorization": f"Bearer {invite_token}"}
         response = self.client.post(self.base_url, data=data, format="json", headers=client_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         response_data = response.json()["data"]
         expected_response = {
-            'password': ['This password is too short. It must contain at least 8 characters.']
+            'password': ['Your password must be at least 8 characters long.']
         }
         self.assertEqual(response_data, expected_response)
 
