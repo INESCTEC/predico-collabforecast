@@ -1,14 +1,14 @@
 # ruff: noqa: E501
 
-EMAIL_SIGNATURE = '\n\nThe Collabforecast project team'
-EMAIL_SUBJECT_FORMAT = '[Collabforecast] - '
+EMAIL_SIGNATURE = '\n\nThe Predico team'
+EMAIL_SUBJECT_FORMAT = '[Predico] - '
 
 # Insert here the different components for your email subject and body message
 
 EMAIL_OPTS = {
     'registration': {
-        'subject': EMAIL_SUBJECT_FORMAT + 'Register to Collabforecast!',
-        'message': '<p>Click the following button to register to Collabforecast.'
+        'subject': EMAIL_SUBJECT_FORMAT + 'Register to Predico!',
+        'message': '<p>Click the following button to register to Predico.'
     },
 
     'generic-error-email': {

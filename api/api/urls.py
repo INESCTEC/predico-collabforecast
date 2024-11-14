@@ -42,7 +42,7 @@ By: INESC TEC - Centre for Power and Energy Systems (2024)
 """,
         license=openapi.License(
             name="GNU AFFERO GENERAL PUBLIC LICENSE",
-            url="https://github.com/INESCTEC/collabforecast/blob/main/LICENSE"
+            url="https://github.com/INESCTEC/predico-collabforecast/blob/main/LICENSE"
         ),
     ),
     public=True,
