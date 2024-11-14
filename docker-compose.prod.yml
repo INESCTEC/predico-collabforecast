@@ -73,16 +73,16 @@ services:
       - predico_network
     restart: "no"
 
-#  forecast:
-#    container_name: predico_forecast
-#    build:
-#      context: forecast
-#    env_file:
-#      - forecast/.env
-#    networks:
-#      - predico_network
-#    volumes:
-#      - ./forecast/files/:/app/files/
+  forecast:
+    container_name: predico_forecast
+    build:
+      context: forecast
+    env_file:
+      - forecast/.env
+    networks:
+      - predico_network
+    volumes:
+      - ./forecast/files/:/app/files/
 
 volumes:
   frontend_build:
