@@ -1,6 +1,6 @@
 Copyright (C) 2024, INESC TEC 
 
-PREDICO: Collaborative Forecasting and Data Market Platform initiative designed to enhance forecasting accuracy through collaboration between market makers (forecast buyers) and forecasters (forecast suppliers). Monetary and non-monetary incentives are created to incentivize data sharing according to its importance for specific data-centric use cases.
+Predico-CollabForecast: Collaborative Forecasting Platform initiative designed to enhance forecasting accuracy through collaboration between market makers (forecast buyers) and forecasters (forecast suppliers). Monetary and non-monetary incentives are created to incentivize data sharing according to its importance for specific data-centric use cases.
 
 This software is authored by:
 
@@ -88,7 +88,7 @@ Portugal
 
 If needed SAL (INESC TEC Technology Licensing Office - TLO) can assist with all the legal details regarding the licensing agreement 
  
-If you use PREDICO in a work that leads to a scientific publication, we would appreciate it if you would kindly cite PREDICO in your manuscript. 
+If you use Predico-CollabForecast in a work that leads to a scientific publication, we would appreciate it if you would kindly cite Predico-CollabForecast in your manuscript. 
 
 - Goncalves, C., Pinson, P. and Bessa, R.J., 2020. Towards data markets in renewable energy forecasting. IEEE Transactions on Sustainable Energy, 12(1), pp.533-542.
 
