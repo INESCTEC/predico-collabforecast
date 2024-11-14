@@ -27,6 +27,13 @@ class MarketSessionChallengeRetrieveSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         rep['resource_name'] = instance.resource.name  # noqa
+
+        # Check if the user is admin
+        request = self.context.get('request')
+        if request and not request.user.is_superuser:
+            # Modify the response if the user is admin
+            rep['user'] = instance.user.email
+
         return rep
 
 
