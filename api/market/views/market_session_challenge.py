@@ -89,7 +89,10 @@ class MarketSessionChallengeView(APIView):
         :return:
         """
         challenge = self.queryset(request)
-        serializer = MarketSessionChallengeRetrieveSerializer(challenge, many=True)
+        serializer = MarketSessionChallengeRetrieveSerializer(
+            challenge,
+            many=True,
+            context={'request': request})
         return Response(serializer.data)
 
     @conditional_swagger_auto_schema(
