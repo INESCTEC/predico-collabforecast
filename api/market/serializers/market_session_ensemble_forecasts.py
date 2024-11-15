@@ -73,15 +73,12 @@ class MarketSessionEnsembleCreateSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         challenge_id = self.context.get('challenge_id')
-        user_id = self.context.get('user_id')
         variable = attrs["variable"]
 
         # 1) Check if user is sending forecasts for an existing challenge
         try:
-            # Check if this resource belongs to user:
-            challenge = (MarketSessionChallenge.objects.
-                         select_related('market_session').
-                         get(id=challenge_id, user_id=user_id))
+            # Check if this challenge exists:
+            challenge = MarketSessionChallenge.objects.get(id=challenge_id)
         except MarketSessionChallenge.DoesNotExist as ex:
             raise market_exceptions.ChallengeNotRegistered(
                 challenge_id=challenge_id,
@@ -203,14 +200,11 @@ class MarketSessionRampAlertsCreateSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         challenge_id = self.context.get('challenge_id')
-        user_id = self.context.get('user_id')
 
         # 1) Check if user is sending alerts for an existing challenge
         try:
             # Check if this resource belongs to user:
-            challenge = (MarketSessionChallenge.objects.
-                         select_related('market_session').
-                         get(id=challenge_id, user_id=user_id))
+            challenge = MarketSessionChallenge.objects.get(id=challenge_id)
         except MarketSessionChallenge.DoesNotExist as ex:
             raise market_exceptions.ChallengeNotRegistered(
                 challenge_id=challenge_id,

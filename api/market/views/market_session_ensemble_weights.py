@@ -42,6 +42,11 @@ class MarketSessionEnsembleWeightsCreateUpdateView(APIView):
             500: "Internal Server Error",
         })
     def post(request, challenge_id):
+        # Only allow admin users w/ session management permissions
+        if not request.user.is_session_manager:
+            return Response(data="You do not have permission to perform this "
+                                 "action.", status=status.HTTP_403_FORBIDDEN)
+
         serializer = MarketSessionEnsembleWeightsCreateSerializer(
             data=request.data,
             context={'request': request, 'challenge_id': challenge_id},

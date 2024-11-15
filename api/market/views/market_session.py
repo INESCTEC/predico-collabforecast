@@ -83,13 +83,10 @@ class MarketSessionView(APIView):
         })
     @method_permission_classes((IsAdminUser,))
     def post(self, request):
-
-        # Only allow admin users w/ session management permissions to
-        # create or update market sessions
+        # Only allow admin users w/ session management permissions
         if not request.user.is_session_manager:
             return Response(data="You do not have permission to perform this "
-                                 "action.",
-                            status=status.HTTP_403_FORBIDDEN)
+                                 "action.", status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.serializer_class(
             data=request.data,

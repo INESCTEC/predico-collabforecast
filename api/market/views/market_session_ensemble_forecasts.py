@@ -98,11 +98,14 @@ class MarketSessionCreateEnsembleForecastsView(APIView):
         :param challenge_id:
         :return:
         """
-        user_id = request.user.id
+        # Only allow admin users w/ session management permissions
+        if not request.user.is_session_manager:
+            return Response(data="You do not have permission to perform this "
+                                 "action.", status=status.HTTP_403_FORBIDDEN)
+
         serializer = MarketSessionEnsembleCreateSerializer(
             data=request.data,
-            context={'request': request, 'challenge_id': challenge_id,
-                     'user_id': user_id},
+            context={'request': request, 'challenge_id': challenge_id},
         )
         serializer.is_valid(raise_exception=True)
         response = serializer.save()
@@ -217,11 +220,14 @@ class MarketSessionCreateRampAlertsView(APIView):
             500: "Internal Server Error",
         })
     def post(request, challenge_id):
-        user_id = request.user.id
+        # Only allow admin users w/ session management permissions
+        if not request.user.is_session_manager:
+            return Response(data="You do not have permission to perform this "
+                                 "action.", status=status.HTTP_403_FORBIDDEN)
+
         serializer = MarketSessionRampAlertsCreateSerializer(
             data=request.data,
-            context={'request': request, 'challenge_id': challenge_id,
-                     'user_id': user_id},
+            context={'request': request, 'challenge_id': challenge_id},
         )
         serializer.is_valid(raise_exception=True)
         response = serializer.save()
