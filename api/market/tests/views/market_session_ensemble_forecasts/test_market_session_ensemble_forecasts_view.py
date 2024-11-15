@@ -81,7 +81,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         ensemble_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": "123e4567-e89b-12d3-a456-426614174000"})
         response = self.client.post(ensemble_url, data={}, format="json")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        
+
     def test_no_auth_list_ensemble(self):
         self.client.credentials(HTTP_AUTHORIZATION="")
         response = self.client.get(self.ensemble_forecasts_list_url)
@@ -92,12 +92,12 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         ensemble_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": "123e4567-e89b-12d3-a456-426614174000"})
         response = self.client.post(ensemble_url, data={}, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_normal_list_ensemble(self):
         login_user(client=self.client, user=self.normal_user)
         response = self.client.get(self.ensemble_forecasts_list_url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_admin_submit_forecast(self):
         challenge_data = self.create_challenge_pipeline()
         # Update market session status to RUNNING:
@@ -110,7 +110,21 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    
+
+    def test_admin_no_session_manager_submit_forecast(self):
+        challenge_data = self.create_challenge_pipeline()
+        # Update market session status to RUNNING:
+        session = MarketSession.objects.get(id=challenge_data["market_session"])
+        session.status = MarketSession.MarketStatus.RUNNING
+        session.save()
+        # Create forecasts data:
+        forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
+        submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
+        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
+        login_user(client=self.client, user=self.super_user_2)
+        response = self.client.post(submission_url, data=submission_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     def test_admin_list_forecast(self):
         challenge_data = self.create_challenge_pipeline()
         # Update market session status to RUNNING:
@@ -133,7 +147,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         self.assertEqual(response_data[0]["challenge"], challenge_data["id"])
         self.assertEqual(response_data[0]["resource"], challenge_data["resource"])
         self.assertEqual(response_data[0]["variable"], "q50")
-        
+
     def test_normal_submit_forecast(self):
         challenge_data = self.create_challenge_pipeline()
         # Update market session status to RUNNING:
@@ -148,27 +162,13 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         response = self.client.post(submission_url, data=submission_data, format="json")
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-    
+
     def test_normal_list_forecast(self):
         # List forecasts:
         login_user(client=self.client, user=self.normal_user)
         response = self.client.get(self.ensemble_forecasts_list_url, {"challenge": "123e4567-e89b-12d3-a456-426614174000"})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
-    def test_admin_submit_forecast_other_admin_challenge(self):
-        challenge_data = self.create_challenge_pipeline()
-        # Update market session status to RUNNING:
-        session = MarketSession.objects.get(id=challenge_data["market_session"])
-        session.status = MarketSession.MarketStatus.RUNNING
-        session.save()
-        # Create forecasts data:
-        forecasts_data = create_forecasts_submission_data(start_date=challenge_data["forecast_start_datetime"], end_date=challenge_data["forecast_end_datetime"])
-        submission_data = create_market_ensemble_data(variable="q50", forecasts=forecasts_data)
-        login_user(client=self.client, user=self.super_user_2)
-        submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
-        response = self.client.post(submission_url, data=submission_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-    
+
     def test_admin_list_forecast_other_admin_challenge(self):
         challenge_data = self.create_challenge_pipeline()
         # Update market session status to RUNNING:
@@ -212,7 +212,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
     def test_admin_forecasts_incomplete(self):
         challenge_data = self.create_challenge_pipeline()
         session = MarketSession.objects.get(id=challenge_data["market_session"])
@@ -250,7 +250,7 @@ class TestMarketSessionSubmissionView(TransactionTestCase):
         submission_url = reverse("market:market-session-ensemble-create", kwargs={"challenge_id": challenge_data["id"]})
         response = self.client.post(submission_url, data=submission_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
+
     def test_admin_concurrent_submissions(self):
         challenge_data = self.create_challenge_pipeline()
         session = MarketSession.objects.get(id=challenge_data["market_session"])
