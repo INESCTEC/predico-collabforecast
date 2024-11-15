@@ -41,7 +41,7 @@ class UserResourcesView(APIView):
             )
 
         query = Q()
-        if user.is_superuser:
+        if user.is_superuser and (not user.is_session_manager):
             # superuser user 1 cannot access full list of resources of user 2
             query &= Q(user_id=user.id)
 

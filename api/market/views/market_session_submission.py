@@ -54,7 +54,7 @@ class MarketSessionListSubmissionForecastsView(APIView):
 
         # Construct query filters using Q objects for conditional filtering
         query_filters = Q()
-        if user.is_superuser:
+        if user.is_superuser and (not user.is_session_manager):
             # Market Maker X should not be able to list submissions for
             # challenges of Market Maker Y
             query_filters &= Q(submission__market_session_challenge__user_id=user.id)
@@ -117,7 +117,7 @@ class MarketSessionListSubmissionView(APIView):
         # Construct query filters using Q objects for conditional filtering
         query_filters = Q()
 
-        if user.is_superuser:
+        if user.is_superuser and (not user.is_session_manager):
             # Market Maker X should not be able to list submissions for
             # challenges of Market Maker Y
             query_filters &= Q(market_session_challenge__user_id=user.id)

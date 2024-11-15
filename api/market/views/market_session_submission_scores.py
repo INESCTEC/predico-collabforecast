@@ -74,7 +74,7 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
         # Construct query filters using Q objects for conditional filtering
         query_filters = Q()
         query_filters &= Q(submission__market_session_challenge_id=challenge_id)
-        if user.is_superuser:
+        if user.is_superuser and (not user.is_session_manager):
             # Market Maker X should not be able to list submissions scores for
             # challenges of Market Maker Y
             query_filters &= Q(submission__market_session_challenge__user_id=user.id)  # noqa
@@ -88,7 +88,7 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
         ######################################
         query_filters = Q()
         query_filters &= Q(submission__market_session_challenge_id=challenge_id)
-        if user.is_superuser:
+        if user.is_superuser and (not user.is_session_manager):
             # Market Maker X should not be able to list submissions scores for
             # challenges of Market Maker Y
             query_filters &= Q(submission__market_session_challenge__user_id=user.id)  # noqa
@@ -110,7 +110,7 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
         # Get ranks of all submissions:
         query_filters = Q()
         query_filters &= Q(submission__market_session_challenge_id=challenge_id)
-        if user.is_superuser:
+        if user.is_superuser and (not user.is_session_manager):
             # Market Maker X should not be able to list submissions scores for
             # challenges of Market Maker Y
             query_filters &= Q(submission__market_session_challenge__user_id=user.id)  # noqa
