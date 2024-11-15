@@ -30,14 +30,21 @@ Restful API for **Predico - Collaborative Forecasting Service** (Proof of Concep
     * Upload and access your historical forecasts data
     * Access raw measurements data, published by the Market Maker
 
-## Developers // Contacts:
-- andre.f.garcia@inesctec.pt
-- carla.s.goncalves@inesctec.pt
-- giovanni.buroni@inesctec.pt
-- jose.r.andrade@inesctec.pt
-- ricardo.j.bessa@inesctec.pt
 
-By: INESC TEC - Centre for Power and Energy Systems (2024)
+#### Important! Authentication!
+
+The API is public, but most endpoints require Authentication (bearer token).
+
+When using [Swagger](https://predico-elia.inesctec.pt/swagger/), you should:
+    
+    1. Get an access token (see `/token` endpoint)
+    2. Load this token in the "Authorize" Swagger section ('Bearer <your_access_token>') to automatically add the authorization header in every subsequent request.
+
+
+## Contacts:
+- predico@elia.be
+
+**API developed by INESC TEC - Centre for Power and Energy Systems (2024)**
 
 """,
         license=openapi.License(
