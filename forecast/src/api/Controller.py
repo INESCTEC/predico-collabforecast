@@ -255,7 +255,7 @@ class Controller(RequestController):
             data=payload,
             exception_cls=MarketSessionException
         )
-        return response['data']
+        return response
 
     def post_market_ramp_alerts(self, challenge_id: str,
                                 model_id: str,
@@ -271,7 +271,7 @@ class Controller(RequestController):
             data=payload,
             exception_cls=MarketSessionException
         )
-        return response['data']
+        return response
 
     def post_market_weights(self,
                             challenge_id: str,

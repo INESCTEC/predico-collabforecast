@@ -399,13 +399,21 @@ class MarketClass:
             forecasts_ = buyer_output["forecasts"][buyer_output["forecasts"]["variable"] == variable].copy()
             forecasts_["datetime"] = forecasts_["datetime"].dt.strftime("%Y-%m-%dT%H:%M:%SZ")
             forecasts_ = forecasts_[["datetime", "value"]].to_dict(orient="records")
-            # todo: check api responses
-            api_controller.post_market_forecasts(
-                challenge_id=buyer_output["challenge_id"],
-                model_id=buyer_output["forecast_model"],
-                variable_id=variable,
-                forecasts=forecasts_,
-            )
+            try:
+                # todo: improve this handling:
+                response = api_controller.post_market_forecasts(
+                    challenge_id=buyer_output["challenge_id"],
+                    model_id=buyer_output["forecast_model"],
+                    variable_id=variable,
+                    forecasts=forecasts_,
+                )
+                if response["code"] != 201:
+                    logger.error(f"Error! Failed to upload forecasts for "
+                                 f"Buyer {buyer_output['user_id']} "
+                                 f"Details: {response.text}")
+            except Exception:
+                logger.error(f"Error! Failed to upload forecasts for "
+                             f"Buyer {buyer_output['user_id']} ")
 
         # Upload ramp alerts + variability forecasts:
         ramps_ = buyer_output["df_ramp_clusters"]
@@ -423,13 +431,20 @@ class MarketClass:
             ramps_ = ramps_.drop(columns=quantiles_)
             ramps_["datetime"] = ramps_.index.strftime("%Y-%m-%dT%H:%M:%SZ")
             ramps_ = ramps_.to_dict(orient="records")
-            # todo: check api responses
-            api_controller.post_market_ramp_alerts(
-                challenge_id=buyer_output["challenge_id"],
-                model_id="idw_based",
-                ramp_alerts=ramps_
-            )
-
+            try:
+                # todo: improve this handling:
+                response = api_controller.post_market_ramp_alerts(
+                    challenge_id=buyer_output["challenge_id"],
+                    model_id="idw_based",
+                    ramp_alerts=ramps_
+                )
+                if response["code"] != 201:
+                    logger.error(f"Error! Failed to upload ramp alerts for "
+                                 f"Buyer {buyer_output['user_id']} "
+                                 f"Details: {response.text}")
+            except Exception:
+                logger.error(f"Error! Failed to ramp alerts for "
+                             f"Buyer {buyer_output['user_id']} ")
 
     @staticmethod
     def __upload_weights(api_controller,
