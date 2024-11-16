@@ -21,70 +21,69 @@ The following directory structure should be considered:
 ├── api                       # REST API source code
 ├──── api                     # main configs
 ├──── authentication          # authentication endpoints
-├──── data                    # data operations endpoints
-|──── logs                    # logs directory
+├──── files                   # system files (logging, db backups)
+├──── data                    # data ops endpoints
 ├──── market                  # market participation endpoints
-├──── tests                   # unittests suite
 ├──── users                   # users endpoints
+├── cron                      # Suggested CRONTAB
+├── documentation             # Project Documentation (for service users)
+├── forecast                  # Forecasting source code
+├── frontend                  # Frontend source code
 ├── nginx                     # NGINX configs
-├──── Dockerfile              # Dockerfile
-├──── index.html              # Docs mainpage
-├──── nginx.conf              # Nginx config
-├──── project.conf            # Nginx config
-├── docs                      # Docs
-├── .dockerignore             # dockerignore file
-├── .gitignore                # gitignore file
-├── .gitlab-ci.yml            # gitlab-ci file
-├── docker-compose.prod.yml   # docker-compose file (production)
-├── docker-compose.test.yml   # docker-compose file (CICD)
-├── docker-compose.yml        # docker-compose file (development)
-├── README.md
 ```
+
 
 ## Project Setup
 
-Create a `.env` file from a provided example (`dotenv`) and update its variables
+This software stack can be deployed using Docker. The following steps will guide you through the process.
+
+### Environment variables:
+
+Inside both 'api', 'forecast' and 'frontend' directories, you will find a file named `dotenv`. This file contains the environment variables that are used by the application. You can copy this file to `.env` and update the variables to your specifics.
+
 ```shell
-cp dotenv .dev.env
+cp dotenv .env
 ```
+
+!!! warning:
+    Make sure you set the environment variables. If you do not create these files, the application will not work properly.
 
 Start docker stack:
 
 ```shell
-docker-compose up -d
+docker-compose -f docker-compose.prod.yml up -d
 ```
 
-Enter docker container (app):
+This command should start the following services:
+- `predico_rest_app`: Django REST API
+- `predico_forecast`: Forecasting service
+- `predico_frontend`: React frontend
+- `predico_nginx`: NGINX server
+- `predico_postgresql`: PostgreSQL database
+- `predico_mkdocs`: Intermediate build to generate documentation
 
-```shell
-docker exec -it predico_rest_app bash
+!!! info:
+    - Service mainpage will be available on http://0.0.0.0:80
+    - Service API will be available on http://0.0.0.0/api
+
+
+### Configure Super user:
+
+Service administrators need to be added via CLI, with the following command.
+
+```shell  
+docker exec -it predico_rest_app python manage.py createsuperuser
 ```
 
-Inside the container (`predico_rest_app`) apply current migrations and create superuser.
-
-```shell
-python manage.py migrate
-python manage.py createsuperuser
-```
-
-Run collectstatic to serve static files (relevant if behind NGINX)
-```shell
-python manage.py collectstatic
-```
+### Check functional tests:
 
 Check if all tests pass successfully
 
 ```shell
-pytest
+docker exec -it predico_rest_app pytest
 ```
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
-
-## Development Deployment
-
-### Environment Variables
-
-To apply the environment variables, you can edit the `.dev.env` file and load it the helpers/enviroment.py file.
 
 
 ## Production Deployment
