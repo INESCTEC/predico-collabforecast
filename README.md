@@ -23,10 +23,14 @@
 
 Predico Collabforecast is a backend service designed to facilitate collaborative forecasting. This document provides a comprehensive guide to setting up and deploying the backend service, including the necessary requirements, project structure, and deployment instructions.
 
-## Requirements
+The Predico Collabforecast service is composed of the following components:
 
-* [Python ^3.11](https://www.python.org/downloads/)
-* [Pip ^21.x](https://pypi.org/project/pip/)
+1. **REST API**: The REST API is the core of the Predico Collabforecast service. It provides endpoints for managing users, data, market participation, and authentication.
+2. **Forecasting Service**: The forecasting service is responsible for generating forecasts based on the data provided by users. It uses machine learning algorithms to generate accurate forecasts.
+3. **Frontend**: The frontend is a web-based interface that allows users to interact with the Predico Collabforecast service. It provides a user-friendly interface for managing user data (e.g., create invite links for data providers, aka Forecasters)
+4. **NGINX**: NGINX is used as a reverse proxy server to route requests and serve static files (documentation, frontend, etc.)
+5. **PostgreSQL**: PostgreSQL is used as the database management system for storing user data, forecasts, and other information.
+6. **Documentation**: The documentation provides detailed information about the Predico Collabforecast service, including installation instructions, API endpoints, and usage examples.
 
 
 ## Project Structure:
@@ -34,7 +38,7 @@ Predico Collabforecast is a backend service designed to facilitate collaborative
 The following directory structure should be considered:
 
 ``` bash
-.   # Current directory
+.                             # Current directory
 ├── api                       # REST API source code
 ├──── api                     # main configs
 ├──── authentication          # authentication endpoints
@@ -56,13 +60,27 @@ This software stack can be deployed using Docker. The following steps will guide
 
 ### Prerequisites
 
+#### For Production Deployment:
+
 Ensure you have the following installed on your system:
-- Docker
-- Docker Compose
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+#### For local development (without Docker):
+
+This service backend can be run without Docker, but you will need to install the following dependencies:
+
+* [Python ^3.11](https://www.python.org/downloads/)
+* [Pip ^21.x](https://pypi.org/project/pip/)
+* [Poetry ^1.8.x](https://python-poetry.org/)
+
+For the frontend, as it is a React application, you will need to have Node.js installed. You can download it from the [official website](https://nodejs.org/).
+
 
 ### Environment variables:
 
-Inside both 'api', 'forecast' and 'frontend' directories, you will find a file named `dotenv`. This file contains the environment variables that are used by the application. You can copy this file to `.env` and update the variables to your specifics.
+Inside both `api`, `forecast` and `frontend` directories, you will find a file named `dotenv`. This file contains the environment variables that are used by the application. You can copy this file to `.env` and update the variables to your specifics.
 
 ```shell
 cp dotenv .env
@@ -75,10 +93,10 @@ Start docker stack:
 
 ## Production Deployment
 
-### Start Docker Stack
+### Start Docker Containers Stack
 
 ```shell
-docker-compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml up -d
 ```
 
 This command should start the following services:
@@ -93,14 +111,17 @@ This command should start the following services:
     - Service mainpage will be available on http://0.0.0.0:80
     - Service API will be available on http://0.0.0.0/api
 
-
-### Configure Super user:
+### Configure Predico Super user:
 
 Service administrators need to be added via CLI, with the following command.
 
 ```shell  
-docker exec -it predico_rest_app python manage.py createsuperuser
+docker exec -it predico_rest_app python manage.py createadmin
 ```
+
+**Note that:**
+- `createadmin` is a custom command that creates a superuser and confirms if this user should be a session manager.
+- `session_manager` users have a higher level of privileges and can manage sessions (open / close / post ensemble forecasts / etc.)
 
 ### Check functional tests:
 
@@ -114,7 +135,7 @@ See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
 ### Frontend
 
-For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod to the correct URL.
+For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod.yml to the correct URL.
 
 ```yaml
   frontend:
@@ -130,8 +151,9 @@ For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod to th
       - frontend_build:/app/build  # This volume will store the build output
 ```
 
-## Development Mode
+## Development Mode - API (REST) Decoupled
 
+### Prepare Python environment:
 How to run the code in development mode, with the REST API decoupled from docker stack?
 
 First, install the necessary project python dependencies:
@@ -142,21 +164,23 @@ poetry install
 poetry shell
 ```
 
-Then, create a `.dev.env` file with environment variables used to debug and update default environment variables to your specifics.
+####
+In the same directory, create a `.dev.env` file with environment variables used to debug and update default environment variables to your specifics.
 
 ```shell
 cp dotenv .dev.env
 ```
 
-**Important:** Make sure you force develop mode by using the following environment variable `DJANGO_APPLICATION_ENVIRONMENT=develop` and `POSTGRES_HOST=localhost`
+**Important:** Ensure you force develop mode by using the following environment variable `DJANGO_APPLICATION_ENVIRONMENT=develop` and `POSTGRES_HOST=localhost`
 
-Then, use docker-compose to initialize a Postgres DB:
+Then, initialize the service Postgres DB:
 
 ```shell
-docker-compose up -d --build postgresql
+# Execute on the project root:
+docker compose -f docker-compose.dev.yml up -d
 ```
 
-Once your DB is up, you can debug locally by just by uncommenting the following lines in "environment.lines: 
+Once your DB is up, you can debug locally by just by uncommenting the following lines in the `api/manage.py` file: 
 
 ```python
 from dotenv import load_dotenv
@@ -171,15 +195,16 @@ After this, you can easily run your application without docker container, in eit
 python manage.py migrate
 ```
 
-2. Create a superuser:
+2. Create a superuser with session management privileges:
 
 ```shell
-python manage.py createsuperuser
+python manage.py createadmin
 ```
 
 3. Run your app using through Django runserver command:
 
 ```shell
+# This will start the Django development server (do not use this in production):
 python manage.py runserver
 ```
 
