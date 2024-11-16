@@ -1,15 +1,9 @@
-# Steps to Ensure the Frontend Updates 
-Clear Docker Caches Thoroughly: Sometimes, even when you run --no-cache, 
-Docker might still be using cached layers or containers. To ensure everything is completely rebuilt, you should:
+# Predico-Collabforecast Frontend
 
-- Remove the Docker volume for the frontend service:
+This is the frontend for the Predico Collabforecast service. It is a React application that allows users to interact with the service documentation and administrators to invite and manage user accesses to the platform.
 
-```bash
-    docker volume rm collabforecast_frontend_build
-```
 
 # Frontend printscreens
-
 
 ### Home Page
 

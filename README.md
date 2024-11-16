@@ -13,11 +13,9 @@
 5. [Production Deployment](#production-deployment)
 6. [Development Mode](#development-mode)
 7. [Schedule Tasks](#schedule-tasks)
-8. [Contacts](#contacts)
-9. [Contributing](#contributing)
-10. [License](#license)
-11. [FAQ](#faq)
-12. [Code of Conduct](#code-of-conduct)
+8. [Contributing](#contributing)
+9. [Contacts](#contacts)
+
 
 ## Introduction
 
@@ -39,17 +37,11 @@ The following directory structure should be considered:
 
 ``` bash
 .                             # Current directory
-├── api                       # REST API source code
-├──── api                     # main configs
-├──── authentication          # authentication endpoints
-├──── files                   # system files (logging, db backups)
-├──── data                    # data ops endpoints
-├──── market                  # market participation endpoints
-├──── users                   # users endpoints
-├── cron                      # Suggested CRONTAB
+├── api                       # REST API server module source code
+├── cron                      # Suggested CRONTAB for operational tasks
 ├── documentation             # Project Documentation (for service users)
-├── forecast                  # Forecasting source code
-├── frontend                  # Frontend source code
+├── forecast                  # Forecast module source code
+├── frontend                  # Frontend module source code
 ├── nginx                     # NGINX configs
 ```
 
@@ -111,7 +103,7 @@ This command should start the following services:
     - Service mainpage will be available on http://0.0.0.0:80
     - Service API will be available on http://0.0.0.0/api
 
-### Configure Predico Super user:
+### Configure super user:
 
 Service administrators need to be added via CLI, with the following command.
 
@@ -133,96 +125,34 @@ docker exec -it predico_rest_app pytest
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
+#### Steps to Ensure correct Frontend Updates 
+
+If you make any changes on the Frontend module, please clear Docker caches thoroughly before rebuilding images.
+Docker might still be using cached layers or containers. To ensure everything is completely rebuilt, you should:
+
+- Remove the Docker volume for the frontend service:
+
+```bash
+    docker volume rm predico_frontend_build
+```
+
+### Forecasting
+
+Check the documentation of the [Forecast](forecast/README.md) module.
+
 ### Frontend
 
-For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod.yml to the correct URL.
+Check the documentation of the [Frontend](frontend/README.md) module.
 
-```yaml
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        REACT_APP_API_URL: https://predico-elia.inesctec.pt/api/v1
-    container_name: predico_frontend_build
-    networks:
-      - predico_network
-    volumes:
-      - frontend_build:/app/build  # This volume will store the build output
-```
+## Development Mode
 
-## Development Mode - API (REST) Decoupled
+This software stack can also be launched in development mode, without Docker. 
+A developer guide is included separately for each module. See the **"Development Mode"** section in the following documents:
 
-### Prepare Python environment:
-How to run the code in development mode, with the REST API decoupled from docker stack?
+- [API](api/README.md) for the REST API module.
+- [Forecast](forecast/README.md) for the Forecasting module.
+- [Frontend](frontend/README.md) for the Frontend module.
 
-First, install the necessary project python dependencies:
-
-```shell
-cd /api
-poetry install
-poetry shell
-```
-
-####
-In the same directory, create a `.dev.env` file with environment variables used to debug and update default environment variables to your specifics.
-
-```shell
-cp dotenv .dev.env
-```
-
-**Important:** Ensure you force develop mode by using the following environment variable `DJANGO_APPLICATION_ENVIRONMENT=develop` and `POSTGRES_HOST=localhost`
-
-Then, initialize the service Postgres DB:
-
-```shell
-# Execute on the project root:
-docker compose -f docker-compose.dev.yml up -d
-```
-
-Once your DB is up, you can debug locally by just by uncommenting the following lines in the `api/manage.py` file: 
-
-```python
-from dotenv import load_dotenv
-load_dotenv(".dev.env")
-```
-
-After this, you can easily run your application without docker container, in either an IDE or straight from the command line.
-
-1. Migrate your DB migrations:
-
-```shell
-python manage.py migrate
-```
-
-2. Create a superuser with session management privileges:
-
-```shell
-python manage.py createadmin
-```
-
-3. Run your app using through Django runserver command:
-
-```shell
-# This will start the Django development server (do not use this in production):
-python manage.py runserver
-```
-
-## Schedule tasks
-
-To schedule tasks, you can use the Django management commands:
-
-- Remove older register tokens
-
-```shell
-python manage.py delete_old_register_tokens
-```
-
-- Remove older password reset tokens
-
-```shell
-python manage.py delete_old_reset_password_tokens
-```
 
 ## Contributing
 
