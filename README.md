@@ -1,10 +1,27 @@
-# Predico Collabforecast - Backend
-
------------------------------------------------------
+# Predico Collabforecast - A Collaborative Forecasting Platform
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
 [![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-360/)
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Requirements](#requirements)
+3. [Project Structure](#project-structure)
+4. [Project Setup](#project-setup)
+5. [Production Deployment](#production-deployment)
+6. [Development Mode](#development-mode)
+7. [Schedule Tasks](#schedule-tasks)
+8. [Contacts](#contacts)
+9. [Contributing](#contributing)
+10. [License](#license)
+11. [FAQ](#faq)
+12. [Code of Conduct](#code-of-conduct)
+
+## Introduction
+
+Predico Collabforecast is a backend service designed to facilitate collaborative forecasting. This document provides a comprehensive guide to setting up and deploying the backend service, including the necessary requirements, project structure, and deployment instructions.
 
 ## Requirements
 
@@ -37,6 +54,12 @@ The following directory structure should be considered:
 
 This software stack can be deployed using Docker. The following steps will guide you through the process.
 
+### Prerequisites
+
+Ensure you have the following installed on your system:
+- Docker
+- Docker Compose
+
 ### Environment variables:
 
 Inside both 'api', 'forecast' and 'frontend' directories, you will find a file named `dotenv`. This file contains the environment variables that are used by the application. You can copy this file to `.env` and update the variables to your specifics.
@@ -49,6 +72,10 @@ cp dotenv .env
     Make sure you set the environment variables. If you do not create these files, the application will not work properly.
 
 Start docker stack:
+
+## Production Deployment
+
+### Start Docker Stack
 
 ```shell
 docker-compose -f docker-compose.prod.yml up -d
@@ -85,9 +112,6 @@ docker exec -it predico_rest_app pytest
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
-
-## Production Deployment
-
 ### Frontend
 
 For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod to the correct URL.
@@ -106,12 +130,11 @@ For the frontend change the `REACT_APP_API_URL` in the docker-compose.prod to th
       - frontend_build:/app/build  # This volume will store the build output
 ```
 
-## How to easy deploy in "debug" mode (developers)?
+## Development Mode
 
-How to run the code in development mode, with APP decoupled from docker stack?
+How to run the code in development mode, with the REST API decoupled from docker stack?
 
 First, install the necessary project python dependencies:
-
 
 ```shell
 cd /api
@@ -175,6 +198,13 @@ python manage.py delete_old_register_tokens
 ```shell
 python manage.py delete_old_reset_password_tokens
 ```
+
+## Contributing
+
+This project is currently under active development and we are working on a contribution guide.
+
+### How do I report a bug?
+Please report bugs by opening an issue on our GitHub repository.
 
 ## Contacts:
 
