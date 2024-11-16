@@ -56,7 +56,8 @@ api_test:
   rules:
     - changes:
         - api/**/*
-    - when: never
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
   stage: test
   image: python:3.12
   services:
@@ -112,6 +113,7 @@ api_fuzz:
           variables:
               FUZZAPI_IMAGE_SUFFIX: "-fips"
         - if: $CI_COMMIT_BRANCH
+        - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
     script:
         - cd api
         # Set up a Python virtual environment
