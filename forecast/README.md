@@ -78,6 +78,7 @@ The following directory structure should be considered:
 ``` bash
 .   # `offline_simulator` directory
 ├── main.py  # main script to execute simulations
+├── plot_results.py  # helper script to plot simulation results
 ├── simulation  # simulation helper classes
 |──── SimulationManager.py  # configs / reports manager
 |──── AgentsLoader.py  # loads agents information
@@ -164,31 +165,42 @@ By default simulation will run for ten sessions (`nr_sessions = 10`), every day 
 On the end of the simulation runs, some report files will be produced and stored in `files/reports/<dataset_name>` directory.
 These are:
 
-1. `buyers.csv`: Includes market session buyers information, per resource in their portfolio. 
-    It includes:
-    * Estimated gain (function and value) by using market forecasts (see `gain_func` and `gain` columns)
-    * Initial and final bids (see `initial_bid` and `final_bid` columns).
-      * Initial bid is the bid that the agent would have made if it had no information about the market.
-      * Final bid is the bid is the initial bid value adjusted according to the potential gain and the `max_payment` value initially defined by the user.
-    * Maximum payment that the agent is willing to pay (see `max_payment` column).
-    * Final amount that the agent has to pay for this resource
+1. `buyers.csv`: Includes general market session buyers information.
+2. `buyers_resources.json`: Includes details on market session buyers resources
+3. `forecasts.csv`: Ensemble forecasts produced by forecasting engine, for each buyer resource and market session.
+4. `market.csv`: Includes general market session information.
+4. `sellers_resources.json`: Includes market session sellers information.
+5. `weights.csv`: Includes forecast contribution weights for each seller and market session.
 
-2. `forecasts.csv`: Forecasts produced by the market model, for each buyer resource.
-3. `sellers.csv`: Includes market session sellers information, per resource in their portfolio. 
-    It includes:
-    * Final amount that the agent has to receive for this resource
+During or at the end of the simulations, you can also visualize the results by running the `plot_results.py` script.
 
-### Execution considerations:
+First, make sure you have the necessary visualization libraries installed by running the following command:
+
+``` bash
+pip install seaborn
+```
+
+Then, make sure you have the necessary report files in the `files/reports/<dataset_name>` directory, and point to these files on the `plot_results.py` script.
+
+```python plot_results.py
+# Load the results
+DATASET = "example_elia_opendata"
+QUANTILES = ["q10", "q50", "q90"]
+FORECASTING_MODEL = "LR"
+FILES_DT_FORMAT = "%Y-%m-%d %H:%M"
+SIMULATION_REPORT_ID = "20241117222358_test"
+```
+
+Finally, execute the following command:
+
+``` bash
+python plot_results.py
+```
+
+### Simulation execution considerations:
 
 The simulation can take a while to run, depending on the number of sessions and resources in the dataset. 
 To speed things up, you can increase the number of parallel processes by changing the `N_JOBS` variable in the `main.py` script.
 
 If you want to run the simulation in a single process, set `N_JOBS = 1`. 
-
-If you want to see all the process logs in the console, uncomment the following lines in the `main.py` script.
-
-```python
-# -- Setup logger (removes existing logger + adds new sys logger):
-logger.remove()
-logger.add(sys.stderr, level="DEBUG")
-```
+If you want to run the simulation in parallel, set `N_JOBS = -1` to use all available cores.

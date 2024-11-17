@@ -15,11 +15,12 @@ def load_json(file_path):
 
 
 # Load the results
-DATASET = "example_1"
-QUANTILES = ["q10", "q50", "q90"]
-FORECASTING_MODEL = "LR"
-FILES_DT_FORMAT = "%Y-%m-%d %H:%M"
-SIMULATION_REPORT_ID = "20240626095233_test"
+DATASET = "example_elia_opendata"  # Your dataset name
+QUANTILES = ["q10", "q50", "q90"]  # Forecast variables you want to inspect
+FORECASTING_MODEL = "LR"  # Forecasting model you want to inspect
+FILES_DT_FORMAT = "%Y-%m-%d %H:%M"  # Datetime format in the files
+SIMULATION_REPORT_ID = "20241117222358_test"  # Simulation report ID (reports/<dataset>/<report_id> folder)
+
 report_dirs = os.listdir(os.path.join("files", "reports", DATASET))
 # Load buyers and sellers resources:
 buyers_resources_path = os.path.join("files", "datasets", DATASET, "buyers_resources.json")
