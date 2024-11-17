@@ -5,8 +5,7 @@ examples/offline_simulator/simulation/reports/
 
 .idea/
 .vscode/
-examples/files/*
-examples/files/reports
+examples/offline_simulator/files
 files/models
 
 # Byte-compiled / optimized / DLL files
