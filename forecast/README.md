@@ -2,14 +2,14 @@
 
 -----------------------------------------------------
 
-[![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
-[![status](https://img.shields.io/badge/status-development-yellow.svg)]()
-[![Python Version](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-360/)
+
 
 ## Requirements
 
-* [Python 3.10+](https://www.python.org/downloads/)
+* [Python ^3.11](https://www.python.org/downloads/)
 * [Pip ^21.x](https://pypi.org/project/pip/)
+* [Poetry ^1.8.x](https://python-poetry.org/)
 
 ## Module Structure:
 
@@ -38,8 +38,7 @@ For that, please check the `examples` directory, which includes a script for run
 
 ### Initial setup:
 
-> **_NOTE:_**  The commands below assume that you are running them from the root directory of the project
-
+> **_NOTE:_**  The commands below assume that you are running them from the root directory of the project module `forecast`
 
 ### Configure environment variables:
 
@@ -51,7 +50,6 @@ To configure the environment variables, copy the `dotenv` file to `.env` and fil
 ```
 
 **_NOTE:_** In windows, just copy-paste the `dotenv` file and rename it to `.env`.
-
 
 ### With Docker:
 
@@ -85,27 +83,3 @@ Also, only 'simulation' functionalities (i.e., without integration with the data
 > **_NOTE:_** If you're already working in a virtual environment (e.g., conda or pyenv), you can skip the `poetry shell` command. 
 
 
-### Using the Command Line Interface (CLI):
-
-Market sessions can be open/executed through our command line interface (CLI).
-
-> **_NOTE 2:_**  The following instructions assume that the data market database and REST API are already initialized (available in other projects).
-
-> **_WARNING:_**  The following command will run the market pipeline with the settings specified in the `.env` file.
-
-#### With Docker:
-
-> **_IMPORTANT:_**  The Docker commands below assume that you have the 'forecast' module image created. These commands must be executed them from the root directory of the project (where the docker compose file is located),
-
-
-#### Open market session:
-
-```shell
-docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py open_session
-```
-
-#### Close & Run collaborative forecasting session:
-
- ```shell
-cd $PROJECT_PATH && docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py run_session
- ```

@@ -5,13 +5,12 @@ The following directory structure should be considered:
 
 ``` bash
 .                             # Current directory
-├── api                       # REST API source code
-├──── api                     # main configs
-├──── authentication          # authentication endpoints
-├──── files                   # system files (logging, db backups)
-├──── data                    # data ops endpoints
-├──── market                  # market participation endpoints
-├──── users                   # users endpoints
+├── api                     # main configs
+├── authentication          # authentication endpoints
+├── files                   # system files (logging, db backups)
+├── data                    # data ops endpoints
+├── market                  # market participation endpoints
+├── users                   # users endpoints
 ```
 
 ### API (REST) Decoupled
@@ -22,7 +21,6 @@ How to run the code in development mode, with the REST API decoupled from docker
 First, install the necessary project python dependencies:
 
 ```shell
-cd /api
 poetry install
 poetry shell
 ```

@@ -2,7 +2,6 @@
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
-[![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-360/)
 
 ## Table of Contents
 
@@ -61,13 +60,15 @@ Ensure you have the following installed on your system:
 
 #### For local development (without Docker):
 
-This service backend can be run without Docker, but you will need to install the following dependencies:
+This software stack can be executed without Docker, but you will need to install specific dependencies for each module.
 
-* [Python ^3.11](https://www.python.org/downloads/)
-* [Pip ^21.x](https://pypi.org/project/pip/)
-* [Poetry ^1.8.x](https://python-poetry.org/)
+A separate guide is available for each module, with detailed information about it and how to perform a set up decoupled from the remaining software stack.
 
-For the frontend, as it is a React application, you will need to have Node.js installed. You can download it from the [official website](https://nodejs.org/).
+See the **"Development Mode"** section in the following documents:
+
+- [API](api/README.md) for the REST API module.
+- [Forecast](forecast/README.md) for the Forecasting module.
+- [Frontend](frontend/README.md) for the Frontend module.
 
 
 ### Environment variables:
@@ -78,10 +79,8 @@ Inside both `api`, `forecast` and `frontend` directories, you will find a file n
 cp dotenv .env
 ```
 
-!!! warning:
-    Make sure you set the environment variables. If you do not create these files, the application will not work properly.
+**Ensure you set the environment variables. If you do not create these files, the next steps will not work properly.**
 
-Start docker stack:
 
 ## Production Deployment
 
@@ -99,7 +98,7 @@ This command should start the following services:
 - `predico_postgresql`: PostgreSQL database
 - `predico_mkdocs`: Intermediate build to generate documentation
 
-!!! info:
+**Note that:**
     - Service mainpage will be available on http://0.0.0.0:80
     - Service API will be available on http://0.0.0.0/api
 
@@ -125,34 +124,47 @@ docker exec -it predico_rest_app pytest
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
-#### Steps to Ensure correct Frontend Updates 
+### Using the Command Line Interface (CLI):
 
-If you make any changes on the Frontend module, please clear Docker caches thoroughly before rebuilding images.
-Docker might still be using cached layers or containers. To ensure everything is completely rebuilt, you should:
+Market sessions can be open/executed through the command line interface (CLI) available in the `forecast` module.
 
-- Remove the Docker volume for the frontend service:
+> **_NOTE 2:_**  The following instructions assume you have all the services running. If you don't, please refer to the previous section.
 
-```bash
-    docker volume rm predico_frontend_build
+> **_WARNING:_**  The following command will run the market pipeline with the settings specified in the `.env` file.
+
+#### Open market session:
+
+When executed, this task will open a new market session, allowing forecasters to submit their forecasts.
+
+```shell
+docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py open_session
 ```
+
+#### Close & Run collaborative forecasting session:
+
+When executed, this task will close the currently open market session (gate closure time) and run the collaborative forecasting models.
+
+Remember that Forecasters will not be able to submit forecasts after the gate closure time.
+
+ ```shell
+docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py run_session
+ ```
+ 
+#### Run data value assessment tasks
+
+When executed, this task will calculate individual forecasters forecast skill scores and contribution to the final ensemble forecasts.
+
+ ```shell
+docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py calculate_ensemble_weights
+ ```
 
 ### Forecasting
 
-Check the documentation of the [Forecast](forecast/README.md) module.
+Check the documentation of the [Collaborative Forecasting](forecast/README.md) module.
 
 ### Frontend
 
 Check the documentation of the [Frontend](frontend/README.md) module.
-
-## Development Mode
-
-This software stack can also be launched in development mode, without Docker. 
-A developer guide is included separately for each module. See the **"Development Mode"** section in the following documents:
-
-- [API](api/README.md) for the REST API module.
-- [Forecast](forecast/README.md) for the Forecasting module.
-- [Frontend](frontend/README.md) for the Frontend module.
-
 
 ## Contributing
 
