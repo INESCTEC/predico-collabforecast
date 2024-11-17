@@ -59,7 +59,7 @@ A collaborative forecasting session is organized in four phases:
 
 **Service Sequence Diagram:**
 
-![Service Sequence Diagram](documentation/docs/static/predico-interactions-sd.png "Service Sequence Diagram")
+[<img src="documentation/docs/static/predico-interactions-sd.png" alt="Service Sequence Diagram" width="300">](documentation/docs/static/predico-interactions-sd.png)
 
 ### 1.3. Service Components
 
@@ -73,7 +73,7 @@ The Collabforecast service is composed of the following components:
 6. **Documentation**: Provides detailed information about the Collabforecast service, including installation instructions, API endpoints, and usage examples.
 
 
-## 2. Repository Structure:
+## 2. Project Structure
 
 
 ``` bash
