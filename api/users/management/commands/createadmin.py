@@ -1,3 +1,5 @@
+import getpass
+
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
@@ -8,12 +10,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
         email = input('Email: ')
-        password = input('Password: ')
-        password_ = input('Confirm password: ')
+        password = getpass.getpass(prompt='Password: ')
+        password_ = getpass.getpass(prompt='Confirm password: ')
         if password != password_:
             self.stdout.write(self.style.ERROR('Passwords do not match'))
             return
-
+        
         # Check if password is weak. Should have at least special character
         # and one uppercase letter. The user can override this check
         if not any(char.isupper() for char in password) or not any(char in "!@#$%^&*()-_+=~`[]{}|;:,.<>?/" for char in password): # noqa
