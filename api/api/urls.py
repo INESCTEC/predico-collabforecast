@@ -34,7 +34,7 @@ Restful API server for **Predico - Collaborative Forecasting Service** (Proof of
 
 The API is public, but most endpoints require Authentication (bearer token).
 
-When using [Swagger](https://predico-elia.inesctec.pt/swagger/), you should:
+When using [Swagger](http://127.0.0.1:8000/swagger/), you should:
 
    1. Get an access token (see `/token` endpoint)
    2. Load this token in the "Authorize" Swagger section ('Bearer `<your_access_token>`') to automatically add the authorization header in every subsequent request.

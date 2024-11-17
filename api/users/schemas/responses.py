@@ -102,7 +102,7 @@ GetUserResourcesResponse = openapi.Response(
             "data": [
                 {
                     "id": "c02f6644-2e65-4931-8a86-fa694b481a4a",
-                    "name": "wind_farm_elia",
+                    "name": "wind_farm_1",
                     "timezone": "Europe/Brussels",
                     "registered_at": "2024-11-03T23:35:43.285606Z",
                     "updated_at": "2024-11-03T23:35:43.285624Z",

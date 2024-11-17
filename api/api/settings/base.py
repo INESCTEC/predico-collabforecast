@@ -51,11 +51,11 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 if ENVIRONMENT == 'production':
     CORS_ALLOWED_ORIGINS = [
-        os.getenv('FRONTEND_URL', 'https://predico-elia.inesctec.pt'),
+        os.getenv('FRONTEND_URL', 'http://127.0.0.1:80'),
     ]
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    ALLOWED_HOSTS = ['predico-elia.inesctec.pt', '127.0.0.1', 'localhost']
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_SSL_REDIRECT = True  # Force HTTPS connections
 else:
