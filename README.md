@@ -1,61 +1,76 @@
-<div align="left">
-  <img src="/documentation/docs/static/logo.svg"  align="middle" width="33%" height="auto">
-</div>
-
-
 # Collabforecast - A Collaborative Forecasting Platform
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
 
+<div align="left">
+  <img src="documentation/docs/static/logo.svg" width="33%" height="auto" alt="Collabforecast Logo">
+</div>
+
+---
+
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Requirements](#requirements)
-3. [Project Structure](#project-structure)
-4. [Project Setup](#project-setup)
-5. [Production Deployment](#production-deployment)
-6. [Development Mode](#development-mode)
-7. [Schedule Tasks](#schedule-tasks)
-8. [Contributing](#contributing)
-9. [Contacts](#contacts)
+1. [Introduction](#1-introduction)
+   - [Definitions / Nomenclature](#11-definitions--nomenclature)
+   - [Collaborative Forecasting Sessions](#12-collaborative-forecasting-sessions)
+   - [Service Components](#13-service-components)
+2. [Project Structure](#2-project-structure)
+3. [Getting Started](#3-getting-started)
+   - [Prerequisites](#31-prerequisites)
+   - [Environment Variables](#32-environment-variables)
+4. [Production Deployment](#4-production-deployment)
+   - [Start Docker Containers Stack](#41-start-docker-containers-stack)
+   - [Configure Service Super User](#42-configure-service-super-user)
+   - [Run Functional Tests](#43-run-functional-tests)
+   - [Using the Command Line Interface (CLI)](#44-using-the-command-line-interface-cli)
+5. [Development Mode](#5-development-mode)
+6. [Contributing](#6-contributing)
+   - [Reporting Issues](#61-reporting-issues)
+7. [License](#7-license)
+8. [Contacts](#8-contacts)
 
 ## 1. Introduction
 
-Predico Collabforecast is a backend service designed to facilitate collaborative forecasting. 
-This document provides a comprehensive guide to setting up and deploying the backend service, including the necessary requirements, project structure, and deployment instructions.
+Collabforecast is a backend service designed to facilitate collaborative forecasting. 
+It provides a platform where market participants can collaboratively generate forecasts by contributing their individual predictions. 
+
+Our approach leverages on collective intelligence to improve forecast accuracy and offers a transparent and fair mechanism for participants to benefit from their contributions.
+
 
 ### 1.1. Definitions / Nomenclature
-    
-- **Market Maker**: An entity that owns resources (e.g., wind farms) or manages a grid (e.g., a TSO) and seeks forecasts by opening and funding collaborative forecasting market sessions.
-- **Forecaster**: An individual or organization registered in the platform, aiming to submit forecasts to collaborative forecasting challenges opened by the Market Maker, competing for the available prize money in each session.
-- **Market Session**: A specific period during which Market Makers can create forecasting challenges, and Forecasters can submit forecasts for the open challenges.
-- **Market Challenge**: An opportunity, published by the Market Maker, with meta-data regarding a forecasting challenge that Forecasters can try to submit forecasts for.
-- **Gate Closure Time**: The deadline by which forecasts must be submitted for a market session.
-- **Forecast Variables**: Quantities to be forecasted. Currently only quantile 10, 50, 90 forecasts are accepted.
-- **Ensemble Forecast**: An aggregate forecast computed from multiple forecasters’ submissions.
+
+   - **Market Maker**: An entity that owns resources (e.g., wind farms) or manages a grid (e.g., a Transmission System Operator) and seeks forecasts by opening and funding collaborative forecasting market sessions.
+   - **Forecaster**: An individual or organization registered on the platform, aiming to submit forecasts to collaborative forecasting challenges opened by the Market Maker, competing for the available prize money in each session.
+   - **Market Session**: A specific period during which Market Makers can create forecasting challenges, and Forecasters can submit forecasts for the open challenges.
+   - **Market Challenge**: An opportunity, published by the Market Maker, with metadata regarding a forecasting challenge that Forecasters can submit forecasts for.
+   - **Gate Closure Time**: The deadline by which forecasts must be submitted for a market session.
+   - **Forecast Variables**: Quantities to be forecasted. Currently, only quantile 10, 50, and 90 forecasts are accepted.
+   - **Ensemble Forecast**: An aggregate forecast computed from multiple Forecasters’ submissions.
 
 ### 1.2. Collaborative Forecasting Sessions
 
-Below, you can find a sequence diagram illustrating the dynamics of a collaborative forecasting session, which is generally organized in four separate phases.
+A collaborative forecasting session is organized in four phases:
 
-- **Phase 1**: A new market session is scheduled to open.
-- **Phase 2**: Market Makers post new challenges, such as submitting day-ahead forecasts for specific assets (aka resources) in their portfolio.
-- **Phase 3**: Forecasters log into Predico API, download raw measurements data, build their models, and submit forecasts.
-- **Phase 4**: Forecasters log into Predico API, preview their skill scores and contribution importance to the final ensemble forecasts, to be delivered to the Market Maker.
+1. **Phase 1**: A new market session is scheduled to open.
+2. **Phase 2**: Market Makers post new challenges, such as submitting day-ahead forecasts for specific assets (resources) in their portfolio.
+3. **Phase 3**: Forecasters log into the Collabforecast API, download raw measurement data, build their models, and submit forecasts.
+4. **Phase 4**: Forecasters log into the Collabforecast API, preview their skill scores and contribution importance to the final ensemble forecasts, which are delivered to the Market Maker.
 
-**See the **<a href="/documentation/docs/static/predico-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.**
+**Service Sequence Diagram:**
+
+![Service Sequence Diagram](documentation/docs/static/predico-interactions-sd.png "Service Sequence Diagram")
 
 ### 1.3. Service Components
 
-The Predico Collabforecast service is composed of the following components:
+The Collabforecast service is composed of the following components:
 
-1. **REST API**: The REST API is the core of the Predico Collabforecast service. It provides endpoints for managing users, data, market participation, and authentication.
-2. **Forecasting Service**: The forecasting service is responsible for generating forecasts based on the data provided by users. It uses machine learning algorithms to generate accurate forecasts.
-3. **Frontend**: The frontend is a web-based interface that allows users to interact with the Predico Collabforecast service. It provides a user-friendly interface for managing user data (e.g., create invite links for data providers, aka Forecasters)
-4. **NGINX**: NGINX is used as a reverse proxy server to route requests and serve static files (documentation, frontend, etc.)
-5. **PostgreSQL**: PostgreSQL is used as the database management system for storing user data, forecasts, and other information.
-6. **Documentation**: The documentation provides detailed information about the Predico Collabforecast service, including installation instructions, API endpoints, and usage examples.
+1. **REST API**: The core of the Collabforecast service, providing endpoints for managing users, data, market participation, and authentication.
+2. **Forecasting Service**: Responsible for generating forecasts based on the data provided by users, using machine learning algorithms to generate accurate forecasts.
+3. **Frontend**: A web-based interface that allows users to interact with the Collabforecast service, providing a user-friendly interface for managing user data (e.g., creating invite links for data providers, aka Forecasters).
+4. **NGINX**: Used as a reverse proxy server to route requests and serve static files (documentation, frontend, etc.).
+5. **PostgreSQL**: Used as the database management system for storing user data, forecasts, and other information.
+6. **Documentation**: Provides detailed information about the Collabforecast service, including installation instructions, API endpoints, and usage examples.
 
 
 ## 2. Repository Structure:
@@ -72,40 +87,38 @@ The Predico Collabforecast service is composed of the following components:
 ```
 
 
-## 3. Initial Setup
+## 3. Getting Started
 
-This software stack can be deployed using Docker. The following steps will guide you through the process.
+These instructions will help you set up and run the Collabforecast platform on your local machine for development and testing purposes.
 
 ### 3.1. Prerequisites
 
-#### 3.1.1. For Production Deployment:
+#### For Production Deployment
 
 Ensure you have the following installed on your system:
 
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
+- [Docker](https://www.docker.com/) (recommended version 20.10 or later)
+- [Docker Compose](https://docs.docker.com/compose/) (recommended version 1.29 or later)
 
-#### 3.1.2. For local development (without Docker):
+#### For Local Development
 
-This software stack can be executed without Docker, but you will need to install specific dependencies for each module.
+Ensure you have the following installed on your system:
 
-A separate guide is available for each module, with detailed information about it and how to perform a set up decoupled from the remaining software stack.
+- [Docker](https://www.docker.com/) (recommended version 20.10 or later)
+- [Docker Compose](https://docs.docker.com/compose/) (recommended version 1.29 or later)
+- [Python ^3.11](https://www.python.org/downloads/)
+- [Node.js](https://nodejs.org/en/download/)
 
-See the **"Development Mode"** section in the following documents:
 
-- [API](api/README.md) for the REST API module.
-- [Forecast](forecast/README.md) for the Forecasting module.
-- [Frontend](frontend/README.md) for the Frontend module.
+### 3.2. Environment Variables
 
-### 3.2. Environment variables:
+Each module (`api`, `forecast`, and `frontend`) contains a file named `dotenv`. This file holds the environment variables used by the application. Copy this file to `.env` and update the variables according to your setup.
 
-Inside both `api`, `forecast` and `frontend` directories, you will find a file named `dotenv`. This file contains the environment variables that are used by the application. You can copy this file to `.env` and update the variables to your specifics.
-
-```shell
+```bash
 cp dotenv .env
 ```
 
-**Ensure you set the environment variables. If you do not create these files, the next steps will not work properly.**
+**Note: Setting up the environment variables is crucial. Without these files properly configured, the application will not run as expected.**
 
 
 ## 4. Production Deployment
@@ -117,16 +130,17 @@ docker compose -f docker-compose.prod.yml up -d
 ```
 
 This command should start the following services:
-- `predico_rest_app`: Django REST API
-- `predico_forecast`: Forecasting service
-- `predico_frontend`: React frontend
-- `predico_nginx`: NGINX server
-- `predico_postgresql`: PostgreSQL database
-- `predico_mkdocs`: Intermediate build to generate documentation
+   - `predico_rest_app`: Django REST API
+   - `predico_forecast`: Forecasting service
+   - `predico_frontend`: React frontend
+   - `predico_nginx`: NGINX server
+   - `predico_postgresql`: PostgreSQL database
+   - `predico_mkdocs`: Intermediate build to generate documentation
 
-**Note that:**
-    - Service mainpage will be available on http://0.0.0.0:80
-    - Service API will be available on http://0.0.0.0/api
+Access Points:
+	 -	Main Page: http://127.0.0.1
+	 -	RESTful API: http://127.0.0.1:8000/api
+   -	Documentation: http://127.0.0.1/docs
 
 ### 4.2. Configure service super user:
 
@@ -137,18 +151,17 @@ docker exec -it predico_rest_app python manage.py createadmin
 ```
 
 **Note that:**
-- `createadmin` is a custom command that creates a superuser and confirms if this user should be a session manager.
-- `session_manager` users have a higher level of privileges and can manage sessions (open / close / post ensemble forecasts / etc.)
+   - The createadmin command is a custom script that creates a superuser.
+   - You will be prompted to enter a username, email, and password.
+   - You can specify whether this user should be a session_manager, granting higher privileges to manage sessions (open/close/post ensemble forecasts, etc.).
 
-### 4.3. Check functional tests:
+### 4.3. Run functional tests:
 
 Check if all tests pass successfully
 
 ```shell
 docker exec -it predico_rest_app pytest
 ```
-
-See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
 ### 4.4. Using the Command Line Interface (CLI):
 
@@ -184,14 +197,29 @@ When executed, this task will calculate individual forecasters forecast skill sc
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py calculate_ensemble_weights
  ```
 
-## 5. Contributing
+## 5. Development mode
+
+While Docker is recommended for production deployment, you can also set up the project locally installing the dependencies for each module individually. 
+Refer to the development setup guides in each module's README:
+
+- [RESTful API Module Guide](api/README.md)
+- [Forecast Module Guide](forecast/README.md)
+- [Frontend Module Guide](frontend/README.md)
+
+**Note that in these examples we still use Docker to run the PostgreSQL database. You can also install PostgreSQL locally if you prefer.**
+
+## 6. Contributing
 
 This project is currently under active development and we are working on a contribution guide.
 
-### 5.1. How do I report a bug?
+### 6.1. Reporting Issues
 Please report bugs by opening an issue on our GitHub repository.
 
-## 6. Contacts:
+## 7. License
+
+This project is licensed under the AGPL v3 license - see the [LICENSE](LICENSE) file for details.
+
+## 8. Contacts:
 
 If you have any questions regarding this project, please contact the following people:
 
