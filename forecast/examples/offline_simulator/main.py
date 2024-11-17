@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # Set base simulation parameters:
     N_JOBS = 1
     simulation_params = {
-        "dataset_path": "files/datasets/example_elia",
+        "dataset_path": "files/datasets/example_elia_opendata",
         "report_name_suffix": "test",
         "nr_sessions": 10,
         "first_lt_utc": "2023-02-15T10:30:00Z",

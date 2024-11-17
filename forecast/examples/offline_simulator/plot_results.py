@@ -15,7 +15,7 @@ def load_json(file_path):
 
 
 # Load the results
-DATASET = "example_elia"
+DATASET = "example_1"
 QUANTILES = ["q10", "q50", "q90"]
 FORECASTING_MODEL = "LR"
 FILES_DT_FORMAT = "%Y-%m-%d %H:%M"

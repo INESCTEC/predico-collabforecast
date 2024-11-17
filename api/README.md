@@ -1,4 +1,6 @@
-# Collabforecast - API (REST) Server
+# Predico Collabforecast - API (REST) Server
+
+-----------------------------------------------------
 
 ## Introduction
 
@@ -19,7 +21,7 @@ The following directory structure should be considered:
 ├── users                   # users endpoints
 ```
 
-## Run API server decoupled from remaining services
+## Run API server decoupled from remaining services (besides database)
 
 ### Requirements
 
@@ -28,14 +30,21 @@ The following directory structure should be considered:
 ª [Poetry ^1.8.x](https://python-poetry.org/)
 
 ###  Prepare Python environment:
-How to run the code in development mode, with the REST API decoupled from docker stack?
 
-First, install the necessary project python dependencies:
+#### 1. Install poetry (if not already installed)
 
 ```shell
-poetry install
+pip install poetry   
+```
+
+#### 2. Install the python dependencies and activate the virtual environment:
+
+```shell
+oetry install
 poetry shell
 ```
+
+> **_NOTE:_** If you're already working in a virtual environment (e.g., conda or pyenv), you can skip the `poetry shell` command. 
 
 ### Prepare the database:
 In the same directory, create a `.dev.env` file with environment variables used to debug and update default environment variables to your specifics.

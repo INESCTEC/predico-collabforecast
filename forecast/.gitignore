@@ -1,7 +1,7 @@
 !.gitkeep
 *.csv
-examples/simulator_no_api/simulation/datasets/
-examples/simulator_no_api/simulation/reports/
+examples/offline_simulator/simulation/datasets/
+examples/offline_simulator/simulation/reports/
 
 .idea/
 .vscode/
