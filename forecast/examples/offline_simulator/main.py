@@ -1,13 +1,17 @@
 # flake8: noqa
-import os
+import sys
 import gc
 
 from time import time
 from copy import deepcopy
 from loguru import logger
 
+from os.path import dirname as up
+
 # -- If needed to run via command line, add root proj to sys path:
-os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+# Add the root project directory to the Python path
+root_dir = up(up(up(up(__file__))))
+sys.path.append(root_dir)
 from forecast.src.market import MarketClass
 
 from simulation import SessionGenerator, AgentsLoader, SimulatorManager
