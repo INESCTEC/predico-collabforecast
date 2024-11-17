@@ -219,7 +219,7 @@ Please report bugs by opening an issue on our GitHub repository.
 
 This project is licensed under the AGPL v3 license - see the [LICENSE](LICENSE) file for details.
 
-## 8. Contacts:
+## 8. Contacts
 
 If you have any questions regarding this project, please contact the following people:
 
