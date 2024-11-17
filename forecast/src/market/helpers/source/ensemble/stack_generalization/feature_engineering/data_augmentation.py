@@ -62,8 +62,8 @@ def create_augmented_dataframe(df, max_lags, forecasters_diversity=False, add_la
     df = pd.concat([df, shifted_df_ensemble], axis=1)
     if add_lags:
         df = df.iloc[max_lags:,:]  # remove the first rows with NaN values
-        df_train = df[df.index < end_train]
-        df_test = df[(df.index >= start_pred) & (df.index <= end_pred)]
+        df_train = df[df.index < end_train].copy()
+        df_test = df[(df.index >= start_pred) & (df.index <= end_pred)].copy()
         for lag in range(1, max_lags + 1):
             lag_colunms = df_train.columns.str.contains('_t-'+str(lag))
             # set the first lag rows to nans

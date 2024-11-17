@@ -36,6 +36,8 @@ def concatenate_feat_targ_dataframes(buyer_resource_name, df_train_ensemble, df_
     assert 'norm_' + buyer_resource_name in df_train.columns, "norm_measured should be in df_train columns"
     assert 'norm_' + buyer_resource_name in df_test.columns, "norm_measured should be in df_test columns"
     assert isinstance(max_lag, int), "max_lag should be an integer"
+    df_train_ensemble = df_train_ensemble.copy()
+    df_test_ensemble = df_test_ensemble.copy()
     col_name_buyer = 'norm_' + buyer_resource_name
     df_train_ensemble.loc[:, 'norm_targ'] = df_train[col_name_buyer].values[max_lag:]
     df_test_ensemble.loc[:, 'norm_targ'] = df_test[col_name_buyer].values
