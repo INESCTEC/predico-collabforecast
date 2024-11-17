@@ -1,5 +1,7 @@
 # Django secret key:
 SECRET_KEY=insert_your_secret_key_here
+
+# Frontend URL (required for CORS_ALLOWED_ORIGINS configuration)
 FRONTEND_URL=http://localhost:3000
 
 # Applications environment options: production/develop/test
@@ -13,7 +15,7 @@ POSTGRES_DB=db_name
 POSTGRES_USER=db_user
 POSTGRES_PASSWORD=db_password
 POSTGRES_HOST=db_host
-POSTGRES_PORT=db_port
+POSTGRES_PORT=5432
 
 # Email configs:
 EMAIL_HOST=email_host
@@ -24,4 +26,4 @@ EMAIL_USE_TLS=1
 EMAIL_USE_SSL=0
 
 # URL Configs:
-SWAGGER_BASE_URL=http://localhost:8000
+SWAGGER_BASE_URL=http://127.0.0.1:8000

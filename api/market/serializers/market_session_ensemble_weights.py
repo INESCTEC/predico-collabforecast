@@ -34,14 +34,14 @@ class MarketSessionEnsembleWeightsCreateSerializer(serializers.ModelSerializer):
                 id=attrs["ensemble"].id,
                 market_session_challenge_id=challenge_id).exists():
             raise serializers.ValidationError(
-                f"Ensemble {attrs["ensemble"].id} does not belong "
+                f"Ensemble {attrs['ensemble'].id} does not belong "
                 f"to this challenge"
             )
         if not MarketSessionSubmission.objects.filter(
                 user=attrs["user"].id,
                 market_session_challenge_id=challenge_id).exists():
             raise serializers.ValidationError(
-                f"Submission {attrs["submission"].id} does not belong "
+                f"Submission {attrs['submission'].id} does not belong "
                 f"to this challenge"
             )
         return attrs

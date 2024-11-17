@@ -15,6 +15,12 @@ The following directory structure should be considered:
 
 ### API (REST) Decoupled
 
+#### Requirements
+
+* [Python ^3.11](https://www.python.org/downloads/)
+* [Pip ^21.x](https://pypi.org/project/pip/)
+ª [Poetry ^1.8.x](https://python-poetry.org/)
+
 ####  Prepare Python environment:
 How to run the code in development mode, with the REST API decoupled from docker stack?
 
@@ -71,7 +77,15 @@ python manage.py createadmin
 python manage.py runserver
 ```
 
-### API (Forecast) Decoupled
+**By default the API will be available at `http://127.0.0.1:8000`. If you want to change either HOST or PORT references, please update the `SWAGGER_BASE_URL` environment variable in the `.dev.env` file.**
 
-You can also try this service forecasting modules decoupled from the REST API and the service Database.
-Check the documentation of the [Forecast](forecast/README.md) module.
+
+4. Access the API swagger or redoc documentation:
+
+Default URLs:
+
+**Swagger**
+http://127.0.0.1:8000/swagger
+
+**Redoc**
+http://127.0.0.1:8000/redoc
