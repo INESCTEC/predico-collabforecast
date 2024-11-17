@@ -128,7 +128,7 @@ See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
 Market sessions can be open/executed through the command line interface (CLI) available in the `forecast` module.
 
-> **_NOTE 2:_**  The following instructions assume you have all the services running. If you don't, please refer to the previous section.
+> **_NOTE:_**  The following instructions assume you have all the services running. If you don't, please refer to the previous section.
 
 > **_WARNING:_**  The following command will run the market pipeline with the settings specified in the `.env` file.
 
@@ -157,14 +157,6 @@ When executed, this task will calculate individual forecasters forecast skill sc
  ```shell
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py calculate_ensemble_weights
  ```
-
-### Forecasting
-
-Check the documentation of the [Collaborative Forecasting](forecast/README.md) module.
-
-### Frontend
-
-Check the documentation of the [Frontend](frontend/README.md) module.
 
 ## Contributing
 
