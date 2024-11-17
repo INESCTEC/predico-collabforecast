@@ -12,15 +12,15 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Predico - Restful-API",
+        title="Predico - Collabforecast RESTful API Server",
         default_version='v1',
         description="""
-#### Description:
-Restful API for **Predico - Collaborative Forecasting Service** (Proof of Concept Version).
 
-### Visit the [Official Landing Page](https://predico-elia.inesctec.pt/)
+Restful API server for **Predico - Collaborative Forecasting Service** (Proof of Concept Version).
 
-## Main functions:
+### Visit the [Official Landing Page](https://inesctec.github.io/predico-collabforecast/)
+
+### Main functions:
 - **Market management**:
     * List market sessions and challenges
     * List ensemble forecasts / weights / contributions per forecasting challenges
@@ -30,19 +30,18 @@ Restful API for **Predico - Collaborative Forecasting Service** (Proof of Concep
     * Upload and access your historical forecasts data
     * Access raw measurements data, published by the Market Maker
 
-
 #### Important! Authentication!
 
 The API is public, but most endpoints require Authentication (bearer token).
 
 When using [Swagger](https://predico-elia.inesctec.pt/swagger/), you should:
-    
-    1. Get an access token (see `/token` endpoint)
-    2. Load this token in the "Authorize" Swagger section ('Bearer <your_access_token>') to automatically add the authorization header in every subsequent request.
 
+   1. Get an access token (see `/token` endpoint)
+   2. Load this token in the "Authorize" Swagger section ('Bearer `<your_access_token>`') to automatically add the authorization header in every subsequent request.
 
-## Contacts:
-- predico@elia.be
+### Contacts:
+   - José Andrade <jose.r.andrade@inesctec.pt>
+   - André Garcia <andre.f.garcia@inesctec.pt>
 
 **API developed by INESC TEC - Centre for Power and Energy Systems (2024)**
 
@@ -66,7 +65,7 @@ v1_urlpatterns = [
     re_path('market/', include('market.urls'), name="market"),
     re_path('user/', include('users.urls'), name="user"),
     re_path('data/', include('data.urls'), name="data"),
-    re_path('test/', TestEndpointView.as_view(), name="test-service"),
+    re_path(r'health/?$', TestEndpointView.as_view(), name="test-service"),
 ]
 
 urlpatterns = [

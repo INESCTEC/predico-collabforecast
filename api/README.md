@@ -1,3 +1,9 @@
+# Collabforecast - API (REST) Server
+
+## Introduction
+
+This project is a REST API that provides endpoints for Collabforecast market sessions and user management / authentication.
+It is built using [Django Rest Framework](https://www.django-rest-framework.org/).
 
 ## Module Structure:
 
@@ -13,15 +19,15 @@ The following directory structure should be considered:
 ├── users                   # users endpoints
 ```
 
-### API (REST) Decoupled
+## Run API server decoupled from remaining services
 
-#### Requirements
+### Requirements
 
 * [Python ^3.11](https://www.python.org/downloads/)
 * [Pip ^21.x](https://pypi.org/project/pip/)
 ª [Poetry ^1.8.x](https://python-poetry.org/)
 
-####  Prepare Python environment:
+###  Prepare Python environment:
 How to run the code in development mode, with the REST API decoupled from docker stack?
 
 First, install the necessary project python dependencies:
@@ -31,7 +37,7 @@ poetry install
 poetry shell
 ```
 
-#### Prepare the database:
+### Prepare the database:
 In the same directory, create a `.dev.env` file with environment variables used to debug and update default environment variables to your specifics.
 
 ```shell
@@ -47,9 +53,9 @@ Then, initialize the service Postgres DB:
 docker compose -f docker-compose.dev.yml up -d
 ```
 
-#### Run the REST API:
+### Run using built-in Django server:
 
-Once your DB is up, you can debug locally by just by uncommenting the following lines in the `manage.py` file: 
+Once your DB is up, you can debug locally by just by uncommenting the following lines in the `manage.py` file:
 
 ```python api/manage.py
 from dotenv import load_dotenv
@@ -58,19 +64,19 @@ load_dotenv(".dev.env")
 
 After this, you can easily run your application without docker container, in either an IDE or straight from the command line.
 
-1. Migrate DB migrations:
+#### 1. Migrate DB migrations:
 
 ```shell
 python manage.py migrate
 ```
 
-2. Create a superuser, with session management privileges:
+#### 2. Create a superuser, with session management privileges:
 
 ```shell
 python manage.py createadmin
 ```
 
-3. Run your app using through Django runserver:
+#### 3. Run your app using through Django runserver:
 
 ```shell
 # This will start the Django development server (do not use this in production):
@@ -80,7 +86,16 @@ python manage.py runserver
 **By default the API will be available at `http://127.0.0.1:8000`. If you want to change either HOST or PORT references, please update the `SWAGGER_BASE_URL` environment variable in the `.dev.env` file.**
 
 
-4. Access the API swagger or redoc documentation:
+#### 4. Check if you can reach the test endpoint:
+
+You can test if the API is running with a simple HTTP GET request (e.g., using CURL)
+
+```shell
+curl http://127.0.0.1:8000/api/v1/health/
+```
+
+
+#### 4. Access the API swagger or redoc documentation:
 
 Default URLs:
 
@@ -89,3 +104,4 @@ http://127.0.0.1:8000/swagger
 
 **Redoc**
 http://127.0.0.1:8000/redoc
+
