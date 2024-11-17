@@ -46,20 +46,7 @@ Below, you can find a sequence diagram illustrating the dynamics of a collaborat
 
 **See the **<a href="/documentation/docs/static/predico-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.**
 
-### 1.3. Forecasting Components Breakdown
-
-The Predico platform's forecasting process is structured into various modules, as illustrated in the diagram below. This breakdown highlights the main stages of wind power and wind power variability forecasting, and how the contributions from different forecasters are evaluated.
-
-- **Data Value Assessment**: Using methods such as Permutation Importance and Shapley Values, this component assesses the value of data inputs, helping identify the most influential variables in forecasting accuracy.
-- **Forecasting**: This is divided into two parallel processes:
-    * ***Wind Power***: Forecasts are generated through a series of steps including feature engineering, hyperparameter optimization, model training, and the final forecast generation.
-    * ***Wind Power Variability***: A similar process is followed here, focusing on capturing fluctuations in wind power output, which includes feature engineering, hyperparameter optimization, model training, and forecast generation.
-- **Wind Ramp Detection**: Identifies sudden changes or "ramps" in wind power, which are crucial for managing grid stability and operational decisions.
-- **Forecast Skill Evaluation**: This stage evaluates the performance of forecasters using metrics like Root Mean Squared Error (RMSE) and Pinball Loss. These scores help rank forecasters based on their forecast skill, per challenge participation.
-
-**The interaction of these components with market makers and forecasters is shown in the **<a href="/documentation/docs/static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.**
-
-### 1.4. Service Components
+### 1.3. Service Components
 
 The Predico Collabforecast service is composed of the following components:
 
