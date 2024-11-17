@@ -30,7 +30,7 @@ Below, you can find a sequence diagram illustrating the dynamics of a collaborat
 - **Phase 4**: Forecasters log into Predico API, preview their skill scores and contribution importance to the final ensemble forecasts, to be delivered to the Market Maker.
 
 !!! tip "Check this out"
-    See the **<a href="../static/predico-elia-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.
+    See the **<a href="../static/predico-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.
 
 
 ## Forecasting Components Breakdown

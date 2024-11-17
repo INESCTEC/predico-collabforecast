@@ -1,4 +1,9 @@
-# Predico Collabforecast - A Collaborative Forecasting Platform
+<div align="left">
+  <img src="/documentation/docs/static/logo.svg"  align="middle" width="33%" height="auto">
+</div>
+
+
+# Collabforecast - A Collaborative Forecasting Platform
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
@@ -15,10 +20,46 @@
 8. [Contributing](#contributing)
 9. [Contacts](#contacts)
 
+## 1. Introduction
 
-## Introduction
+Predico Collabforecast is a backend service designed to facilitate collaborative forecasting. 
+This document provides a comprehensive guide to setting up and deploying the backend service, including the necessary requirements, project structure, and deployment instructions.
 
-Predico Collabforecast is a backend service designed to facilitate collaborative forecasting. This document provides a comprehensive guide to setting up and deploying the backend service, including the necessary requirements, project structure, and deployment instructions.
+### 1.1. Definitions / Nomenclature
+    
+- **Market Maker**: An entity that owns resources (e.g., wind farms) or manages a grid (e.g., a TSO) and seeks forecasts by opening and funding collaborative forecasting market sessions.
+- **Forecaster**: An individual or organization registered in the platform, aiming to submit forecasts to collaborative forecasting challenges opened by the Market Maker, competing for the available prize money in each session.
+- **Market Session**: A specific period during which Market Makers can create forecasting challenges, and Forecasters can submit forecasts for the open challenges.
+- **Market Challenge**: An opportunity, published by the Market Maker, with meta-data regarding a forecasting challenge that Forecasters can try to submit forecasts for.
+- **Gate Closure Time**: The deadline by which forecasts must be submitted for a market session.
+- **Forecast Variables**: Quantities to be forecasted. Currently only quantile 10, 50, 90 forecasts are accepted.
+- **Ensemble Forecast**: An aggregate forecast computed from multiple forecasters’ submissions.
+
+### 1.2. Collaborative Forecasting Sessions
+
+Below, you can find a sequence diagram illustrating the dynamics of a collaborative forecasting session, which is generally organized in four separate phases.
+
+- **Phase 1**: A new market session is scheduled to open.
+- **Phase 2**: Market Makers post new challenges, such as submitting day-ahead forecasts for specific assets (aka resources) in their portfolio.
+- **Phase 3**: Forecasters log into Predico API, download raw measurements data, build their models, and submit forecasts.
+- **Phase 4**: Forecasters log into Predico API, preview their skill scores and contribution importance to the final ensemble forecasts, to be delivered to the Market Maker.
+
+**See the **<a href="/documentation/docs/static/predico-interactions-sd.png" target="_blank">service sequence diagram</a>** for a visual representation of the collaborative forecasting session.**
+
+### 1.3. Forecasting Components Breakdown
+
+The Predico platform's forecasting process is structured into various modules, as illustrated in the diagram below. This breakdown highlights the main stages of wind power and wind power variability forecasting, and how the contributions from different forecasters are evaluated.
+
+- **Data Value Assessment**: Using methods such as Permutation Importance and Shapley Values, this component assesses the value of data inputs, helping identify the most influential variables in forecasting accuracy.
+- **Forecasting**: This is divided into two parallel processes:
+    * ***Wind Power***: Forecasts are generated through a series of steps including feature engineering, hyperparameter optimization, model training, and the final forecast generation.
+    * ***Wind Power Variability***: A similar process is followed here, focusing on capturing fluctuations in wind power output, which includes feature engineering, hyperparameter optimization, model training, and forecast generation.
+- **Wind Ramp Detection**: Identifies sudden changes or "ramps" in wind power, which are crucial for managing grid stability and operational decisions.
+- **Forecast Skill Evaluation**: This stage evaluates the performance of forecasters using metrics like Root Mean Squared Error (RMSE) and Pinball Loss. These scores help rank forecasters based on their forecast skill, per challenge participation.
+
+**The interaction of these components with market makers and forecasters is shown in the **<a href="/documentation/docs/static/modules-breakdown.png" target="_blank">forecasting components diagram</a>**.**
+
+### 1.4. Service Components
 
 The Predico Collabforecast service is composed of the following components:
 
@@ -30,9 +71,8 @@ The Predico Collabforecast service is composed of the following components:
 6. **Documentation**: The documentation provides detailed information about the Predico Collabforecast service, including installation instructions, API endpoints, and usage examples.
 
 
-## Project Structure:
+## 2. Repository Structure:
 
-The following directory structure should be considered:
 
 ``` bash
 .                             # Current directory
@@ -45,20 +85,20 @@ The following directory structure should be considered:
 ```
 
 
-## Project Setup
+## 3. Initial Setup
 
 This software stack can be deployed using Docker. The following steps will guide you through the process.
 
-### Prerequisites
+### 3.1. Prerequisites
 
-#### For Production Deployment:
+#### 3.1.1. For Production Deployment:
 
 Ensure you have the following installed on your system:
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
-#### For local development (without Docker):
+#### 3.1.2. For local development (without Docker):
 
 This software stack can be executed without Docker, but you will need to install specific dependencies for each module.
 
@@ -70,8 +110,7 @@ See the **"Development Mode"** section in the following documents:
 - [Forecast](forecast/README.md) for the Forecasting module.
 - [Frontend](frontend/README.md) for the Frontend module.
 
-
-### Environment variables:
+### 3.2. Environment variables:
 
 Inside both `api`, `forecast` and `frontend` directories, you will find a file named `dotenv`. This file contains the environment variables that are used by the application. You can copy this file to `.env` and update the variables to your specifics.
 
@@ -82,9 +121,9 @@ cp dotenv .env
 **Ensure you set the environment variables. If you do not create these files, the next steps will not work properly.**
 
 
-## Production Deployment
+## 4. Production Deployment
 
-### Start Docker Containers Stack
+### 4.1. Start Docker Containers Stack
 
 ```shell
 docker compose -f docker-compose.prod.yml up -d
@@ -102,7 +141,7 @@ This command should start the following services:
     - Service mainpage will be available on http://0.0.0.0:80
     - Service API will be available on http://0.0.0.0/api
 
-### Configure super user:
+### 4.2. Configure service super user:
 
 Service administrators need to be added via CLI, with the following command.
 
@@ -114,7 +153,7 @@ docker exec -it predico_rest_app python manage.py createadmin
 - `createadmin` is a custom command that creates a superuser and confirms if this user should be a session manager.
 - `session_manager` users have a higher level of privileges and can manage sessions (open / close / post ensemble forecasts / etc.)
 
-### Check functional tests:
+### 4.3. Check functional tests:
 
 Check if all tests pass successfully
 
@@ -124,7 +163,7 @@ docker exec -it predico_rest_app pytest
 
 See the Swagger (http://0.0.0.0:80/swagger) for methods description.
 
-### Using the Command Line Interface (CLI):
+### 4.4. Using the Command Line Interface (CLI):
 
 Market sessions can be open/executed through the command line interface (CLI) available in the `forecast` module.
 
@@ -132,7 +171,7 @@ Market sessions can be open/executed through the command line interface (CLI) av
 
 > **_WARNING:_**  The following command will run the market pipeline with the settings specified in the `.env` file.
 
-#### Open market session:
+#### 4.4.1. Open market session:
 
 When executed, this task will open a new market session, allowing forecasters to submit their forecasts.
 
@@ -140,7 +179,7 @@ When executed, this task will open a new market session, allowing forecasters to
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py open_session
 ```
 
-#### Close & Run collaborative forecasting session:
+#### 4.4.2. Close & Run collaborative forecasting session:
 
 When executed, this task will close the currently open market session (gate closure time) and run the collaborative forecasting models.
 
@@ -150,7 +189,7 @@ Remember that Forecasters will not be able to submit forecasts after the gate cl
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py run_session
  ```
  
-#### Run data value assessment tasks
+#### 4.4.3. Run data value assessment tasks
 
 When executed, this task will calculate individual forecasters forecast skill scores and contribution to the final ensemble forecasts.
 
@@ -158,14 +197,14 @@ When executed, this task will calculate individual forecasters forecast skill sc
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py calculate_ensemble_weights
  ```
 
-## Contributing
+## 5. Contributing
 
 This project is currently under active development and we are working on a contribution guide.
 
-### How do I report a bug?
+### 5.1. How do I report a bug?
 Please report bugs by opening an issue on our GitHub repository.
 
-## Contacts:
+## 6. Contacts:
 
 If you have any questions regarding this project, please contact the following people:
 
