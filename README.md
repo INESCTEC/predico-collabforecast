@@ -23,8 +23,7 @@
 4. [Production Deployment](#4-production-deployment)
    - [Start Docker Containers Stack](#41-start-docker-containers-stack)
    - [Configure Service Super User](#42-configure-service-super-user)
-   - [Run Functional Tests](#43-run-functional-tests)
-   - [Using the Command Line Interface (CLI)](#44-using-the-command-line-interface-cli)
+   - [Using the Command Line Interface (CLI)](#43-using-the-command-line-interface-cli)
 5. [Development Mode](#5-development-mode)
 6. [Contributing](#6-contributing)
    - [Reporting Issues](#61-reporting-issues)
@@ -147,17 +146,7 @@ openssl req -new -key nginx/ssl/localhost.key -out nginx/ssl/localhost.csr -subj
 openssl x509 -req -days 365 -in nginx/ssl/localhost.csr -signkey nginx/ssl/localhost.key -out nginx/ssl/localhost.pem
 ```
 
-Explanation:
-
-   - x509: Outputs a self-signed certificate instead of a certificate request.
-   - nodes: Skips the option to secure our key with a passphrase.
-   - days 365: The certificate is valid for 365 days.
-   - newkey rsa:2048: Creates a new RSA key of 2048 bits.
-   - keyout: Specifies where to save the private key file.
-   - out: Specifies where to save the certificate file.
-   - subj "/CN=localhost": Sets the Common Name (CN) to localhost.
-
-**The current NGINX configuration file is set to use the `localhost.crt` and `localhost.key` files.
+**The current NGINX configuration file is set to use the `localhost.pem` and `localhost.key` files.
 If you generate the certificate with a different name, update the `nginx.conf` file accordingly.**
 
 
@@ -179,7 +168,7 @@ This command should start the following services:
 
 Access Points:
 	 -	Main Page: http://127.0.0.1
-	 -	RESTful API: http://127.0.0.1:8000/api
+	 -	RESTful API: http://127.0.0.1/api
    -	Documentation: http://127.0.0.1/docs
 
 ### 4.2. Configure service super user:
@@ -195,15 +184,8 @@ docker exec -it predico_rest_app python manage.py createadmin
    - You will be prompted to enter a username, email, and password.
    - You can specify whether this user should be a session_manager, granting higher privileges to manage sessions (open/close/post ensemble forecasts, etc.).
 
-### 4.3. Run functional tests:
 
-Check if all tests pass successfully
-
-```shell
-docker exec -it predico_rest_app pytest
-```
-
-### 4.4. Using the Command Line Interface (CLI):
+### 4.3. Using the Command Line Interface (CLI):
 
 Market sessions can be open/executed through the command line interface (CLI) available in the `forecast` module.
 
@@ -211,7 +193,7 @@ Market sessions can be open/executed through the command line interface (CLI) av
 
 > **_WARNING:_**  The following command will run the market pipeline with the settings specified in the `.env` file.
 
-#### 4.4.1. Open market session:
+#### 4.3.1. Open market session:
 
 When executed, this task will open a new market session, allowing forecasters to submit their forecasts.
 
@@ -219,7 +201,7 @@ When executed, this task will open a new market session, allowing forecasters to
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py open_session
 ```
 
-#### 4.4.2. Close & Run collaborative forecasting session:
+#### 4.3.2. Close & Run collaborative forecasting session:
 
 When executed, this task will close the currently open market session (gate closure time) and run the collaborative forecasting models.
 
@@ -229,7 +211,7 @@ Remember that Forecasters will not be able to submit forecasts after the gate cl
 docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py run_session
  ```
  
-#### 4.4.3. Run data value assessment tasks
+#### 4.3.3. Run data value assessment tasks
 
 When executed, this task will calculate individual forecasters forecast skill scores and contribution to the final ensemble forecasts.
 
