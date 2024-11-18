@@ -1,0 +1,17 @@
+# Market configs
+MARKET_EMAIL=market_email
+MARKET_PASSWORD=market_password
+MARKET_FORECAST_HORIZON=24
+
+# Database configs:
+POSTGRES_HOST=db_host
+POSTGRES_DB=db_name
+POSTGRES_USER=db_user
+POSTGRES_PASSWORD=db_password
+POSTGRES_PORT=5432
+
+# Rest API configs
+RESTAPI_PROTOCOL=https
+RESTAPI_HOST=localhost
+RESTAPI_PORT=443
+N_REQUEST_RETRIES=3
