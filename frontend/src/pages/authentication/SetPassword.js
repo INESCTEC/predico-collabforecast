@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from "../../routes/axiosInstance";
-import logo from '../../assets/images/elia-group-logo-svg.svg';
+import logo from '../../assets/images/logo.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 

@@ -19,7 +19,7 @@ params = {
     "end_date": end_date
 }
 # Download data:
-next_url = "https://predico-elia.inesctec.pt/api/v1/data/individual-forecasts/historical"
+next_url = "https://127.0.0.1/api/v1/data/individual-forecasts/historical"
 dataset = []
 
 # -- Note: This will stop once all the samples are retrieved.

@@ -6,8 +6,8 @@ COPY nginx.conf /etc/nginx/
 RUN rm /etc/nginx/conf.d/default.conf
 COPY project.conf /etc/nginx/conf.d/
 
-COPY certificate.pem /etc/nginx/ssl/certificate.pem
-COPY private.key /etc/nginx/ssl/private.key
+COPY ssl/localhost.pem /etc/nginx/ssl/certificate.pem
+COPY ssl/localhost.key /etc/nginx/ssl/private.key
 
 COPY docs/quick-guide /usr/share/nginx/quick-guide
 

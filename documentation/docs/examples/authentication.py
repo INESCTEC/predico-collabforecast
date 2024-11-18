@@ -3,7 +3,7 @@ import requests
 email = "your_email@example.com"
 password = "your_password"
 
-response = requests.post('https://predico-elia.inesctec.pt/api/v1/token',
+response = requests.post('https://127.0.0.1/api/v1/token',
                          data={'email': email, 'password': password})
 
 # Check if authentication was successful

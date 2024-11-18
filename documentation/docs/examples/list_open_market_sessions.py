@@ -8,7 +8,7 @@ headers = {
 }
 
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/session',
+    url='https://127.0.0.1/api/v1/market/session',
     params={"status": "open"},
     headers=headers
 )

@@ -137,12 +137,14 @@ Why Use a Self-Signed Certificate?
 To set up HTTPS locally, you need to generate a self-signed SSL certificate and configure NGINX to use it.
 
 ```shell
-# Generate a self-signed certificate and store it on the project nginx directory
-sudo openssl req -x509 -nodes -days 365 \
-  -newkey rsa:2048 \
-  -keyout nginx/ssl/localhost.key \
-  -out nginx/ssl/localhost.crt \
-  -subj "/CN=localhost"
+# Generate a private key
+openssl genrsa -out nginx/ssl/localhost.key 2048
+
+# Generate a certificate signing request (CSR)
+openssl req -new -key nginx/ssl/localhost.key -out nginx/ssl/localhost.csr -subj "/CN=localhost"
+
+# Generate a self-signed certificate in PEM format
+openssl x509 -req -days 365 -in nginx/ssl/localhost.csr -signkey nginx/ssl/localhost.key -out nginx/ssl/localhost.pem
 ```
 
 Explanation:

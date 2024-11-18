@@ -12,7 +12,7 @@ open_market_session_id = "your_open_market_session_id"
 
 # Request the challenges for the open market session:
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
+    url='https://127.0.0.1/api/v1/market/challenge',
     params={'market_session': int(open_market_session_id)},
     headers=headers
 )
@@ -34,7 +34,7 @@ print(f"Challenge Resource ID: {resource_id}")
 
 # Get information on the data availability for this resource:
 response = requests.get(
-    url=f'https://predico-elia.inesctec.pt/api/v1/user/resource',
+    url=f'https://127.0.0.1/api/v1/user/resource',
     params={"resource": resource_id},
     headers=headers
 )
@@ -51,7 +51,7 @@ params = {
     "end_date": end_date
 }
 # Download data:
-next_url = "https://predico-elia.inesctec.pt/api/v1/data/raw-measurements/"
+next_url = "https://127.0.0.1/api/v1/data/raw-measurements/"
 dataset = []
 
 # -- Note: This will stop once all the samples are retrieved.

@@ -9,7 +9,7 @@ If you haven't registered yet, please refer to the [Forecaster Application](appl
 
 To authenticate with the Predicto API you can use the following endpoint:
 
-- **POST** [`/api/v1/token`](https://predico-elia.inesctec.pt/redoc/#tag/token/operation/token_create) - Authenticate and retrieve an access (bearer) token.
+- **POST** [`/api/v1/token`](https://127.0.0.1/redoc/#tag/token/operation/token_create) - Authenticate and retrieve an access (bearer) token.
 
 
 ## Retrieving an Access Token

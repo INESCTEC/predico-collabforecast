@@ -8,8 +8,8 @@ To interact with the Predicto API and retrieve information about
 your submission contributions to the final ensemble forecasts,
 you can use the following endpoints:
 
-- **GET** [`/api/v1/market/challenge/submission`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_submission) - Retrieve a list of your previous submissions (and respective challenges).
-- **GET** [`/api/v1/market/challenge/ensemble-weights`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_ensemble_weights) - Retrieve a list of your submissions scores and relative ranking to other forecasters.
+- **GET** [`/api/v1/market/challenge/submission`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session_submission) - Retrieve a list of your previous submissions (and respective challenges).
+- **GET** [`/api/v1/market/challenge/ensemble-weights`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session_ensemble_weights) - Retrieve a list of your submissions scores and relative ranking to other forecasters.
 
 
 !!! important "Access Token Required"

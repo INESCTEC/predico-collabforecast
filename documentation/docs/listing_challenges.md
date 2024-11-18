@@ -1,7 +1,7 @@
 # Listing Challenges for Market Sessions
 
 After retrieving the open market sessions, you may want to list the challenges associated with a specific market session. 
-Challenges are opportunities published by the Market Maker (Elia) that Forecasters can submit forecasts for.
+Challenges are opportunities published by the Market Maker that Forecasters can submit forecasts for.
 
 ## API Endpoints:
 
@@ -9,8 +9,8 @@ To interact with the Predicto API and retrieve information about
 challenges published in open market sessions, 
 you can use the following endpoints:
 
-- **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
-- **GET** [`/api/v1/market/challenge`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
+- **GET** [`/api/v1/market/session`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
+- **GET** [`/api/v1/market/challenge`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
 
 
 !!! info "Prerequisites"

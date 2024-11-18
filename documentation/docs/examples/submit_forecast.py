@@ -15,7 +15,7 @@ open_market_session_id = "your_open_market_session_id"
 
 # Request the challenges for the open market session:
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
+    url='https://127.0.0.1/api/v1/market/challenge',
     params={'market_session': int(open_market_session_id)},
     headers=headers
 )
@@ -75,7 +75,7 @@ for i, submission in enumerate(submission_list):
 
 # Submit the forecasts:
 for submission in submission_list:
-    response = requests.post(url=f"https://predico-elia.inesctec.pt/api/v1/market/challenge/submission/{challenge_id}",
+    response = requests.post(url=f"https://127.0.0.1/api/v1/market/challenge/submission/{challenge_id}",
                             json=submission,
                             headers=headers)
 

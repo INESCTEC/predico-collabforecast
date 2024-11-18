@@ -17,9 +17,11 @@
    - **Market** Challenge: A specific forecasting opportunity provided by a Market Maker, specifying details like target variables, time resolution and forecast horizon.
 
 
-#### 4. How do I register as a Forecaster?
+#### 4. Who can I contact for more information?
 
-   - Forecasters must apply by emailing [predico@elia.be](mailto:predico@elia.be). Upon acceptance, you will receive a registration link. A historical forecast submission of at least 30 days, in 15-minute intervals, is mandatory for your first participation.
+   - For any inquiries, you can reach out to the developers at [predico-support@lists.inesctec.pt](mailto:predico-support@lists.inesctec.pt).
+
+Feel free to consult the API documentation for technical details and guidelines on submission formats.
 
 
 #### 5. How are forecasts submitted?
@@ -41,33 +43,3 @@
 In contrast, forecasters are ranked based on pinball loss when evaluating forecasts at the 10th and 90th percentiles. In both cases, a lower value indicates a higher ranking for the forecaster.
 
    - Regarding prize distribution, it is done based on rank with 50% of the market value distributed to top-ranking Forecasters, and 50% based on the contribution to the ensemble forecast.
-
-
-#### 9. How are payments handled?
-
-   - Payments are made monthly in Euro to European bank accounts. You must accumulate at least €1,000 in winnings to receive payment.
-
-
-#### 10. What compliance measures are in place?
-
-   - **Fair Play Policy**: The market is designed to reward Forecasters making accurate forecasts. Integrity and honesty are paramount.
-   - **Prohibited Actions**:  Any attempt to interfere with the proper functioning of the market, platform, or competitors—including gaming the market—is strictly prohibited.
-   - **Disciplinary Actions**: Violations will result in removal from the market, non-payment, and possible legal action.
-   - **Elia's Rights**: Elia reserves the right to remove a Forecaster from the market for any reason.
-
-
-#### 11. Where can I access relevant data?
-
-   - Input data is available on Elia’s (Open Data Portal)[https://opendata.elia.be]. You can also use external sources, like weather forecasts, to improve your submissions.
-
-
-#### 12. How will I be informed about updates?
-
-   - Elia will send important updates and rule changes via email. Forecasters are responsible for staying informed about any rule changes or updates.
-
-
-#### 13. Who can I contact for more information?
-
-   - For any inquiries, you can reach out to Elia at [predico@elia.be](mailto:predico@elia.be).
-
-Feel free to consult the API documentation for technical details and guidelines on submission formats.

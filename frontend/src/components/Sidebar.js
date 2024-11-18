@@ -1,7 +1,7 @@
 import {ChevronRightIcon, Cog6ToothIcon, XMarkIcon} from '@heroicons/react/24/outline';
 import {Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react';
 import {NavLink, useLocation} from 'react-router-dom'; // Import NavLink and useLocation for route checks
-import logo from '../assets/images/elia-group-logo-svg.svg'; // Path to your logo
+import logo from '../assets/images/logo.svg'; // Path to your logo
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

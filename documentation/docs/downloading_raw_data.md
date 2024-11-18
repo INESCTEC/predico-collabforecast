@@ -12,8 +12,8 @@ To interact with the Predicto API and retrieve information about
 the raw measurements for a specific challenge target resource,
 you can use the following endpoints:
 
-- **GET** [`/api/v1/market/challenge`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
-- **GET** [`/api/v1/data/raw-measurements/`](https://predico-elia.inesctec.pt/redoc/#tag/data/operation/get_raw_data) - Retrieve raw measurements for a specific challenge target resource.
+- **GET** [`/api/v1/market/challenge`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
+- **GET** [`/api/v1/data/raw-measurements/`](https://127.0.0.1/redoc/#tag/data/operation/get_raw_data) - Retrieve raw measurements for a specific challenge target resource.
 
 
 !!! important "Access Token Required"

@@ -16,7 +16,7 @@ open_market_session_id = "your_open_market_session_id"
 
 # Request the challenges for the open market session:
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
+    url='https://127.0.0.1/api/v1/market/challenge',
     params={'market_session': int(open_market_session_id)},
     headers=headers
 )
@@ -75,7 +75,7 @@ for qt in ["q10", "q50", "q90"]:
 
 # Submit historical forecasts:
 for submission in hist_submission_list:
-    response = requests.post(url=f"https://predico-elia.inesctec.pt/api/v1/data/individual-forecasts/historical",
+    response = requests.post(url=f"https://127.0.0.1/api/v1/data/individual-forecasts/historical",
                             json=submission,
                             headers=headers)
 
