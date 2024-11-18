@@ -10,6 +10,9 @@
 nginx/private.key
 nginx/certificate.pem
 
+nginx/ssl/private.key
+nginx/ssl/certificate.pem
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
