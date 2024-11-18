@@ -19,6 +19,7 @@
 3. [Getting Started](#3-getting-started)
    - [Prerequisites](#31-prerequisites)
    - [Environment Variables](#32-environment-variables)
+   - [Environment Variables](#33-environment-variables)
 4. [Production Deployment](#4-production-deployment)
    - [Start Docker Containers Stack](#41-start-docker-containers-stack)
    - [Configure Service Super User](#42-configure-service-super-user)
@@ -119,6 +120,43 @@ cp dotenv .env
 ```
 
 **Note: Setting up the environment variables is crucial. Without these files properly configured, the application will not run as expected.**
+
+### 3.3. Self-signed certificate
+
+When running the application locally with HTTPS enabled, a self-signed SSL certificate is necessary to establish secure connections. 
+This is important for testing features that require HTTPS, such as secure cookies, service workers, or certain APIs that only function over secure protocols.
+
+Why Use a Self-Signed Certificate?
+
+   - Testing HTTPS-Dependent Features: Some web features and APIs are only available when served over HTTPS. Using a self-signed certificate locally allows you to test these features during development.
+   - Simulating Production Environment: Running your local server with HTTPS helps you mirror the production environment more closely, enabling you to catch issues that might not appear over HTTP.
+   - Security Testing: It allows you to test SSL/TLS configurations and security-related headers to ensure they work correctly before deploying to production.
+
+#### Generating a Self-Signed Certificate
+
+To set up HTTPS locally, you need to generate a self-signed SSL certificate and configure NGINX to use it.
+
+```shell
+# Generate a self-signed certificate and store it on the project nginx directory
+sudo openssl req -x509 -nodes -days 365 \
+  -newkey rsa:2048 \
+  -keyout nginx/ssl/localhost.key \
+  -out nginx/ssl/localhost.crt \
+  -subj "/CN=localhost"
+```
+
+Explanation:
+
+   - x509: Outputs a self-signed certificate instead of a certificate request.
+   - nodes: Skips the option to secure our key with a passphrase.
+   - days 365: The certificate is valid for 365 days.
+   - newkey rsa:2048: Creates a new RSA key of 2048 bits.
+   - keyout: Specifies where to save the private key file.
+   - out: Specifies where to save the certificate file.
+   - subj "/CN=localhost": Sets the Common Name (CN) to localhost.
+
+**The current NGINX configuration file is set to use the `localhost.crt` and `localhost.key` files.
+If you generate the certificate with a different name, update the `nginx.conf` file accordingly.**
 
 
 ## 4. Production Deployment
