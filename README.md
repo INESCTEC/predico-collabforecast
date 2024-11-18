@@ -1,4 +1,4 @@
-# Collabforecast - A Collaborative Forecasting Platform
+# Predico Collabforecast - A Collaborative Forecasting Platform
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
