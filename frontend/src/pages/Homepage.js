@@ -1,7 +1,7 @@
   import React from 'react';
 import { Link } from 'react-router-dom';
 import { DocumentIcon, BookOpenIcon, LockClosedIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/solid';
-import logo from '../assets/images/elia-group-logo-svg.svg';
+import logo from '../assets/images/logo.svg';
 import { ArchiveBoxIcon } from '@heroicons/react/24/outline';
 import windTurbineImage from '../assets/images/windturbine.jpg';
 
@@ -41,7 +41,7 @@ function Homepage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
               {/* Quick Guide Documentation Card */}
               <a
-                href="http://predico-elia.inesctec.pt/docs/"
+                href="http://127.0.0.1/docs/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center rounded-lg p-6 bg-transparent hover:bg-white hover:bg-opacity-30 hover:shadow-lg transition-transform transform"
@@ -54,7 +54,7 @@ function Homepage() {
               
               {/* Redoc Documentation Card */}
               <a
-                href="https://predico-elia.inesctec.pt/redoc/"
+                href="https://127.0.0.1/redoc/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center rounded-lg p-6 bg-transparent hover:bg-white hover:bg-opacity-30 hover:shadow-lg transition-transform transform"
@@ -85,21 +85,21 @@ function Homepage() {
               <h3 className="text-sm font-semibold text-gray-700 mb-2">Other resources</h3>
               <div className="space-y-2">
                 <p className="text-sm text-gray-600">
-                  <a href="https://predico-elia.inesctec.pt/quick-guide/bruno-api-client/Predico-Collabforecast.zip"
+                  <a href="https://127.0.0.1/quick-guide/bruno-api-client/Predico-Collabforecast.zip"
                      target="_self"
                      rel="noopener noreferrer" className="hover:underline text-indigo-600">
                     Bruno Documentation
                   </a> - Access in-depth documentation
                 </p>
                 <p className="text-sm text-gray-600">
-                  <a href="https://predico-elia.inesctec.pt/swagger/"
+                  <a href="https://127.0.0.1/swagger/"
                      target="_self"
                      rel="noopener noreferrer" className="hover:underline text-indigo-600">
                     Swagger Documentation
                   </a> - View API documentation with Swagger
                 </p>
                 <p className="text-sm text-gray-600">
-                  <a href="https://predico-elia.inesctec.pt/quick-guide/jpynb-client/forecaster_tutorial.ipynb"
+                  <a href="https://127.0.0.1/quick-guide/jpynb-client/forecaster_tutorial.ipynb"
                      target="_self" rel="noopener noreferrer"
                      className="hover:underline text-indigo-600">
                     Jupyter Notebooks
@@ -118,7 +118,7 @@ function Homepage() {
               <h3 className="text-sm font-semibold text-gray-700 mb-2">Contacts</h3>
               <div className="space-y-1 text-gray-600 text-sm ">
                 <p>
-                  <a href="mailto:predico@elia.be" className="hover:underline text-indigo-600">
+                  <a href="mailto:predico-support@lists.inesctec.pt" className="hover:underline text-indigo-600">
                     Email
                   </a> - For assistance with technical issues, system errors, or troubleshooting
                 </p>

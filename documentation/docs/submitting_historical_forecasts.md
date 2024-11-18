@@ -9,9 +9,9 @@ To interact with the Predicto API and submit
 your historical forecasts,
 you can use the following endpoints:
 
-- **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
-- **GET** [`/api/v1/market/challenge`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
-- **POST** [`/api/v1/data/individual-forecasts/historical`](https://predico-elia.inesctec.pt/redoc/#tag/data/operation/post_individual_forecasts_historical) - Publish your forecast submission for a specific challenge.
+- **GET** [`/api/v1/market/session`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
+- **GET** [`/api/v1/market/challenge`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
+- **POST** [`/api/v1/data/individual-forecasts/historical`](https://127.0.0.1/redoc/#tag/data/operation/post_individual_forecasts_historical) - Publish your forecast submission for a specific challenge.
 
 
 !!! info "Prerequisites"

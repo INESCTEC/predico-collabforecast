@@ -9,9 +9,9 @@ To interact with the Predicto API and submit
 your forecasts for open challenges,
 you can use the following endpoints:
 
-- **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
-- **GET** [`/api/v1/market/challenge`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
-- **POST** [`/api/v1/market/challenge/submission/{challenge_id}`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/post_market_session_submission) - Publish your forecast submission for a specific challenge.
+- **GET** [`/api/v1/market/session`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
+- **GET** [`/api/v1/market/challenge`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session_challenge) - Retrieve challenges for an open market session.
+- **POST** [`/api/v1/market/challenge/submission/{challenge_id}`](https://127.0.0.1/redoc/#tag/market/operation/post_market_session_submission) - Publish your forecast submission for a specific challenge.
 
 
 !!! info "Prerequisites"
@@ -35,7 +35,7 @@ In this example, we'll submit the random data generated in [Preparing a Forecast
     - **First-Time Submission Requirement**: Before making your first submission, you must fulfill at least **1 month of historical forecast samples** submitted to the Predico platform. Refer to [Historical Forecast Submission](submitting_historical_forecasts.md) for detailed instructions.
 
 !!! note "On updating your submission"
-    - If you wish to update your submission, you can do so by submitting a new forecast using the [PUT method](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/put_market_session_submission). The latest submission will overwrite the previous one.
+    - If you wish to update your submission, you can do so by submitting a new forecast using the [PUT method](https://127.0.0.1/redoc/#tag/market/operation/put_market_session_submission). The latest submission will overwrite the previous one.
 
 
 ```python title="submit_forecast.py"

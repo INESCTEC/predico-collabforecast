@@ -2,9 +2,6 @@
 
 The information below helps forecasters to understand critical definitions (vocabulary) and the general workflow of our collaborative forecasting platform.
 
-!!! important "Important"
-    This information is thoroughly detailed on the <a href="../static/predico_rulebook.pdf" download>Participation Rulebook</a>. Please read it carefully before proceeding.
-
 !!! tip "Check this out"
     Check our [Useful Links](useful_links.md) section for additional resources (Jupyter Notebook, API Specifications) to help you get started with the Predico platform.
 
@@ -85,9 +82,6 @@ It is important that forecasters understand the following rules and guidelines w
 ## Evaluation and Scoring
 
 The Predico platform evaluates the submitted forecasts based on both forecast skill and forecast contribution (i.e., to the final ensemble).
-
-This information is thoroughly detailed on the <a href="../static/predico_rulebook.pdf" download>Participation Rulebook</a>.
-
 
 ## What's next?
 

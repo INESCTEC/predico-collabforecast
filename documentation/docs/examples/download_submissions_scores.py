@@ -9,7 +9,7 @@ headers = {
 
 # List your historical submissions:
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge/submission',
+    url='https://127.0.0.1/api/v1/market/challenge/submission',
     headers=headers
 )
 
@@ -31,7 +31,7 @@ print(f"Challenge ID: {challenge_id}")
 
 # Request the submission scores for the selected challenge
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge/submission-scores',
+    url='https://127.0.0.1/api/v1/market/challenge/submission-scores',
     params={'challenge': challenge_id},
     headers=headers
 )

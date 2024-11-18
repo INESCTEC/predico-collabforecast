@@ -2,9 +2,6 @@
 
 The information below helps forecasters to understand critical definitions (vocabulary) and the general workflow of our collaborative forecasting platform.
 
-!!! important "Important"
-    This information is thoroughly detailed on the <a href="../static/predico_rulebook.pdf" download>Participation Rulebook</a>. Please read it carefully before proceeding.
-
 
 ## First things first
 
@@ -23,8 +20,7 @@ Check our [Useful Links](useful_links.md) section for additional resources to he
 
 1. Jupyter Notebook with a step-by-step guide on how to interact with the platform
 2. API Specifications (Swagger / Redoc) to help you understand the platform's functionalities and how to interact with it programmatically
-3. Rulebook for detailed information on the platform's rules and guidelines
-4. FAQ for answers to common questions about the platform
+3. FAQ for answers to common questions about the platform
 
 
 ## What's next?

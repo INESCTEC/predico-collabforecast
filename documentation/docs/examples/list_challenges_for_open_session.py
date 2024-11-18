@@ -13,7 +13,7 @@ params = {
 }
 
 response = requests.get(
-    url='https://predico-elia.inesctec.pt/api/v1/market/challenge',
+    url='https://127.0.0.1/api/v1/market/challenge',
     params=params,
     headers=headers
 )

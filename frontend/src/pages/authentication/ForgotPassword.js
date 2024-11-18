@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // To navigate back to login
 import { axiosInstance } from "../../routes/axiosInstance";
-import logo from '../../assets/images/elia-group-logo-svg.svg';
+import logo from '../../assets/images/logo.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 
 export default function ForgotPassword() {

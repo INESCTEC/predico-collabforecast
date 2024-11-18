@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {login, clearAuthMessages} from '../../slices/authSlice';
 import {Link, useNavigate} from 'react-router-dom';
 import {EyeIcon, EyeSlashIcon} from '@heroicons/react/24/outline';
-import logo from '../../assets/images/elia-group-logo-svg.svg';
+import logo from '../../assets/images/logo.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg';
 
 export default function SignIn() {

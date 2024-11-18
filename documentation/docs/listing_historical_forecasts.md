@@ -12,7 +12,7 @@ To interact with the Predicto API and retrieve information about
 your historical forecasts available in the platform, 
 you can use the following endpoints:
 
-- **GET** [`/api/v1/data/individual-forecasts/historical`](https://predico-elia.inesctec.pt/redoc/#tag/data/operation/get_individual_forecasts_historical) - Retrieve your forecasted time-series for a specific submission or challenge.
+- **GET** [`/api/v1/data/individual-forecasts/historical`](https://127.0.0.1/redoc/#tag/data/operation/get_individual_forecasts_historical) - Retrieve your forecasted time-series for a specific submission or challenge.
 
 
 !!! important "Access Token Required"

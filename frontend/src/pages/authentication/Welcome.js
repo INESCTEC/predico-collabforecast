@@ -1,6 +1,6 @@
 import {CheckCircleIcon} from '@heroicons/react/24/outline'; // Importing an icon for success message
 import {Link, useNavigate} from 'react-router-dom';
-import logo from '../../assets/images/elia-group-logo-svg.svg';
+import logo from '../../assets/images/logo.svg';
 import windTurbineImage from '../../assets/images/windturbine.jpg';
 import React from "react"; // Importing the background image
 
@@ -49,7 +49,7 @@ export default function Welcome() {
             
             <div className="mt-8 space-y-6 text-center">
               {/* API Documentation */}
-              <Link to="https://predico-elia.inesctec.pt/swagger"
+              <Link to="https://127.0.0.1/swagger"
                     className="block text-indigo-600 font-semibold hover:text-indigo-500"
                     target="_blank"
                     rel="noopener noreferrer">

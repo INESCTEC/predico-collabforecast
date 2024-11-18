@@ -8,7 +8,7 @@ To interact with the Predicto API and retrieve information about
 open market sessions, 
 you can use the following endpoint:
 
-- **GET** [`/api/v1/market/session`](https://predico-elia.inesctec.pt/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
+- **GET** [`/api/v1/market/session`](https://127.0.0.1/redoc/#tag/market/operation/get_market_session) - Retrieve list of market sessions (you can filter by 'open' sessions with query parameters)
 
 !!! important "Access Token Required"
     An access token must be included in the `Authorization` header of your request. If you haven't obtained an access token yet, please refer to the [Authentication](authentication.md) section.
