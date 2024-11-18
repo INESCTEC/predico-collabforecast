@@ -300,5 +300,7 @@ class TestEndpointView(APIView):
 
     @staticmethod
     def get(request):
-        message = {'code': 200, 'status': 'healthy', 'message': 'Welcome to Predico-Collabforecast!'}
+        message = {'code': 200, 
+            'status': 'healthy', 
+            'message': 'Welcome to Predico-Collabforecast!'}
         return Response(message)
