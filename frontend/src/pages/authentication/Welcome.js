@@ -32,7 +32,7 @@ export default function Welcome() {
             containerClass='sm:mx-auto sm:w-full sm:max-w-md'
             imageClass='mx-auto h-6 sm:h-8 md:h-10 lg:h-8 w-auto'>
         </Logo>
-        
+
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div
             className="bg-gradient-to-b from-orange-100 via-white to-orange-200 px-6 py-12 shadow sm:rounded-lg sm:px-12">

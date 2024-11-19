@@ -1,4 +1,4 @@
-# Collabforecast - A Collaborative Forecasting Platform
+# Predico-Collabforecast: A Collaborative Forecasting Platform
 
 [![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
@@ -32,7 +32,7 @@
 
 ## 1. Introduction
 
-Collabforecast is a backend service designed to facilitate collaborative forecasting. 
+Collabforecast is a backend service designed to facilitate collaborative forecasting. It is built within INESC TEC "Predico" innitiative to support the development of a data market and collaborative forecasting platform.
 It provides a platform where market participants can collaboratively generate forecasts by contributing their individual predictions. 
 
 Our approach leverages on collective intelligence to improve forecast accuracy and offers a transparent and fair mechanism for participants to benefit from their contributions.
