@@ -119,8 +119,39 @@ cp dotenv .env
 ```
 
 **Note: Setting up the environment variables is crucial. Without these files properly configured, the application will not run as expected.**
+### 3.3 BaseUrl and domain configuration
 
-### 3.3. Self-signed certificate
+In the **docker-compose.prod.yml** file you should change the localhost to your domain name.
+
+```yaml
+    frontend:
+       build:
+         context: ./frontend
+         dockerfile: Dockerfile
+         args:
+           REACT_APP_API_URL: https://localhost/api/v1 # Change the URL of the REST API
+           REACT_APP_BASE_URL: https://localhost # Change the URL of the frontend
+           REACT_APP_EMAIL: predico@example.com 
+
+     nginx:
+       container_name: predico_rest_nginx
+       restart: unless-stopped
+       build:
+         context: nginx
+         dockerfile: Dockerfile
+       ports:
+         - "443:443" # HTTPS
+       environment:
+         - NGINX_SERVER_NAME=localhost # Change the domain name
+```
+
+Additionally, in the **api/.env** file you should change the ALLOWED_HOSTS variable to your domain name:
+
+```shell
+DJANGO_ALLOWED_HOSTS=localhost,
+```
+
+### 3.4. Self-signed certificate
 
 When running the application locally with HTTPS enabled, a self-signed SSL certificate is necessary to establish secure connections. 
 This is important for testing features that require HTTPS, such as secure cookies, service workers, or certain APIs that only function over secure protocols.

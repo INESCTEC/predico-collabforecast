@@ -1,7 +1,7 @@
 import {ChevronRightIcon, Cog6ToothIcon, XMarkIcon} from '@heroicons/react/24/outline';
 import {Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react';
 import {NavLink, useLocation} from 'react-router-dom'; // Import NavLink and useLocation for route checks
-import logo from '../assets/images/logo.svg'; // Path to your logo
+import logo from '../assets/images/PREDICO_LOGO_POSITIF.svg'; // Path to your logo
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -37,7 +37,7 @@ export default function Sidebar({ navigation, sidebarOpen, setSidebarOpen }) {
         className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-gray-200 bg-gradient-to-b from-orange-100 via-white to-orange-200">
         <div className="flex flex-col gap-y-5 overflow-y-auto p-6 pb-4">
           <div className="flex h-16 items-center">
-            <img src={logo} alt="Your Company" className="h-12 w-auto"/>
+            <img src={logo} alt="Your Company" className="h-24 w-auto"/>
           </div>
           <NavigationList navigation={navigation}/>
         </div>
@@ -46,25 +46,25 @@ export default function Sidebar({ navigation, sidebarOpen, setSidebarOpen }) {
   );
 }
 
-function NavigationList({ navigation }) {
+function NavigationList({navigation}) {
   const location = useLocation(); // Get the current location to check the route
-  
+
   return (
-    <nav className="flex-1">
-      <ul className="flex flex-col gap-y-7">
-        <li>
-          <ul className="-mx-2 space-y-1">
-            {navigation.map((item) => {
-              const isActiveParent = item.children && item.children.some((subItem) => location.pathname === subItem.href);
-              const isAnySubItemActive = item.children && location.pathname.startsWith(item.href);
-              
-              return (
-                <li key={item.name}>
-                  {!item.children ? (
-                    <NavLink
-                      to={item.href}
-                      className={({ isActive }) =>
-                        classNames(
+      <nav className="flex-1">
+        <ul className="flex flex-col gap-y-7">
+          <li>
+            <ul className="-mx-2 space-y-1">
+              {navigation.map((item) => {
+                const isActiveParent = item.children && item.children.some((subItem) => location.pathname === subItem.href);
+                const isAnySubItemActive = item.children && location.pathname.startsWith(item.href);
+
+                return (
+                    <li key={item.name}>
+                      {!item.children ? (
+                          <NavLink
+                              to={item.href}
+                              className={({isActive}) =>
+                                  classNames(
                           isActive
                             ? 'bg-orange-300 text-orange-800'  // Active link background and text color
                             : 'text-gray-700 hover:bg-orange-200 hover:text-orange-900',

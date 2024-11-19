@@ -3,13 +3,14 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
-# Define arguments to accept the API URL and PUBLIC_URL
+# Pass build arguments to React
 ARG REACT_APP_API_URL
-ARG PUBLIC_URL
+ARG REACT_APP_BASE_URL
+ARG REACT_APP_EMAIL
 
-# Make the arguments available as environment variables
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
-#ENV PUBLIC_URL=$PUBLIC_URL
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+ENV REACT_APP_EMAIL=$REACT_APP_EMAIL
 
 # Install dependencies
 COPY package.json package-lock.json ./

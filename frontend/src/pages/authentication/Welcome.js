@@ -1,10 +1,13 @@
 import {CheckCircleIcon} from '@heroicons/react/24/outline'; // Importing an icon for success message
 import {Link, useNavigate} from 'react-router-dom';
-import logo from '../../assets/images/logo.svg';
+import Logo from "../../components/Logo";
 import windTurbineImage from '../../assets/images/windturbine.jpg';
 import React from "react"; // Importing the background image
 
 export default function Welcome() {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const docsUrl = `${baseUrl}/docs/`;
+
   const navigate = useNavigate();
   
   const navigateToHomePage = () => {
@@ -25,13 +28,10 @@ export default function Welcome() {
       ></div>
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            alt="Predico"
-            src={logo}
-            className="mx-auto h-8 sm:h-12 md:h-16 lg:h-20 w-auto"
-          />
-        </div>
+        <Logo
+            containerClass='sm:mx-auto sm:w-full sm:max-w-md'
+            imageClass='mx-auto h-6 sm:h-8 md:h-10 lg:h-8 w-auto'>
+        </Logo>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div
@@ -49,11 +49,11 @@ export default function Welcome() {
             
             <div className="mt-8 space-y-6 text-center">
               {/* API Documentation */}
-              <Link to="https://127.0.0.1/swagger"
+              <Link to={docsUrl}
                     className="block text-indigo-600 font-semibold hover:text-indigo-500"
                     target="_blank"
                     rel="noopener noreferrer">
-                Swagger Documentation
+                Service Documentation
               </Link>
               
               {/* Styled Back to Sign In link */}

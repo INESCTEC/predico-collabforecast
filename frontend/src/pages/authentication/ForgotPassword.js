@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // To navigate back to login
 import { axiosInstance } from "../../routes/axiosInstance";
-import logo from '../../assets/images/logo.svg';
+import Logo from "../../components/Logo";
 import windTurbineImage from '../../assets/images/windturbine.jpg'; // Import the background image
 
 export default function ForgotPassword() {
@@ -39,13 +39,10 @@ export default function ForgotPassword() {
       ></div>
       
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            alt="Predico"
-            src={logo}
-            className="mx-auto h-8 sm:h-12 md:h-16 lg:h-20 w-auto"
-          />
-        </div>
+        <Logo
+            containerClass='sm:mx-auto sm:w-full sm:max-w-md'
+            imageClass='mx-auto h-6 sm:h-8 md:h-10 lg:h-8 w-auto'>
+        </Logo>
         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div
