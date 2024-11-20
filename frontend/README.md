@@ -66,13 +66,13 @@ Docker might still be using cached layers or containers.
 2. **Build the Docker image**:
 
 ```bash
-   docker-compose build frontend
+   docker-compose -f docker-compose.prod.yml build frontend
 ```
 
 3. **Run the Docker container**:
 
 ```bash
-   docker-compose up frontend
+   docker-compose -f docker-compose.prod.yml up frontend
 ```
 
 ## Environment Variables
@@ -108,40 +108,13 @@ npm install
 2. Remove Docker containers and volumes:
 
 ```bash
-docker-compose down
+docker-compose -f docker-compose.prod.yml down
 docker volume rm predico_frontend_build
 ```
 
 3. Rebuild and restart the services:
 
 ```bash
-docker-compose build frontend
-docker-compose up -d
+docker-compose -f docker-compose.prod.yml build frontend
+docker-compose -f docker-compose.prod.yml up -d
 ```
-
-# Contributing
-
-If you want to contribute to the project:
-1.	Fork the repository.
-2.	Create a new branch for your feature:
-
-```bash
-git checkout -b feature/your-feature-name
-```
-
-3.	Commit your changes:
-
-```bash
-git commit -am 'Add some feature'
-git push origin feature-name
-```
-
-4. Open a pull request.
-
-# Support 
-
-If you encounter any issues or have questions, please contact the team at [predico@inesctec.pt](mailto:predico.inesctec.pt).
-
-# License
-
-This project is licensed under the MIT License. Feel free to use and modify the code as per the license terms.
