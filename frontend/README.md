@@ -1,16 +1,147 @@
 # Predico-Collabforecast Frontend
 
-This is the frontend for the Predico Collabforecast service. It is a React application that allows users to interact with the service documentation and administrators to invite and manage user accesses to the platform.
+This is the frontend for the Predico Collabforecast service.
+It is a **React application** that allows users to interact with the service documentation and 
+for administrators to invite and manage user access to the platform.
 
-For the frontend, as it is a React application, you will need to have Node.js installed. You can download it from the [official website](https://nodejs.org/).
- 
-#### Important! Steps to Ensure correct Frontend Updates 
+---
 
-If you make any changes on the Frontend module, please clear Docker caches thoroughly before rebuilding images.
-Docker might still be using cached layers or containers. To ensure everything is completely rebuilt, you should:
+## Prerequisites
 
-- Remove the Docker volume for the frontend service:
+### System Requirements
+- **Node.js**: You will need Node.js installed on your machine. Download it from the [official website](https://nodejs.org/).
+
+- **Docker (Optional)**: Docker is required for building and running the production version of the application. Visit the [Docker website](https://www.docker.com/) for installation instructions.
+
+---
+
+## Development Setup
+
+1. **Clone the repository**:
+```bash
+   git clone git@github.com:INESCTEC/predico-collabforecast.git
+   cd predico-collabforecast/frontend
+```
+
+2. **Install dependencies**:
 
 ```bash
-    docker volume rm predico_frontend_build
+   npm install
 ```
+
+3. **Start the development server**:
+
+```bash
+   npm start
+```
+The application will be available at `http://localhost:3000`.
+
+## Production Setup
+
+1. **Build the dependencies**:
+
+```bash
+   npm run build
+```
+
+2. **Serve the application**:
+
+```bash
+   npm install -g serve
+   serve -s build
+```
+
+# Docker Deployment
+
+## Build the Docker Image
+
+1. **Clear the docker cache**:
+If you’ve made any changes to the frontend module, clear Docker caches thoroughly before rebuilding images. 
+Docker might still be using cached layers or containers.
+
+```bash
+   docker volume rm predico_frontend_build
+```
+
+2. **Build the Docker image**:
+
+```bash
+   docker-compose build frontend
+```
+
+3. **Run the Docker container**:
+
+```bash
+   docker-compose up frontend
+```
+
+## Environment Variables
+
+The frontend application requires the following environment variables to be set:
+
+- REACT_APP_API_URL=https://predico.inesctec.pt/api/v1
+- REACT_APP_BASE_URL=https://predico.inesctec.pt
+- REACT_APP_EMAIL=predico@example.com
+
+## Features
+
+### User interaction
+
+- To be defined
+
+### Admin interaction
+
+- Invite users and manage user roles.
+- Monitor platform access logs and activity.
+
+# Clearing Caches and Resetting
+
+Clearing Caches and Resetting
+
+1. Clearing Caches and Resetting
+
+```bash
+rm -rf node_modules
+npm install
+```
+
+2. Remove Docker containers and volumes:
+
+```bash
+docker-compose down
+docker volume rm predico_frontend_build
+```
+
+3. Rebuild and restart the services:
+
+```bash
+docker-compose build frontend
+docker-compose up -d
+```
+
+# Contributing
+
+If you want to contribute to the project:
+1.	Fork the repository.
+2.	Create a new branch for your feature:
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3.	Commit your changes:
+
+```bash
+git commit -am 'Add some feature'
+git push origin feature-name
+```
+
+4. Open a pull request.
+
+# Support 
+
+If you encounter any issues or have questions, please contact the team at [predico@inesctec.pt](mailto:predico.inesctec.pt).
+
+# License
+
+This project is licensed under the MIT License. Feel free to use and modify the code as per the license terms.
