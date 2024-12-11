@@ -28,11 +28,6 @@ def retry(func, max_attempts=3, delay=1, retry_if_result_false=False,
 
 class MarketTasks(object):
 
-    def __init__(self):
-        self.transfer_out_validate_retry_delay = 30
-        self.transfer_out_validate_retry_attempts = 15
-        self.dlt_confirm_wait_time = 5
-
     @staticmethod
     def open_session():
         """

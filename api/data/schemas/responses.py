@@ -80,6 +80,43 @@ ForbiddenAccessResponse = \
     )
 
 
+ConflictResponse = openapi.Response(
+    description="Conflict",
+    schema=openapi.Schema(
+        title="Conflict schema",
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "code": create_schema(
+                type=openapi.TYPE_INTEGER,
+                enum=[409],
+                description="Response status code.",
+            ),
+            "data": create_schema(
+                type=openapi.TYPE_OBJECT,
+                description="Null field in case of error response.",
+            ),
+            "status": create_schema(
+                type=openapi.TYPE_STRING,
+                enum=["error"],
+                description="Response status info.",
+            ),
+            "message": create_schema(
+                type=openapi.TYPE_STRING,
+                enum=["Self-explanatory message about the problem."],
+                description="Error message.",
+            ),
+        },
+    ),
+    examples={
+        "application/json": {
+            "code": 409,
+            "data": None,
+            "status": "error",
+            "message": "Self-explanatory message about the problem.",
+        },
+    },
+)
+
 ###############################
 # RawDataView
 ###############################

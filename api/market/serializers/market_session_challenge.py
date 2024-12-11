@@ -121,7 +121,10 @@ class MarketSessionChallengeCreateSerializer(serializers.Serializer):
         resource_id = validated_data["resource"]
         use_case = validated_data["use_case"]
         resource_tz = pytz.timezone(validated_data["resource_data"].timezone)
-        open_date = validated_data["market_session_open_ts"].date()
+        open_date = validated_data["market_session_open_ts"]
+        # Convert open_date to resource TZ
+        # (in order to properly set DA range, adaptive to each tz):
+        open_date = open_date.astimezone(resource_tz).date()
         day_ahead = open_date + dt.timedelta(days=1)
 
         # Create start / end datetime for the forecast (local tz):

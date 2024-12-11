@@ -171,6 +171,7 @@ class IndividualForecastsHistoricalCreateRetrieveView(APIView):
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
+            409: ConflictResponse,
             500: "Internal Server Error",
         })
     def post(request):

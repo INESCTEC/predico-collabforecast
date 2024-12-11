@@ -26,13 +26,21 @@ logger = structlog.get_logger(__name__)
 
 
 class MarketSessionSubmissionRetrieveSerializer(serializers.ModelSerializer):
+    market_session = serializers.ReadOnlyField(
+        source='market_session_challenge.market_session.id'
+    )
     market_session_challenge_resource_id = serializers.ReadOnlyField(
         source='market_session_challenge.resource_id'
+    )
+    email = serializers.ReadOnlyField(
+        source='user.email'
     )
 
     class Meta:
         model = MarketSessionSubmission
-        fields = '__all__'
+        fields = ["id", "market_session_challenge_resource_id", "variable",
+                  "registered_at", "market_session_challenge",
+                  "market_session", "user", "email"]
 
 
 class MarketSessionSubmissionForecastsRetrieveSerializer(serializers.ModelSerializer):
@@ -42,6 +50,9 @@ class MarketSessionSubmissionForecastsRetrieveSerializer(serializers.ModelSerial
     user = serializers.ReadOnlyField(
         source='submission.user.id'
     )
+    email = serializers.ReadOnlyField(
+        source='submission.user.email'
+    )
     resource = serializers.ReadOnlyField(
         source='submission.market_session_challenge.resource_id'
     )
@@ -50,7 +61,7 @@ class MarketSessionSubmissionForecastsRetrieveSerializer(serializers.ModelSerial
         fields = ["submission", "resource",
                   "variable", "datetime",
                   "registered_at",
-                  "value", "user"]
+                  "value", "user", "email"]
 
 
 class MarketSessionSubmissionCreateUpdateSerializer(serializers.Serializer):

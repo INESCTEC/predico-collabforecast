@@ -38,6 +38,7 @@ class MarketSessionSubmissionScoresCreateView(APIView):
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
+            409: ConflictResponse,
             500: "Internal Server Error",
         })
     def post(request, challenge_id):
@@ -124,13 +125,14 @@ class MarketSessionSubmissionScoresRetrieveView(APIView):
         ).annotate(
             rank=Window(
                 expression=Rank(),
-                partition_by='metric',  # Rank within each metric
+                partition_by=['metric', 'submission__variable'],
+                # Rank within each metric and variable
                 order_by=F('value').asc()  # Ascending order for ranking
             ),
             total_participants=Window(
                 expression=Count('id'),
-                partition_by='metric'
-                # Count the total number of participants for each metric
+                partition_by=['metric', 'submission__variable']
+                # Count the total number of participants for each metric and variable
             ),
         ).values(
             'submission',

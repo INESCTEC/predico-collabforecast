@@ -1,5 +1,11 @@
 .idea/
 .vscode/
+.DS_Store
+*/.DS_Store
+*/.vscode
+*/.idea
+
+!*/.keep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

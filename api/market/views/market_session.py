@@ -79,6 +79,7 @@ class MarketSessionView(APIView):
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
+            409: ConflictResponse,
             500: "Internal Server Error",
         })
     @method_permission_classes((IsAdminUser,))
@@ -110,6 +111,7 @@ class MarketSessionUpdateView(APIView):
             400: 'Bad request',
             401: NotAuthenticatedResponse,
             403: ForbiddenAccessResponse,
+            409: ConflictResponse,
             500: "Internal Server Error",
         })
     def patch(self, request, session_id=None):
