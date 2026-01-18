@@ -4,7 +4,7 @@
 [![status](https://img.shields.io/badge/status-development-yellow.svg)]()
 
 <div align="left">
-  <img src="documentation/docs/static/logo.svg" width="33%" height="auto" alt="Collabforecast Logo">
+  <img src="documentation/docs/static/logo.png" width="33%" height="auto" alt="Collabforecast Logo">
 </div>
 
 ---
