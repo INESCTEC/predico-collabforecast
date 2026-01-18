@@ -31,6 +31,10 @@
 7. [License](#7-license)
 8. [Contacts](#8-contacts)
 
+> [!WARNING]
+> This project is under active internal development. A new, more modular open-source release is in progress and will introduce breaking changes relative to this repository.
+> Use at your own risk, and pin versions/releases if you depend on it.
+
 ## 1. Introduction
 
 Collabforecast is a backend service designed to facilitate collaborative forecasting. It is built within INESC TEC "Predico" innitiative to support the development of a data market and collaborative forecasting platform.
