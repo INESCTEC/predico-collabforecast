@@ -1,13 +1,17 @@
 # Predico-Collabforecast: A Collaborative Forecasting Platform
 
-[![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
-[![status](https://img.shields.io/badge/status-development-yellow.svg)]()
+[![version](https://img.shields.io/badge/version-0.1.0-blue.svg)]()
+[![status](https://img.shields.io/badge/status-archived-grey.svg)]()
 
 <div align="left">
   <img src="documentation/docs/static/logo.png" width="33%" height="auto" alt="Collabforecast Logo">
 </div>
 
 ---
+
+   ## Version Notice
+   - **v0.1.0** (Current): Full platform with API, frontend, database
+   - This version is **ARCHIVED**. A new modular open-source release is in progress.
 
 ## Table of Contents
 
