@@ -1,63 +1,26 @@
-import os
-import random
 import numpy as np
 import pandas as pd
-import datetime as dt
 
 
 np.random.seed(13)
 
 
-def get_measurements2(data, agent_id, end_date):
-    _ts = data[:end_date].index
-    _v = data.loc[:end_date, f"A{agent_id}"].values
-    measurements = pd.DataFrame({
-        "datetime": _ts,
-        "value": _v,
-        "variable": ["measurements"] * len(_ts),
-        "units": ["w"] * len(_ts),
-    })
-    return measurements
-
-
-def get_features(data, agent_id):
-    _et = dt.datetime.now().replace(second=0, microsecond=0)
-    _st = _et - dt.timedelta(hours=len(data) - 1)
-    _ts = pd.date_range(_st, _et, freq="H", tz="utc")
-    _v = np.insert(data[f"A{agent_id}"].values, 1, 0)[:-1]
-    measurements = pd.DataFrame({
-        "datetime": _ts,
-        "value": _v,
-        "variable": ["feature1"] * len(_ts),
-        "units": ["w"] * len(_ts),
-    })
-    return measurements
-
-
-def generate_measurements(start_date,
-                          end_date,
-                          scale_factor=1,
-                          freq='H',
-                          outliers=False):
+def generate_measurements(
+    start_date, end_date, scale_factor=1, freq="H", outliers=False
+):
     _st = start_date.replace(second=0, microsecond=0)
     _et = end_date.replace(second=0, microsecond=0)
     _ts = pd.date_range(_st, _et, freq=freq, tz="utc")
     _v = np.random.uniform(low=0, high=1, size=len(_ts)) * scale_factor
-    measurements = pd.DataFrame({
-        "datetime": _ts,
-        "value": _v,
-        "variable": ["measurements"] * len(_ts),
-        "units": ["w"] * len(_ts),
-    })
+    measurements = pd.DataFrame(
+        {
+            "datetime": _ts,
+            "value": _v,
+            "variable": ["measurements"] * len(_ts),
+            "units": ["w"] * len(_ts),
+        }
+    )
     return measurements
-
-
-def generate_bid(max_bid_price):
-    return np.random.uniform(0.5, max_bid_price)
-
-
-def generate_max_payment():
-    return np.random.uniform(20, 100)
 
 
 class MeasurementsGenerator:
@@ -65,17 +28,16 @@ class MeasurementsGenerator:
         self.mock_dataset = pd.DataFrame()
 
     def load_from_csv(self, path):
-        self.mock_dataset = pd.read_csv(path, sep=';')
-        self.mock_dataset.loc[:, 'datetime'] = pd.to_datetime(
-            self.mock_dataset["datetime"],
-            format="%Y-%m-%d %H:%M").dt.tz_localize("UTC")
+        self.mock_dataset = pd.read_csv(path, sep=";")
+        self.mock_dataset.loc[:, "datetime"] = pd.to_datetime(
+            self.mock_dataset["datetime"], format="%Y-%m-%d %H:%M"
+        ).dt.tz_localize("UTC")
         self.mock_dataset.set_index("datetime", inplace=True)
 
     @staticmethod
     def __add_season(data):
         _n_cicles = np.random.randint(3)
-        return data + np.sin(
-            _n_cicles * np.pi * np.arange(len(data)) / len(data))
+        return data + np.sin(_n_cicles * np.pi * np.arange(len(data)) / len(data))
 
     @staticmethod
     def __add_noise(data):
@@ -86,8 +48,9 @@ class MeasurementsGenerator:
     @staticmethod
     def __wave_generator(amplitude, n_samples, freq):
         _24h_sin = amplitude * np.sin(freq * np.pi * np.arange(24) / 24)
-        return np.append(np.tile(_24h_sin, n_samples // 24),
-                         _24h_sin[:(n_samples % 24)])
+        return np.append(
+            np.tile(_24h_sin, n_samples // 24), _24h_sin[: (n_samples % 24)]
+        )
 
     @staticmethod
     def __add_nan(data):
@@ -117,9 +80,9 @@ class MeasurementsGenerator:
 
     @staticmethod
     def var_lasso_generator(n_agents, n_obs):
-
         n_obs_var = n_obs + 2000  # add 2000 values for var warmup
         from .var_lasso_funcs import random_coef_VAR
+
         ###########################################
         # COLUNAS PAGAM A LINHAS! (J PAGA A I)
         ###########################################
@@ -131,9 +94,11 @@ class MeasurementsGenerator:
         sim_measurements[0, :] = np.random.normal(0, 1, (1, n_agents))
         # then a VAR process is used to simulate the next observations
         for idx in range(1, n_obs_var):
-            sim_measurements[idx, :] = intercepts_ + np.matmul(
-                sim_measurements[idx - 1, :].flatten(order='A'),
-                coefs_var) + np.random.normal(0, 50, (1, n_agents))
+            sim_measurements[idx, :] = (
+                intercepts_
+                + np.matmul(sim_measurements[idx - 1, :].flatten(order="A"), coefs_var)
+                + np.random.normal(0, 50, (1, n_agents))
+            )
         # Remove var warmup period:
         sim_measurements = sim_measurements[2000:, :]
         # Calculate standardized var coefficients:
@@ -154,25 +119,23 @@ class MeasurementsGenerator:
             # remove diag coef. (case where agent sells to himself)
             coefs_sum_ = np.delete(abs_std_coefs[:, j], j).sum()
             norm_coefs_ = abs_std_coefs[:, j] / coefs_sum_
-            revenue_dict[j] = dict([(k, v) for k, v in
-                                    enumerate(norm_coefs_) if k != j])
+            revenue_dict[j] = dict(
+                [(k, v) for k, v in enumerate(norm_coefs_) if k != j]
+            )
             revenue_dict[j][j] = 0.0
         return sim_measurements, revenue_dict
 
-    def generate_mock_data_var_lasso(self,
-                                     n_agents,
-                                     start_date,
-                                     end_date):
-
+    def generate_mock_data_var_lasso(self, n_agents, start_date, end_date):
         start_date = start_date.replace(microsecond=0, second=0, minute=0)
         end_date = end_date.replace(microsecond=0, second=0, minute=0)
         _st = start_date.strftime("%Y-%m-%d %H:%M:%S")
         _et = end_date.strftime("%Y-%m-%d %H:%M:%S")
-        _ts = pd.date_range(_st, _et, freq='H', tz='utc')
+        _ts = pd.date_range(_st, _et, freq="H", tz="utc")
 
         agent_values = []
-        values, revenue_coefs = self.var_lasso_generator(n_agents=n_agents,
-                                                         n_obs=len(_ts))
+        values, revenue_coefs = self.var_lasso_generator(
+            n_agents=n_agents, n_obs=len(_ts)
+        )
         for agent in range(n_agents):
             agent_values.append(
                 pd.DataFrame(
@@ -180,14 +143,15 @@ class MeasurementsGenerator:
                         "datetime": _ts,
                         "value": values[:, agent],
                         "variable": ["measurements"] * len(_ts),
-                    })
+                    }
+                )
             )
         return agent_values, revenue_coefs
 
     def generate_mock_data_sin(self, start_date, end_date):
         _st = start_date.strftime("%Y-%m-%d %H:%M:%S")
         _et = end_date.strftime("%Y-%m-%d %H:%M:%S")
-        _ts = pd.date_range(_st, _et, freq='h', tz='utc')
+        _ts = pd.date_range(_st, _et, freq="h", tz="utc")
         # Data sample configs:
         n_harmonics_ = np.random.randint(1, 5)
         base_wave = self.__wave_generator(1, len(_ts), 3)
@@ -208,14 +172,17 @@ class MeasurementsGenerator:
                 "datetime": _ts,
                 "value": base_wave,
                 "variable": ["measurements"] * len(_ts),
-            })
+            }
+        )
 
     def get_measurements(self, agent_id, end_date):
         _ts = self.mock_dataset[:end_date].index
         _v = self.mock_dataset.loc[:end_date, f"A{agent_id}"].values
-        measurements = pd.DataFrame({
-            "datetime": _ts,
-            "value": _v,
-            "variable": ["measurements"] * len(_ts),
-        })
+        measurements = pd.DataFrame(
+            {
+                "datetime": _ts,
+                "value": _v,
+                "variable": ["measurements"] * len(_ts),
+            }
+        )
         return measurements

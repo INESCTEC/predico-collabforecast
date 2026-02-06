@@ -1,3 +1,1 @@
-from .data_generators import (
-    MeasurementsGenerator
-)
+from .data_generators import MeasurementsGenerator as MeasurementsGenerator

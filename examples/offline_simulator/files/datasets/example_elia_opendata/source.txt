@@ -1,3 +1,0 @@
-Data Source - ELia Open Data Portal - Historical Offshore Wind power production estimation and forecast on Belgian grid
-   
-Link: https://opendata.elia.be/explore/dataset/ods031/table/?sort=-datetime&refine.offshoreonshore=Offshore

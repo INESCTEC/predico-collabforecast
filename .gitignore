@@ -1,17 +1,12 @@
+!.gitkeep
+*.csv
+examples/simulator_no_api/simulation/datasets/
+examples/simulator_no_api/simulation/reports/
+
 .idea/
 .vscode/
-.DS_Store
-*/.DS_Store
-*/.vscode
-*/.idea
-
-!*/.keep
-
-nginx/private.key
-nginx/certificate.pem
-
-nginx/ssl/localhost.key
-nginx/ssl/localhost.pem
+examples/files
+files/models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -104,7 +99,6 @@ celerybeat-schedule
 
 # Environments
 *.env
-.env
 .venv
 env/
 venv/
@@ -129,4 +123,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.idea
