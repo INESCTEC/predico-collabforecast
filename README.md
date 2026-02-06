@@ -1,291 +1,300 @@
-# Predico-Collabforecast: A Collaborative Forecasting Platform
+<!-- markdownlint-disable MD033 MD041 -->
 
-[![version](https://img.shields.io/badge/version-0.0.1-blue.svg)]()
-[![status](https://img.shields.io/badge/status-development-yellow.svg)]()
+<p align="center">
+  <img src="docs/Predico_Logotipo_Color.png" alt="Predico Logo" width="280">
+</p>
 
-<div align="left">
-  <img src="documentation/docs/static/logo.png" width="33%" height="auto" alt="Collabforecast Logo">
-</div>
+<h1 align="center">Predico Forecast Engine</h1>
+
+<p align="center">
+  <strong>Ensemble forecasting algorithms for collaborative renewable energy prediction</strong>
+</p>
+
+<p align="center">
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.12+-blue.svg" alt="Python"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="License"></a>
+  <a href="https://predico.inesctec.pt/docs/"><img src="https://img.shields.io/badge/docs-predico-orange.svg" alt="Documentation"></a>
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
+  <a href="https://python-poetry.org/"><img src="https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json" alt="Poetry"></a>
+  <a href="https://github.com/INESCTEC/predico-collabforecast/commits/"><img src="https://img.shields.io/github/last-commit/INESCTEC/predico-collabforecast" alt="Last Commit"></a>
+  <a href="https://github.com/INESCTEC/predico-collabforecast/stargazers"><img src="https://img.shields.io/github/stars/INESCTEC/predico-collabforecast" alt="Stars"></a>
+  <a href="https://github.com/INESCTEC/predico-collabforecast/issues"><img src="https://img.shields.io/github/issues/INESCTEC/predico-collabforecast" alt="Issues"></a>
+</p>
 
 ---
 
-## Table of Contents
+## What is Predico?
 
-1. [Introduction](#1-introduction)
-   - [Definitions / Nomenclature](#11-definitions--nomenclature)
-   - [Collaborative Forecasting Sessions](#12-collaborative-forecasting-sessions)
-   - [Service Components](#13-service-components)
-2. [Project Structure](#2-project-structure)
-3. [Getting Started](#3-getting-started)
-   - [Prerequisites](#31-prerequisites)
-   - [Environment Variables](#32-environment-variables)
-   - [BaseUrl and domain configuration](#33-baseurl-and-domain-configuration)
-   - [Self-signed certificate](#34-self-signed-certificate)
-4. [Production Deployment](#4-production-deployment)
-   - [Start Docker Containers Stack](#41-start-docker-containers-stack)
-   - [Configure Service Super User](#42-configure-service-super-user)
-   - [Using the Command Line Interface (CLI)](#43-using-the-command-line-interface-cli)
-5. [Development Mode](#5-development-mode)
-6. [Contributing](#6-contributing)
-   - [Reporting Issues](#61-reporting-issues)
-7. [License](#7-license)
-8. [Contacts](#8-contacts)
+**Predico** is a collaborative forecasting platform, built by INESC TEC Centre for Power and Energy Systems (CPES), for energy time-series forecasting.
 
-> [!WARNING]
-> This project is under active internal development. A new, more modular open-source release is in progress and will introduce breaking changes relative to this repository.
-> Use at your own risk, and pin versions/releases if you depend on it.
-
-## 1. Introduction
-
-Collabforecast is a backend service designed to facilitate collaborative forecasting. It is built within INESC TEC "Predico" innitiative to support the development of a data market and collaborative forecasting platform.
-It provides a platform where market participants can collaboratively generate forecasts by contributing their individual predictions. 
-
-Our approach leverages on collective intelligence to improve forecast accuracy and offers a transparent and fair mechanism for participants to benefit from their contributions.
+<p align="center">
+  <img src="docs/predico_overview.png" alt="Predico Overview" width="700px">
+</p>
 
 
-### 1.1. Definitions / Nomenclature
+It improves accuracy and robustness by **combining forecasts from multiple suppliers** using **ensemble methods**, rather than relying on a single model or vendor.
+Check the [Official Platform Website](https://predico.inesctec.pt) for more details.
 
-   - **Market Maker**: An entity that owns resources (e.g., wind farms) or manages a grid (e.g., a Transmission System Operator) and seeks forecasts by opening and funding collaborative forecasting market sessions.
-   - **Forecaster**: An individual or organization registered on the platform, aiming to submit forecasts to collaborative forecasting challenges opened by the Market Maker, competing for the available prize money in each session.
-   - **Market Session**: A specific period during which Market Makers can create forecasting challenges, and Forecasters can submit forecasts for the open challenges.
-   - **Market Challenge**: An opportunity, published by the Market Maker, with metadata regarding a forecasting challenge that Forecasters can submit forecasts for.
-   - **Gate Closure Time**: The deadline by which forecasts must be submitted for a market session.
-   - **Forecast Variables**: Quantities to be forecasted. Currently, only quantile 10, 50, and 90 forecasts are accepted.
-   - **Ensemble Forecast**: An aggregate forecast computed from multiple Forecasters’ submissions.
+---
 
-### 1.2. Collaborative Forecasting Sessions
+## What is in this repository?
 
-A collaborative forecasting session is organized in four phases:
+This repository contains the **Forecast Engine**, the core algorithmic layer of Predico that:
 
-1. **Phase 1**: A new market session is scheduled to open.
-2. **Phase 2**: Market Makers post new challenges, such as submitting day-ahead forecasts for specific assets (resources) in their portfolio.
-3. **Phase 3**: Forecasters log into the Collabforecast API, download raw measurement data, build their models, and submit forecasts.
-4. **Phase 4**: Forecasters log into the Collabforecast API, preview their skill scores and contribution importance to the final ensemble forecasts, which are delivered to the Market Maker.
+1. **Orchestrates forecasting sessions** (a.k.a. *market sessions*)
+2. **Runs ensemble strategies** to combine individual forecasts
+3. **Scores forecast quality** with multiple metrics
+4. Provides a **standalone simulator** to develop and benchmark strategies locally
 
-**Service Sequence Diagram:**
+> [!IMPORTANT]
+> Predico follows an **open core** approach. This repository contains exclusively the **open-source Forecast Engine**, that supports the full Predico platform (RESTful API, Web UI, marketplace features). [Contact us](#contacts) for more details.
 
-[<img src="documentation/docs/static/predico-interactions-sd.png" alt="Service Sequence Diagram" width="300">](documentation/docs/static/predico-interactions-sd.png)
+---
 
-### 1.3. Service Components
+## Project Status
 
-The Collabforecast service is composed of the following components:
+This project is currently **in development**. Core functionalities are working, but improvements are ongoing.
+The available base ensemble strategies and scoring mechanisms are production-ready while experimental features (e.g., advanced ensemble strategies, forecast contribution) are under active development and testing.
 
-1. **REST API**: The core of the Collabforecast service, providing endpoints for managing users, data, market participation, and authentication.
-2. **Forecasting Service**: Responsible for generating forecasts based on the data provided by users, using machine learning algorithms to generate accurate forecasts.
-3. **Frontend**: A web-based interface that allows users to interact with the Collabforecast service, providing a user-friendly interface for managing user data (e.g., creating invite links for data providers, aka Forecasters).
-4. **NGINX**: Used as a reverse proxy server to route requests and serve static files (documentation, frontend, etc.).
-5. **PostgreSQL**: Used as the database management system for storing user data, forecasts, and other information.
-6. **Documentation**: Provides detailed information about the Collabforecast service, including installation instructions, API endpoints, and usage examples.
+---
 
+## Releases
 
-## 2. Project Structure
+See the [Releases page](https://github.com/INESCTEC/predico-collabforecast/releases) for version history, changelogs, and downloadable snapshots.
 
+---
 
-``` bash
-.                             # Current directory
-├── api                       # REST API server module source code
-├── cron                      # Suggested CRONTAB for operational tasks
-├── documentation             # Project Documentation (for service users)
-├── forecast                  # Forecast module source code
-├── frontend                  # Frontend module source code
-├── nginx                     # NGINX configs
+## Technology Stack
+
+| Category | Technologies |
+|----------|--------------|
+| **Language** | Python 3.12+ |
+| **ML & Data** | scikit-learn, pandas, NumPy, joblib |
+| **Outlier Detection** | DTAIDistance (Dynamic Time Warping) |
+| **Database** | SQLAlchemy, psycopg2 (PostgreSQL) |
+| **CLI** | Python Fire |
+| **Logging** | Loguru |
+| **Progress** | tqdm |
+| **Package Management** | Poetry |
+
+---
+
+## Dependencies
+
+This project requires **Python 3.12+**. All dependencies are managed via `pyproject.toml`, with Poetry.
+
+Install Poetry (if not already installed), via `pip install poetry` or see [Poetry Installation Guide](https://python-poetry.org/docs/#installation). 
+
+Then, install all dependencies with `poetry install`.
+
+---
+
+## Repository structure
+
+```text
+.
+├── src/
+│   ├── strategies/        # Ensemble algorithms
+│   ├── features/          # Feature engineering (lags, diversity metrics, rolling stats)
+│   ├── assessment/        # Scoring metrics (RMSE, Pinball Loss, Winkler)
+│   ├── market/            # Session orchestration and forecaster management
+│   ├── io/                # Database and API I/O helpers
+│   ├── core/              # Interfaces, configuration, exceptions
+│   └── MarketController.py  # Production orchestration (session lifecycle)
+├── simulator/
+│   └── community/         # Public simulator for strategy development
+├── tests/                 # Unit tests (pytest)
+│   ├── strategies/        # Strategy-specific tests
+│   ├── features/          # Feature engineering tests
+│   ├── assessment/        # Scoring tests
+│   └── validation/        # Data validation tests
+├── tasks.py               # Fire CLI for production market session loop
+└── conf/                  # Configuration settings
 ```
 
+> [!TIP]
+> See **`src/strategies/README.md`** for available strategies and how to add new ones.
 
-## 3. Getting Started
+---
 
-These instructions will help you set up and run the Collabforecast platform on your local machine for development and testing purposes.
+## A simulator?
 
-### 3.1. Prerequisites
+This repository includes a **standalone forecasting simulator** to facilitate the development, testing, and benchmarking of ensemble strategies without requiring access to the full Predico platform (API, database, etc.).
 
-#### For Production Deployment
+> [!TIP]
+> A complete guide to using the Community Simulator is available in the `simulator/community/README.md`
 
-Ensure you have the following installed on your system:
-
-- [Docker](https://www.docker.com/) (recommended version 20.10 or later)
-- [Docker Compose](https://docs.docker.com/compose/) (recommended version 1.29 or later)
-
-#### For Local Development
-
-Ensure you have the following installed on your system:
-
-- [Docker](https://www.docker.com/) (recommended version 20.10 or later)
-- [Docker Compose](https://docs.docker.com/compose/) (recommended version 1.29 or later)
-- [Python ^3.11](https://www.python.org/downloads/)
-- [Node.js](https://nodejs.org/en/download/)
-
-
-### 3.2. Environment Variables
-
-Each module (`api`, `forecast`, and `frontend`) contains a file named `dotenv`. This file holds the environment variables used by the application. Copy this file to `.env` and update the variables according to your setup.
 
 ```bash
-cp dotenv .env
+# Navigate to the community simulator
+cd simulator/community/
+
+# Generate synthetic datasets with configurable forecaster behaviors
+# (interactive wizard — use 'quickstart' for a non-interactive alternative)
+python simulate.py generate_dataset
+
+# Or run a quick non-interactive demo
+python simulate.py quickstart
+
+# Run simulations and compare strategies
+python simulate.py run --strategies="weighted_avg,median"
+
+# Visualize results
+python simulate.py plot output/<dataset>/<timestamp>/
 ```
 
-**Note: Setting up the environment variables is crucial. Without these files properly configured, the application will not run as expected.**
-### 3.3 BaseUrl and domain configuration
+---
 
-In the **docker-compose.prod.yml** file you should change the localhost to your domain name.
+## Quick start (local simulator)
 
-```yaml
-    frontend:
-       build:
-         context: ./frontend
-         dockerfile: Dockerfile
-         args:
-           REACT_APP_API_URL: https://localhost/api/v1 # Change the URL of the REST API
-           REACT_APP_BASE_URL: https://localhost # Change the URL of the frontend
-           REACT_APP_EMAIL: predico@example.com 
+Predico's **community simulator** allows you to develop and test ensemble forecasting strategies locally, without needing access to the full platform backend.
 
-     nginx:
-       container_name: predico_rest_nginx
-       restart: unless-stopped
-       build:
-         context: nginx
-         dockerfile: Dockerfile
-       ports:
-         - "443:443" # HTTPS
-       environment:
-         - NGINX_SERVER_NAME=localhost # Change the domain name
+
+```bash
+# Clone the repository
+git clone https://github.com/INESCTEC/predico-collabforecast.git
+cd predico-collabforecast
+
+# Install dependencies
+poetry install
+
+# Run a quick simulation
+cd simulator/community
+poetry run python simulate.py quickstart
 ```
 
-Additionally, in the **api/.env** file you should change the ALLOWED_HOSTS variable to your domain name:
+> [!NOTE]
+> You can also activate the virtual environment with `poetry shell` and then run commands directly (e.g., `python simulate.py quickstart`). Using `poetry run` is recommended as a single-step alternative.
 
-```shell
-DJANGO_ALLOWED_HOSTS=localhost,
+This generates a synthetic dataset, with predefined forecaster supplier archetypes, and runs a simulation to demonstrate how ensembles can outperform individual predictors.
+
+---
+
+## Create a custom strategy
+
+You can easily add your own ensemble forecasting strategies.
+
+First, add your strategy code in [`src/strategies/`](src/strategies/), following the existing structure.
+In this example, we create a simple averaging strategy, leveraging on our `SimpleStrategy` base class.
+
+
+```python
+# src/strategies/my_strategy.py
+from src.strategies import SimpleStrategy, StrategyRegistry
+
+@StrategyRegistry.register("my_strategy")
+class MyStrategy(SimpleStrategy):
+    @property
+    def name(self) -> str:
+        return "my_strategy"
+
+    def combine(self, forecasts, **kwargs):
+        # forecasts: pandas.DataFrame, rows=time, columns=forecasters
+        return forecasts.mean(axis=1)
 ```
 
-### 3.4. Self-signed certificate
+Then, import your strategy in [`src/strategies/__init__.py`](src/strategies/__init__.py) so the `@register` decorator is triggered at load time:
 
-When running the application locally with HTTPS enabled, a self-signed SSL certificate is necessary to establish secure connections. 
-This is important for testing features that require HTTPS, such as secure cookies, service workers, or certain APIs that only function over secure protocols.
+```python
+# src/strategies/__init__.py
+from .my_strategy import MyStrategy  # This import triggers @register
 
-Why Use a Self-Signed Certificate?
-
-   - Testing HTTPS-Dependent Features: Some web features and APIs are only available when served over HTTPS. Using a self-signed certificate locally allows you to test these features during development.
-   - Simulating Production Environment: Running your local server with HTTPS helps you mirror the production environment more closely, enabling you to catch issues that might not appear over HTTP.
-   - Security Testing: It allows you to test SSL/TLS configurations and security-related headers to ensure they work correctly before deploying to production.
-
-#### Generating a Self-Signed Certificate
-
-To set up HTTPS locally, you need to generate a self-signed SSL certificate and configure NGINX to use it.
-
-```shell
-# Generate a private key
-openssl genrsa -out nginx/ssl/localhost.key 2048
-
-# Generate a certificate signing request (CSR)
-openssl req -new -key nginx/ssl/localhost.key -out nginx/ssl/localhost.csr -subj "/CN=localhost"
-
-# Generate a self-signed certificate in PEM format
-openssl x509 -req -days 365 -in nginx/ssl/localhost.csr -signkey nginx/ssl/localhost.key -out nginx/ssl/localhost.pem
+__all__ = [
+    # ... Other strategy imports ...
+    "MyStrategy",
+]
 ```
 
-**The current NGINX configuration file is set to use the `localhost.pem` and `localhost.key` files.
-If you generate the certificate with a different name, update the `nginx.conf` file accordingly.**
+Finally, run the community simulator using your new strategy:
 
-
-## 4. Production Deployment
-
-### 4.1. Start Docker Containers Stack
-
-```shell
-docker compose -f docker-compose.prod.yml up -d
+```bash
+cd simulator/community
+python simulate.py run --strategies="my_strategy" --n_sessions=10
 ```
 
-This command should start the following services:
-   - `predico_rest_app`: Django REST API
-   - `predico_forecast`: Forecasting service
-   - `predico_frontend`: React frontend
-   - `predico_nginx`: NGINX server
-   - `predico_postgresql`: PostgreSQL database
-   - `predico_mkdocs`: Intermediate build to generate documentation
+---
+## Relevant Documentation
 
-Access Points:
-	 -	Main Page: http://127.0.0.1
-	 -	RESTful API: http://127.0.0.1/api
-   -	Documentation: http://127.0.0.1/docs
+| Resource | Description |
+|----------|-------------|
+| [`simulator/community/README.md`](simulator/community/README.md) | Getting started with local simulations |
+| [`src/strategies/README.md`](src/strategies/README.md) | Available algorithms + how to create new ones |
+| [`simulator/community/docs/strategy-guide.md`](simulator/community/docs/strategy-guide.md) | Step-by-step strategy development |
+| [`simulator/community/docs/advanced-strategies.md`](simulator/community/docs/advanced-strategies.md) | Advanced base classes and techniques |
+| [`simulator/community/docs/cli-reference.md`](simulator/community/docs/cli-reference.md) | CLI options |
+| [`simulator/community/docs/dataset-format.md`](simulator/community/docs/dataset-format.md) | Input data specifications |
+| [`simulator/community/docs/evaluation-metrics.md`](simulator/community/docs/evaluation-metrics.md) | RMSE, Pinball Loss, Winkler scoring |
 
-### 4.2. Configure service super user:
+For platform integration and API documentation: **https://predico.inesctec.pt/docs/**
 
-Service administrators need to be added via CLI, with the following command.
+---
 
-```shell  
-docker exec -it predico_rest_app python manage.py createadmin
+## Architecture Diagrams
+
+Below is an overview of the main components and data flow within the Predico Forecast Engine.
+Besides the ensemble strategies, Predico also includes modules for outlier detection, feature engineering, session management, and scoring.
+
+<p align="center">
+  <img src="docs/predico_structure.svg" alt="Predico Overview">
+</p>
+
+---
+
+## Known Issues
+
+No major issues are currently documented. For bug reports or feature requests, please open an issue in the repository or contact the maintainers.
+
+---
+
+## Contributing
+
+Contributions are welcome (strategies, metrics, docs, tests).  If you add a new strategy, include:
+- A minimal unit test (see `tests/`)
+- A short note about your strategy in [`src/strategies/README.md`](src/strategies/README.md)
+
+**Running Tests:**
+
+```bash
+poetry run pytest
 ```
 
-**Note that:**
-   - The createadmin command is a custom script that creates a superuser.
-   - You will be prompted to enter a username, email, and password.
-   - You can specify whether this user should be a session_manager, granting higher privileges to manage sessions (open/close/post ensemble forecasts, etc.).
+See INESC TEC's [Contributing Guidelines](https://github.com/INESCTEC/.github/blob/main/documents/contributing.md) for more details on how to contribute.
 
+---
 
-### 4.3. Using the Command Line Interface (CLI):
+## Community Standards
 
-Market sessions can be open/executed through the command line interface (CLI) available in the `forecast` module.
+This project follows the INESC TEC organisation-wide governance documents:
 
-> **_NOTE:_**  The following instructions assume you have all the services running. If you don't, please refer to the previous section.
+- [Code of Conduct](https://github.com/INESCTEC/.github/blob/main/documents/code_of_conduct.md)
+- [Contributing Guidelines](https://github.com/INESCTEC/.github/blob/main/documents/contributing.md)
+- [Reporting Template](https://github.com/INESCTEC/.github/blob/main/documents/reporting_template.md)
+- [Security Policy](https://github.com/INESCTEC/.github/blob/main/documents/security.md)
 
-> **_WARNING:_**  The following command will run the market pipeline with the settings specified in the `.env` file.
+Please review these documents before contributing to the project.
 
-#### 4.3.1. Open market session:
+---
 
-When executed, this task will open a new market session, allowing forecasters to submit their forecasts.
+## Credits and Acknowledgements
 
-```shell
-docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py open_session
-```
+This project is developed and maintained by [INESC TEC](https://www.inesctec.pt/).
 
-#### 4.3.2. Close & Run collaborative forecasting session:
+---
 
-When executed, this task will close the currently open market session (gate closure time) and run the collaborative forecasting models.
+## License
 
-Remember that Forecasters will not be able to submit forecasts after the gate closure time.
+Licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
- ```shell
-docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py run_session
- ```
- 
-#### 4.3.3. Run data value assessment tasks
+- See: `LICENSE`
+- Commercial licensing is available — contact INESC TEC Technology Licensing Office: **info.sal@inesctec.pt**
 
-When executed, this task will calculate individual forecasters forecast skill scores and contribution to the final ensemble forecasts.
+---
 
- ```shell
-docker compose -f docker-compose.prod.yml run --rm forecast python tasks.py calculate_ensemble_weights
- ```
+## Contacts
 
-## 5. Development mode
+- José Andrade — jose.r.andrade@inesctec.pt
+- André Garcia — andre.f.garcia@inesctec.pt
+- Carla Gonçalves — carla.s.goncalves@inesctec.pt
+- Ricardo Bessa — ricardo.j.bessa@inesctec.pt
 
-While Docker is recommended for production deployment, you can also set up the project locally installing the dependencies for each module individually. 
-Refer to the development setup guides in each module's README:
-
-- [RESTful API Module Guide](api/README.md)
-- [Forecast Module Guide](forecast/README.md)
-- [Frontend Module Guide](frontend/README.md)
-
-**Note that in these examples we still use Docker to run the PostgreSQL database. You can also install PostgreSQL locally if you prefer.**
-
-## 6. Contributing
-
-This project is currently under active development and we are working on a contribution guide.
-
-### 6.1. Reporting Issues
-Please report bugs by opening an issue on our GitHub repository.
-
-## 7. License
-
-This project is licensed under the AGPL v3 license - see the [LICENSE](LICENSE) file for details.
-
-## 8. Contacts
-
-If you have any questions regarding this project, please contact the following people:
-
-Developers (SW source code / methodology questions):
-  - José Andrade <jose.r.andrade@inesctec.pt>
-  - André Garcia <andre.f.garcia@inesctec.pt>
-  - Giovanni Buroni <giovanni.buroni@inesctec.pt>
-
-Contributors / Reviewers (methodology questions):
-  - Carla Gonçalves <carla.s.goncalves@inesctec.pt>
-  - Ricardo Bessa <ricardo.j.bessa@inesctec.pt>
+<!-- markdownlint-enable MD033 MD041 -->
