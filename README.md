@@ -7,7 +7,7 @@
 <h1 align="center">Predico Forecast Engine</h1>
 
 <p align="center">
-  <strong>Ensemble forecasting algorithms for collaborative renewable energy prediction</strong>
+  <strong>A collaborative forecasting platform for the energy sector</strong>
 </p>
 
 <p align="center">
@@ -34,6 +34,10 @@
 
 It improves accuracy and robustness by **combining forecasts from multiple suppliers** using **ensemble methods**, rather than relying on a single model or vendor.
 Check the [Official Platform Website](https://predico.inesctec.pt) for more details.
+
+> [!NOTE]
+> Predico is currently being tested as an operational proof-of-concept for **Elia, Belgium's Electricity System Operator**. For more information about the project and its applications, please visit [Elia Innovation Press Release](https://innovation.eliagroup.eu/en/projects/predico-collaborative-forecasting-platform) or contact us directly (see Contacts section below).
+
 
 ---
 
@@ -286,7 +290,7 @@ This project is developed and maintained by [INESC TEC](https://www.inesctec.pt/
 Licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
 - See: `LICENSE`
-- Commercial licensing is available — contact INESC TEC Technology Licensing Office: **info.sal@inesctec.pt**
+- Commercial licensing is available — contact INESC TEC Technology Transfer Office (TTO) at **tech-transfer@inesctec.pt**
 
 ---
 
